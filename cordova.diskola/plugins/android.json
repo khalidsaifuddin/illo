@@ -1,0 +1,31 @@
+{
+  "prepare_queue": {
+    "installed": [],
+    "uninstalled": []
+  },
+  "config_munge": {
+    "files": {}
+  },
+  "installed_plugins": {
+    "cordova-plugin-googleplus": {
+      "PLAY_SERVICES_VERSION": "15.0.1",
+      "PACKAGE_NAME": "io.timkayu.diskuisapp"
+    },
+    "cordova-plugin-keyboard": {
+      "PACKAGE_NAME": "io.timkayu.diskuisapp"
+    },
+    "cordova-plugin-splashscreen": {
+      "PACKAGE_NAME": "io.timkayu.diskuisapp"
+    },
+    "cordova-plugin-statusbar": {
+      "PACKAGE_NAME": "io.timkayu.diskuisapp"
+    },
+    "cordova-plugin-whitelist": {
+      "PACKAGE_NAME": "io.timkayu.diskuisapp"
+    },
+    "cordova-plugin-wkwebview-engine": {
+      "PACKAGE_NAME": "io.timkayu.diskuisapp"
+    }
+  },
+  "dependent_plugins": {}
+}

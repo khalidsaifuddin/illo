@@ -1,0 +1,4 @@
+#Thu Jan 28 08:14:30 WIB 2021
+base.0=/Users/khalid/Projects/LahanLatihan/MejaBantu/cordova/platforms/android/app/build/intermediates/transforms/dexMerger/debug/0
+path.0=classes.dex
+renamed.0=classes.dex

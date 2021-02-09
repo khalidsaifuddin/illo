@@ -1,0 +1,4 @@
+#Fri Sep 25 19:04:22 WIB 2020
+base.0=/Users/khalid/Projects/LahanLatihan/MejaBantu/cordova/platforms/android/app/build/intermediates/transforms/dex/release/0
+path.0=classes.dex
+renamed.0=classes.dex
