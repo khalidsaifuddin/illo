@@ -17,7 +17,9 @@ import {
   List,
   ListItem,
   Badge,
-  Icon} from 'framework7-react';
+  Icon,
+  AccordionItem,
+  AccordionContent} from 'framework7-react';
 import LoginPage from '../pages/login';
 // import {Provider} from 'react-redux';
 // import store from 'store';
@@ -322,32 +324,7 @@ class app extends Component {
               {/* <Navbar className="navbarLogoUtama"> */}
               {/* </Navbar> */}
               {/* <Navbar title={localStorage.getItem('judul_aplikasi')}/> */}
-              {localStorage.getItem('sekolah_id_beranda') !== '' && localStorage.getItem('sekolah_id_beranda') !== null &&
-              <>
-              <BlockTitle>Menu Sekolah</BlockTitle>
-              <List noHairlinesBetween className="menuUtama">
-                <ListItem noChevron link="/" view=".view-main" panelClose panel-close title="Beranda">
-                  {/* <Icon slot="media" ios="f7:rocket"></Icon> */}
-                  <i slot="media" className="f7-icons">rocket</i>
-                </ListItem>
-                <ListItem noChevron link={"/daftarGuru/"+localStorage.getItem('sekolah_id_beranda')} view=".view-main" panelClose panel-close title="Daftar Guru">
-                  <i slot="media" className="f7-icons">person</i>
-                </ListItem>
-                <ListItem noChevron link={"/daftarSiswa/"+localStorage.getItem('sekolah_id_beranda')} view=".view-main" panelClose panel-close title="Daftar Siswa">
-                  <i slot="media" className="f7-icons">person_3_fill</i>
-                </ListItem>
-                <ListItem noChevron link={"/kehadiranRekapGuru/"+localStorage.getItem('sekolah_id_beranda')} view=".view-main" panelClose panel-close title="Kehadiran Guru">
-                  <i slot="media" className="f7-icons">person_crop_circle_badge_checkmark</i>
-                </ListItem>
-                <ListItem noChevron link={"/kehadiranRekapSiswa/"+localStorage.getItem('sekolah_id_beranda')} view=".view-main" panelClose panel-close title="Kehadiran Siswa">
-                  <i slot="media" className="f7-icons">rectangle_badge_checkmark</i>
-                </ListItem>
-                <ListItem noChevron link={"/pengaturanPengguna/"+JSON.parse(localStorage.getItem('user')).pengguna_id+"/"+localStorage.getItem('sekolah_id_beranda')} view=".view-main" panelClose panel-close title="Pengaturan">
-                  <i slot="media" className="f7-icons">gear_alt_fill</i>
-                </ListItem>
-              </List>
-              </>
-              }
+              
 
               {/* {localStorage.getItem('sekolah_id_beranda') !== '' && localStorage.getItem('sekolah_id_beranda') !== null && */}
               {localStorage.getItem('kode_aplikasi') === 'MEJA' &&
@@ -359,25 +336,40 @@ class app extends Component {
               } */}
               {localStorage.getItem('kode_aplikasi') !== 'MEJA-EMPU' &&
               <List noHairlinesBetween className="menuUtama">
-                {/* <ListItem link="/Cari" view=".view-main" panelClose panel-close title="Cari">
-                  <i slot="media" className="f7-icons">search</i>
-                </ListItem> */}
-                {/* murid */}
+                
                 {(localStorage.getItem('user') !== null && localStorage.getItem('user') !== '') && (localStorage.getItem('sekolah_id_beranda') === '' || localStorage.getItem('sekolah_id_beranda') === null) &&
                 <ListItem noChevron link="/" view=".view-main" panelClose panel-close title="Beranda">
                   {/* <Icon slot="media" ios="f7:rocket"></Icon> */}
                   <i slot="media" className="f7-icons">rocket</i>
                 </ListItem>
                 }
-                {/* guru */}
+                {(localStorage.getItem('user') !== null && localStorage.getItem('user') !== '') && (localStorage.getItem('sekolah_id_beranda') === '' || localStorage.getItem('sekolah_id_beranda') === null) &&
+                <ListItem link="/DataMaster/" view=".view-main" panelClose panel-close accordionItem title="Data Master">
+                  <i slot="media" className="f7-icons">cube_box</i>
+                  <AccordionContent>
+                    {/* <ListItem noChevron link="/DataMaster/" view=".view-main" panelClose panel-close title="Data Master">
+                      <i slot="media" className="f7-icons">cube_box</i>
+                    </ListItem> */}
+                    <ListItem noChevron link="/Unit/" view=".view-main" panelClose panel-close title="Unit" className="itemSub">
+                      <i slot="media" className="f7-icons">doc_text</i>
+                    </ListItem>
+                    <ListItem noChevron link="/JenisTiket/" view=".view-main" panelClose panel-close title="Jenis Tiket" className="itemSub">
+                      <i slot="media" className="f7-icons">doc_text</i>
+                    </ListItem>
+                  </AccordionContent>
+                </ListItem>
+                }
+                {/* <ListItem noChevron link="/JenisTiket/" view=".view-main" panelClose panel-close title="Jenis Tiket" className="itemSub">
+                  <i slot="media" className="f7-icons">doc_text</i>
+                </ListItem> */}
               </List>
               }
               
               {localStorage.getItem('sudah_login') === '0' && 
               <List>
-                  <ListItem link="/login" view=".view-main" panelClose panel-close title="Login/Masuk">
-                    <i slot="media" className="f7-icons">square_arrow_right</i>
-                  </ListItem>
+                <ListItem link="/login" view=".view-main" panelClose panel-close title="Login/Masuk">
+                  <i slot="media" className="f7-icons">square_arrow_right</i>
+                </ListItem>
               </List>
               }
               
@@ -460,117 +452,10 @@ class app extends Component {
               className="fontMobileTab"
               style={{fontSize:'10px'}} 
             />
-            {/* {localStorage.getItem('kode_aplikasi') === 'MEJA' &&
-            <Link 
-              href="/Cari" 
-              // onClick={()=>{this.onClickLinkTab('beranda')}} 
-              // tabLinkActive={this.props.tabBar.beranda} 
-              iconIos="f7:search" 
-              iconAurora="f7:search" 
-              iconMd="f7:search" 
-              text="Cari" 
-              style={{fontSize:'10px'}} 
-            />
-            } */}
-            {/* {localStorage.getItem('kode_aplikasi') === 'MEJA' &&
-            <Link 
-              href={"/Kuis/"+((localStorage.getItem('user') !== null && localStorage.getItem('user') !== '') ? JSON.parse(localStorage.getItem('user')).pengguna_id  :  null)} 
-              // onClick={()=>{this.onClickLinkTab('beranda')}} 
-              // tabLinkActive={this.props.tabBar.beranda} 
-              iconIos="f7:gamecontroller_alt_fill" 
-              iconAurora="f7:gamecontroller_alt_fill" 
-              iconMd="f7:gamecontroller_alt_fill" 
-              text="Kuis" 
-              style={{fontSize:'10px'}} 
-            />
-            } */}
-            {/* {localStorage.getItem('kode_aplikasi') === 'MEJA' &&
-            <Link 
-              href="/Ruang" 
-              // onClick={()=>{this.onClickLinkTab('beranda')}} 
-              // tabLinkActive={this.props.tabBar.beranda} 
-              iconIos="f7:circle_grid_hex_fill" 
-              iconAurora="f7:circle_grid_hex_fill" 
-              iconMd="f7:circle_grid_hex_fill" 
-              text="Ruang" 
-              style={{fontSize:'10px'}} 
-            />
-            } */}
-
-            {localStorage.getItem('kode_aplikasi') === 'MEJA-GURU' &&
-            <Link 
-              href={"/KuisAnda/"+((localStorage.getItem('user') !== null && localStorage.getItem('user') !== '') ? JSON.parse(localStorage.getItem('user')).pengguna_id  :  null)} 
-              // onClick={()=>{this.onClickLinkTab('beranda')}} 
-              // tabLinkActive={this.props.tabBar.beranda} 
-              iconIos="f7:gamecontroller_alt_fill" 
-              iconAurora="f7:gamecontroller_alt_fill" 
-              iconMd="f7:gamecontroller_alt_fill" 
-              text="Kuis Anda" 
-              style={{fontSize:'10px'}} 
-            />
-            }
-            {localStorage.getItem('kode_aplikasi') === 'MEJA-GURU' &&
-            <Link 
-              href="/RuangAnda" 
-              // onClick={()=>{this.onClickLinkTab('beranda')}} 
-              // tabLinkActive={this.props.tabBar.beranda} 
-              iconIos="f7:circle_grid_hex_fill" 
-              iconAurora="f7:circle_grid_hex_fill" 
-              iconMd="f7:circle_grid_hex_fill" 
-              text="Ruang Anda" 
-              style={{fontSize:'10px'}} 
-            />
-            }
-            {localStorage.getItem('kode_aplikasi') === 'MEJA-GURU' &&
-            <Link 
-              href="/BerandaSekolah/" 
-              // onClick={()=>{this.onClickLinkTab('beranda')}} 
-              // tabLinkActive={this.props.tabBar.beranda} 
-              iconIos="f7:building_2_fill" 
-              iconAurora="f7:building_2_fill" 
-              iconMd="f7:building_2_fill" 
-              text="Sekolah" 
-              style={{fontSize:'10px'}} 
-            />
-            }
             </>
             }
             {localStorage.getItem('kode_aplikasi') !== 'SPM' &&
             <>
-            {localStorage.getItem('sudah_login') === '1' &&
-              <>
-              {/* <Link 
-                href={"/pertanyaanPengguna/"+((localStorage.getItem('user') !== null && localStorage.getItem('user') !== '') ? JSON.parse(localStorage.getItem('user')).pengguna_id  :  null)} 
-                // onClick={()=>{this.onClickLinkTab('beranda')}} 
-                // tabLinkActive={this.props.tabBar.beranda} 
-                iconIos="f7:question_square_fill" 
-                iconAurora="f7:question_square_fill" 
-                iconMd="f7:question_square_fill" 
-                text="Diskusi" 
-                style={{fontSize:'10px'}} 
-              /> */}
-              {/* <Link 
-                href={"/pantauan/"+((localStorage.getItem('user') !== null && localStorage.getItem('user') !== '') ? JSON.parse(localStorage.getItem('user')).pengguna_id  :  null)} 
-                // onClick={()=>{this.onClickLinkTab('beranda')}} 
-                // tabLinkActive={this.props.tabBar.beranda} 
-                iconIos="f7:bell_circle" 
-                iconAurora="f7:bell_circle" 
-                iconMd="f7:bell_circle" 
-                text="Pantau" 
-                style={{fontSize:'10px'}} 
-              /> */}
-              {/* <Link 
-                href="/ProfilPengguna" 
-                // onClick={()=>{this.onClickLinkTab('beranda')}} 
-                tabLinkActive={this.props.tabBar.beranda} 
-                iconIos="f7:person_alt" 
-                iconAurora="f7:person_alt" 
-                iconMd="material:person_alt" 
-                text="Pengguna" 
-                style={{fontSize:'10px'}} 
-              /> */}
-              </>
-            }
             {localStorage.getItem('sudah_login') === '0' &&
               <Link 
                 href="/login" 
@@ -585,61 +470,7 @@ class app extends Component {
             }
             </>
             }
-            {localStorage.getItem('kode_aplikasi') === 'MEJA-EMPU' &&
-            <Link 
-              href="/EmpuKuis/kuis" 
-              // onClick={()=>{this.onClickLinkTab('beranda')}} 
-              // tabLinkActive={this.props.tabBar.beranda} 
-              iconIos="f7:chart_bar_square" 
-              iconAurora="f7:chart_bar_square" 
-              iconMd="f7:chart_bar_square" 
-              text="Kuis" 
-              style={{fontSize:'10px'}} 
-            />
-            }
-            {localStorage.getItem('kode_aplikasi') === 'MEJA-EMPU' &&
-            <Link 
-              href="/EmpuKuis/ruang" 
-              // onClick={()=>{this.onClickLinkTab('beranda')}} 
-              // tabLinkActive={this.props.tabBar.beranda} 
-              iconIos="f7:chart_bar_square" 
-              iconAurora="f7:chart_bar_square" 
-              iconMd="f7:chart_bar_square" 
-              text="Ruang" 
-              style={{fontSize:'10px'}} 
-            />
-            }
-            {localStorage.getItem('kode_aplikasi') === 'MEJA-EMPU' &&
-            <Link 
-              href="/EmpuKuis/pengguna" 
-              // onClick={()=>{this.onClickLinkTab('beranda')}} 
-              // tabLinkActive={this.props.tabBar.beranda} 
-              iconIos="f7:chart_bar_square" 
-              iconAurora="f7:chart_bar_square" 
-              iconMd="f7:chart_bar_square" 
-              text="Pengguna" 
-              style={{fontSize:'10px'}} 
-            />
-            }
-            {/* <ListItem noChevron link="/Notifikasi" view=".view-main" panelClose panel-close title="Notifikasi">
-              {this.props.notifikasi_belum_dibaca.total > 0 &&
-              <div slot="after" className="badgeNotif">{this.props.notifikasi_belum_dibaca.total}</div>
-              }
-              {this.props.notifikasi_belum_dibaca.total < 1 &&
-              <div slot="after" className="badgeNotifKosong">0</div>
-              }
-              <i slot="media" className="f7-icons">bell_fill</i>
-            </ListItem> */}
-            {/* <Link 
-              href="/Notifikasi" 
-              iconIos={"f7:bell_fill"} 
-              iconAurora={"f7:bell_fill"} 
-              iconMd={"material:bell_fill"} 
-              text="Notifikasi"
-              style={{fontSize:'10px'}}
-            >
-              {this.props.notifikasi_belum_dibaca.total > 0 && <Badge color="red">{this.props.notifikasi_belum_dibaca.total}</Badge>}
-            </Link> */}
+            
             {/* color:'#962C1F' */}
             <Link href="/notifikasi" style={{marginLeft:'0px', fontSize:'10px', fontWeight:'bold', color:'#F27121'}}> 
               <Icon className="f7-icons" ios={this.props.notifikasi_belum_dibaca.total > 0 ? "f7:bell_fill" : "f7:bell"} aurora={this.props.notifikasi_belum_dibaca.total > 0 ? "f7:bell_fill" : "f7:bell"} md={this.props.notifikasi_belum_dibaca.total > 0 ? "material:bell_fill" : "material:bell"} tooltip="Notifikasi">

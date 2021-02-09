@@ -1152,7 +1152,7 @@ class Beranda extends Component {
                               <h1 className="h1-beranda">Kategori</h1>
                             </Col>
                             <Col width="30">
-                              <Button className="color-theme-deeporange" raised fill href="/kategori/" style={{marginTop:'8px'}}>
+                              <Button className="color-theme-teal" raised fill href="/kategori/" style={{marginTop:'8px'}}>
                                 Semua
                               </Button>
                             </Col>

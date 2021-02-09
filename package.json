@@ -1,8 +1,8 @@
 {
-  "name": "diskuis",
+  "name": "iris",
   "private": true,
   "version": "2.2.0",
-  "description": "Aplikasi Diskuis",
+  "description": "Aplikasi IRIS",
   "repository": "",
   "license": "UNLICENSED",
   "framework7": {
@@ -10,14 +10,14 @@
       "pwa",
       "cordova"
     ],
-    "name": "Diskuis",
+    "name": "iris",
     "framework": "react",
     "template": "split-view",
     "bundler": "webpack",
     "cssPreProcessor": false,
     "customColor": false,
     "iconFonts": true,
-    "pkg": "io.timkayu.diskuisapp",
+    "pkg": "io.timkayu.irisapp",
     "cordovaPlatform": [
       "ios",
       "android"
