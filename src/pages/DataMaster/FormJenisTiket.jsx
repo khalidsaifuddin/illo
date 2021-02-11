@@ -19,8 +19,13 @@ class FormJenisTiket extends Component {
         loadingPengguna: false,
         routeParams: {
             jenis_tiket_id: this.$f7route.params['jenis_tiket_id'],
-            induk_jenis_tiket_id: this.$f7route.params['induk_jenis_tiket_id']
-        } 
+            induk_jenis_tiket_id: this.$f7route.params['induk_jenis_tiket_id'],
+            pengguna_id: JSON.parse(localStorage.getItem('user')).pengguna_id
+        } ,
+        unit:{
+            rows: [],
+            total: 0
+        }
     }
 
     bulan = [
@@ -39,13 +44,69 @@ class FormJenisTiket extends Component {
     ]
 
     componentDidMount = () => {
-        
+
+        if(this.$f7route.params['jenis_tiket_id'] && this.$f7route.params['jenis_tiket_id'] !== '-'){
+            this.props.getJenisTiket(this.state.routeParams).then((result)=>{
+                if(result.payload.total > 0){
+
+                    this.setState({
+                        routeParams: {
+                            ...result.payload.rows[0]
+                        }
+                    })
+
+                }
+            })
+            
+        }else{
+            this.props.generateUUID(this.state.routeParams).then((result)=>{
+                this.setState({
+                    routeParams: {
+                        ...this.state.routeParams,
+                        jenis_tiket_id: result.payload
+                    }
+                })
+            })
+        }
+
+        this.props.getUnit(this.state.routeParams).then((result)=>{
+            this.setState({
+                unit: result.payload
+            })
+        })
     }
 
     setValue = (type) => (e) => {
-        alert('tes')
+
+        console.log(type)
+
+        // alert('tes')
+        this.setState({
+            routeParams: {
+                ...this.state.routeParams,
+                [type]: e.target.value
+            }
+        },()=>{
+            console.log(this.state)
+        })
     }
 
+    simpan = () => {
+        this.$f7.dialog.preloader('Menyimpan...')
+        this.props.simpanJenisTiket(this.state.routeParams).then((result)=>{
+            this.$f7.dialog.close()
+            if(result.payload.sukses){
+                this.$f7.dialog.alert("Berhasil menyimpan data!", "Berhasil", ()=> {
+                    this.$f7router.navigate("/JenisTiket/")
+                })
+            }else{
+                this.$f7.dialog.alert("Terdapat kesalahan pada sistem atau jaringan Anda. Mohon coba kembali dalam beberapa saat!", "Gagal")
+            }
+        }).catch(()=>{
+            this.$f7.dialog.close()
+            this.$f7.dialog.alert("Saat ini kami belum dapat menyimpan data Anda. Mohon coba kembali dalam beberapa saat!", "Gagal")
+        })
+    }
     
     render()
     {
@@ -67,11 +128,37 @@ class FormJenisTiket extends Component {
                                         type="text"
                                         placeholder="Nama Jenis Tiket"
                                         clearButton
-                                        value={null}
+                                        value={this.state.routeParams.nama}
                                         onChange={this.setValue('nama')}
                                     />   
+                                    <ListInput
+                                        label="Keterangan Jenis Tiket"
+                                        type="text"
+                                        placeholder="Keterangan Jenis Tiket"
+                                        clearButton
+                                        value={this.state.routeParams.keterangan}
+                                        onChange={this.setValue('keterangan')}
+                                    />
+                                    <ListInput
+                                        label="Unit"
+                                        type="select"
+                                        value={this.state.routeParams.unit_id}
+                                        placeholder="Pilih Unit..."
+                                        onChange={this.setValue('unit_id')}
+                                    >
+                                        <option value={null} disabled selected={(this.state.routeParams.unit_id ? false : true)}>-</option>
+                                        {this.state.unit.rows.map((option)=>{
+                                            return (
+                                                <option value={option.unit_id}>{option.nama}</option>
+                                            )
+                                        })}
+                                    </ListInput>
                                 </List>
-                                
+                                <div style={{borderTop:'1px solid #ccc', marginTop:'16px', marginBottom:'8px'}}>&nbsp;</div>
+                                <Button onClick={this.simpan} style={{display:'inline-flex'}} raised fill className="color-theme-teal">
+                                    <i className="f7-icons" style={{fontSize:'20px'}}>floppy_disk</i>&nbsp;
+                                    Simpan
+                                </Button>
                             </CardContent>
                         </Card>
                     
@@ -87,7 +174,11 @@ class FormJenisTiket extends Component {
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
       updateWindowDimension: Actions.updateWindowDimension,
-      setLoading: Actions.setLoading
+      setLoading: Actions.setLoading,
+      getUnit: Actions.getUnit,
+      getJenisTiket: Actions.getJenisTiket,
+      simpanJenisTiket: Actions.simpanJenisTiket,
+      generateUUID: Actions.generateUUID
     }, dispatch);
 }
 

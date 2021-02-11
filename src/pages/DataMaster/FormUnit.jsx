@@ -18,9 +18,11 @@ class FormUnit extends Component {
         loadingKuis: false,
         loadingPengguna: false,
         routeParams: {
-            unit_id: this.$f7route.params['unit_id'] ? this.$f7route.params['unit_id'] : null,
-            induk_unit_id: this.$f7route.params['induk_unit_id'] ? this.$f7route.params['induk_unit_id'] : null
-        } 
+            unit_id: (this.$f7route.params['unit_id'] && this.$f7route.params['unit_id'] !== '-') ? this.$f7route.params['unit_id'] : null,
+            induk_unit_id: this.$f7route.params['induk_unit_id'] ? this.$f7route.params['induk_unit_id'] : null,
+            pengguna_id: JSON.parse(localStorage.getItem('user')).pengguna_id
+        },
+        induk_unit: {}
     }
 
     bulan = [
@@ -39,7 +41,20 @@ class FormUnit extends Component {
     ]
 
     componentDidMount = () => {
-        if(!this.$f7route.params['unit_id']){
+        if(this.$f7route.params['unit_id'] && this.$f7route.params['unit_id'] !== '-'){
+            this.props.getUnit(this.state.routeParams).then((result)=>{
+                if(result.payload.total > 0){
+
+                    this.setState({
+                        routeParams: {
+                            ...result.payload.rows[0]
+                        }
+                    })
+
+                }
+            })
+            
+        }else{
             this.props.generateUUID(this.state.routeParams).then((result)=>{
                 this.setState({
                     routeParams: {
@@ -48,6 +63,16 @@ class FormUnit extends Component {
                     }
                 })
             })
+
+            if(this.$f7route.params['induk_unit_id']){
+                this.props.getUnit({unit_id: this.$f7route.params['induk_unit_id']}).then((result)=>{
+                    if(result.payload.total > 0){
+                        this.setState({
+                            induk_unit: result.payload.rows[0]
+                        })
+                    }
+                })
+            }
         }
     }
 
@@ -93,6 +118,11 @@ class FormUnit extends Component {
                     <Col width="100" tabletWidth="80" desktopWidth="80">
                         
                         <Card>
+                            {this.$f7route.params['induk_unit_id'] &&
+                            <CardHeader>
+                                Induk Unit: <b>{this.state.induk_unit.nama}</b>
+                            </CardHeader>
+                            }
                             <CardContent>
                                 <List noHairlinesBetweenIos>
                                     <ListInput
@@ -142,7 +172,8 @@ function mapDispatchToProps(dispatch) {
       updateWindowDimension: Actions.updateWindowDimension,
       setLoading: Actions.setLoading,
       generateUUID: Actions.generateUUID,
-      simpanUnit: Actions.simpanUnit
+      simpanUnit: Actions.simpanUnit,
+      getUnit: Actions.getUnit
     }, dispatch);
 }
 

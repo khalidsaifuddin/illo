@@ -1362,12 +1362,13 @@ h2 {
 }
 
 .kontenMenu {
-  background: rgb(0,0,0,0.3);
-  border-radius: 20px 20px 0px 0px;
+  background: rgb(0,0,0,0.5);
+  /* border-radius: 20px 20px 0px 0px; */
+  border-radius: inherit;
   color: white;
   font-weight: bold;
   font-size: 20PX;
-  /* min-height: 100px; */
+  min-height: 80px;
   /* position: absolute; */
   /* width: -webkit-fill-available; */
   bottom: 0px;
@@ -1375,4 +1376,12 @@ h2 {
 
 .itemSub a {
   padding-left: 36px;
+}
+
+.kotakKontenTiket {
+  background-color: white;
+}
+
+.kontenMenuBerandaKecil::after {
+  background:white;
 }

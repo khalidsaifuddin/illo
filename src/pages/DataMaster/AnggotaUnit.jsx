@@ -12,16 +12,23 @@ import moment from 'moment';
 
 import localForage from 'localforage';
 
-class JenisTiket extends Component {
+class AnggotaUnit extends Component {
     state = {
         error: null,
         loadingKuis: false,
         loadingPengguna: false,
         routeParams: {
             start:0,
-            limit:20
+            limit:20,
+            unit_id: this.$f7route.params['unit_id'],
         },
-        jenis_tiket: {
+        unit: {
+            rows: [{
+                nama: '-'
+            }],
+            total: 0
+        },
+        anggota_unit: {
             rows: [],
             total: 0
         }
@@ -41,7 +48,7 @@ class JenisTiket extends Component {
         'November',
         'Desember'
     ]
-    
+
     bulan_singkat = [
         'Jan',
         'Feb',
@@ -63,33 +70,48 @@ class JenisTiket extends Component {
 
     componentDidMount = () => {
         this.$f7.dialog.preloader('Memuat data...')
-        this.props.getJenisTiket(this.state.routeParams).then((result)=>{
+        this.props.getUnit(this.state.routeParams).then((result)=>{
             this.setState({
-                jenis_tiket: result.payload
+                unit: result.payload
             },()=>{
-                this.$f7.dialog.close()
+                this.props.getAnggotaUnit(this.state.routeParams).then((result)=>{
+                    this.setState({
+                        anggota_unit: result.payload
+                    },()=>{
+                        this.$f7.dialog.close()
+                    })
+                })
+
             })
         })
     }
 
-    tambah = () => {
-        this.$f7router.navigate("/FormJenisTiket/")
+    tambah = (unit_id) => {
+        this.$f7router.navigate("/FormAnggotaUnit/"+unit_id)
     }
 
-    edit = (jenis_tiket_id) => {
-        this.$f7router.navigate('/FormJenisTiket/'+jenis_tiket_id)
+    edit = (unit_id) => {
+        this.$f7router.navigate('/FormUnit/'+unit_id)
     }
 
-    hapus = (jenis_tiket_id) => {
+    tambahSub = (induk_unit_id) => {
+        this.$f7router.navigate('/FormUnit/-/'+induk_unit_id)
+    }
+
+    anggotaUnit = (unit_id) => {
+        this.$f7router.navigate('/AnggotaUnit/'+unit_id)
+    }
+
+    hapus = (unit_id) => {
         this.$f7.dialog.confirm('Apakah Anda yakin ingin menghapus data ini?', 'Konfirmasi Hapus',()=>{
             this.$f7.dialog.preloader('Menyimpan...')
-            this.props.simpanJenisTiket({jenis_tiket_id: jenis_tiket_id, soft_delete:1}).then((result)=>{
+            this.props.simpanUnit({unit_id: unit_id, soft_delete:1}).then((result)=>{
                 this.$f7.dialog.close()
                 if(result.payload.sukses){
 
-                    this.props.getJenisTiket(this.state.routeParams).then((result)=>{
+                    this.props.getUnit(this.state.routeParams).then((result)=>{
                         this.setState({
-                            jenis_tiket: result.payload
+                            unit: result.payload
                         })
                     })
 
@@ -106,14 +128,14 @@ class JenisTiket extends Component {
         })
         
     }
+
     
     render()
     {
         return (
-            <Page name="JenisTiket" hideBarsOnScroll style={{paddingBottom:'100px', boxSizing:'content-box'}}>
+            <Page name="AnggotaUnit" hideBarsOnScroll style={{paddingBottom:'100px', boxSizing:'content-box'}}>
                 <Navbar sliding={false} backLink="Kembali" onBackClick={this.backClick}>
-                    <NavTitle sliding>Jenis Tiket</NavTitle>
-                    
+                    <NavTitle sliding>Anggota Unit</NavTitle>
                 </Navbar>
                 
                 <Row noGap>
@@ -121,7 +143,16 @@ class JenisTiket extends Component {
                     <Col width="100" tabletWidth="80" desktopWidth="80">
                         
                         <Card>
-                            <CardContent>
+                            <CardContent style={{padding:'8px'}}>
+                                <Row>
+                                    <BlockTitle style={{marginBottom:'4px', marginTop:'4px', fontWeight:'bold', fontSize:'15px'}}>
+                                        Unit {this.state.unit.rows[0].nama}
+                                    </BlockTitle>
+                                </Row>
+                            </CardContent>
+                        </Card>
+                        <Card>
+                            <CardContent style={{padding:'8px'}}>
                                 <Row>
                                     <Col width="100" tabletWidth="100">
                                         <div className="data-table" style={{overflowY:'hidden'}}>
@@ -130,22 +161,22 @@ class JenisTiket extends Component {
                                                     <a onClick={this.klikPrev} href="#" className={"link "+(this.state.routeParams.start < 1 ? "disabled" : "" )}>
                                                     <i className="icon icon-prev color-gray"></i>
                                                     </a>
-                                                    <a onClick={this.klikNext} href="#" className={"link "+((parseInt(this.state.routeParams.start)+20) >= parseInt(this.state.jenis_tiket.total) ? "disabled" : "" )}>
+                                                    <a onClick={this.klikNext} href="#" className={"link "+((parseInt(this.state.routeParams.start)+20) >= parseInt(this.state.unit.total) ? "disabled" : "" )}>
                                                         <i className="icon icon-next color-gray"></i>
                                                     </a>
-                                                    <span className="data-table-pagination-label">{(this.state.routeParams.start+1)}-{(this.state.routeParams.start)+parseInt(this.state.routeParams.limit) <= parseInt(this.state.jenis_tiket.total) ? (this.state.routeParams.start)+parseInt(this.state.routeParams.limit) : parseInt(this.state.jenis_tiket.total)} dari {this.formatAngka(this.state.jenis_tiket.total)} jenis tiket</span>
+                                                    <span className="data-table-pagination-label">{(this.state.routeParams.start+1)}-{(this.state.routeParams.start)+parseInt(this.state.routeParams.limit) <= parseInt(this.state.unit.total) ? (this.state.routeParams.start)+parseInt(this.state.routeParams.limit) : parseInt(this.state.unit.total)} dari {this.formatAngka(this.state.unit.total)} anggota unit</span>
                                                 </div>
                                             </div>
                                         </div>
                                     </Col>
                                     <Col width="100" tabletWidth="100" style={{textAlign:'right'}}>
-                                        <Button raised fill style={{display:'inline-flex', marginTop:'-60px'}} onClick={this.tambah}>
+                                        <Button raised fill style={{display:'inline-flex', marginTop:'-60px'}} onClick={()=>this.tambah(this.$f7route.params['unit_id'])}>
                                             <i className="f7-icons" style={{fontSize:'20px'}}>plus</i>&nbsp;
                                             Tambah
                                         </Button>
                                     </Col>
                                     <Col width="100" tabletWidth="100">
-                                        {this.state.jenis_tiket.total < 1 &&
+                                        {this.state.anggota_unit.total < 1 &&
                                         <div style={{width:'100%', textAlign:'center', marginBottom:'50px'}}>
                                             <img src="./static/icons/189.jpg" style={{width:'60%'}} /> 
                                             <br/>
@@ -153,58 +184,40 @@ class JenisTiket extends Component {
                                             Silakan klik tombol tambah diatas untuk membuat data baru   
                                         </div>
                                         }
-                                        {this.state.jenis_tiket.rows.map((option)=>{
-                                            let last_update = '';
-                                            last_update = moment(option.last_update).format('D') + ' ' + this.bulan_singkat[(moment(option.last_update).format('M')-1)] + ' ' + moment(option.last_update).format('YYYY') + ', ' + moment(option.last_update).format('H') + ':' + moment(option.last_update).format('mm');
+                                        {this.state.anggota_unit.rows.map((option)=>{
+                                            let create_date = '';
+                                            create_date = moment(option.create_date).format('D') + ' ' + this.bulan_singkat[(moment(option.create_date).format('M')-1)] + ' ' + moment(option.create_date).format('YYYY') + ', ' + moment(option.create_date).format('H') + ':' + moment(option.create_date).format('mm');
 
-                                            if(moment(option.last_update).format('D') + ' ' + this.bulan_singkat[(moment(option.last_update).format('M')-1)] + ' ' + moment(option.last_update).format('YYYY') === moment().format('D') + ' ' + this.bulan_singkat[(moment().format('M')-1)] + ' ' + moment().format('YYYY')){
-                                                last_update = 'Hari ini, ' + moment(option.last_update).format('H') + ':' + moment(option.last_update).format('mm');
+                                            if(moment(option.create_date).format('D') + ' ' + this.bulan_singkat[(moment(option.create_date).format('M')-1)] + ' ' + moment(option.create_date).format('YYYY') === moment().format('D') + ' ' + this.bulan_singkat[(moment().format('M')-1)] + ' ' + moment().format('YYYY')){
+                                                create_date = 'Hari ini, ' + moment(option.create_date).format('H') + ':' + moment(option.create_date).format('mm');
                                             }
 
                                             return (
-                                                <Card key={option.jenis_tiket_id} style={{marginLeft:'0px', marginRight:'0px'}}>
+                                                <Card key={option.anggota_unit_id} style={{marginLeft:'0px', marginRight:'0px'}}>
                                                     <CardContent style={{padding:'8px'}}>
                                                         <Row>
                                                             <Col width="15" tabletWidth="15" desktopWidth="10" style={{textAlign:'center'}}>
-                                                                <img src={"./static/icons/illo-logo-icon.png"} style={{height:'45px', width:'45px', borderRadius:'50%', marginRight:'0px'}} />
+                                                                <img src={option.gambar} style={{height:'45px', width:'45px', borderRadius:'50%', marginRight:'0px'}} />
                                                             </Col>
                                                             <Col width="65" tabletWidth="55" desktopWidth="60">
-                                                                <b>{option.nama}</b>
+                                                                <span className={"hilangDiDesktop"}><b>{option.nama}</b></span>
+                                                                <span className={"hilangDiMobile"}><b>{option.nama}</b> ({option.username})</span>
+                                                                <div style={{fontSize:'10px'}} className="hilangDiDesktop">
+                                                                    {option.username}
+                                                                </div>
                                                                 <div style={{fontSize:'10px'}}>
-                                                                    {option.keterangan &&
-                                                                    <>
-                                                                    {option.keterangan}&nbsp;&bull;&nbsp;
-                                                                    </>
-                                                                    }
-                                                                    {/* {option.pembuat &&
-                                                                    <>
-                                                                    Oleh {option.pembuat}
-                                                                    </>
-                                                                    } */}
-                                                                    <div style={{fontSize:'10px'}}>
-                                                                        Update Terakhir: {last_update}
-                                                                    </div>
-                                                                    {option.unit &&
-                                                                    // <div className="hilangDiDesktop" style={{fontSize:'10px', textAlign:'right', marginRight:'-40px', marginTop:'-14px'}}>
-                                                                    <div className="hilangDiDesktop" style={{fontSize:'10px'}}>
-                                                                    {option.unit}
-                                                                    </div>
-                                                                    }
+                                                                    Bergabung sejak {create_date}
                                                                 </div>
                                                             </Col>
                                                             <Col width="0" tabletWidth="20" desktopWidth="20" style={{textAlign:'right'}} className="hilangDiMobile">
-                                                                {option.unit &&
-                                                                <div style={{fontSize:'10px'}}>
-                                                                {option.unit}
-                                                                </div>
-                                                                }
+                                                                {option.jabatan_unit}
                                                             </Col>
                                                             <Col width="10" tabletWidth="10" desktopWidth="10" style={{textAlign:'right'}}>
-                                                                <Button popoverOpen={".popover-menu-"+option.jenis_tiket_id}><i className="icons f7-icons">ellipsis_vertical</i></Button>
-                                                                <Popover className={"popover-menu-"+option.jenis_tiket_id} style={{minWidth:'300px'}}>
+                                                                <Button popoverOpen={".popover-menu-"+option.anggota_unit_id}><i className="icons f7-icons">ellipsis_vertical</i></Button>
+                                                                <Popover className={"popover-menu-"+option.anggota_unit_id} style={{minWidth:'300px'}}>
                                                                     <List>
-                                                                        <ListItem link="#" popoverClose title="Edit" onClick={()=>this.edit(option.jenis_tiket_id)} />
-                                                                        <ListItem link="#" popoverClose title="Hapus" onClick={()=>this.hapus(option.jenis_tiket_id)} />
+                                                                        <ListItem link="#" popoverClose title="Edit Jabatan" onClick={()=>this.edit(option.anggota_unit_id)} />
+                                                                        <ListItem link="#" popoverClose title="Hapus" onClick={()=>this.hapus(option.anggota_unit_id)} />
                                                                     </List>
                                                                 </Popover>
                                                             </Col>
@@ -217,7 +230,7 @@ class JenisTiket extends Component {
                                 </Row>
                             </CardContent>
                         </Card>
-                    
+
                     </Col>
                     <Col width="0" tabletWidth="10" desktopWidth="10"></Col>
                 </Row>
@@ -231,9 +244,8 @@ function mapDispatchToProps(dispatch) {
     return bindActionCreators({
       updateWindowDimension: Actions.updateWindowDimension,
       setLoading: Actions.setLoading,
-      getJenisTiket: Actions.getJenisTiket,
-      simpanJenisTiket: Actions.simpanJenisTiket,
-      generateUUID: Actions.generateUUID
+      getUnit: Actions.getUnit,
+      getAnggotaUnit: Actions.getAnggotaUnit
     }, dispatch);
 }
 
@@ -244,5 +256,5 @@ function mapStateToProps({ App, Pertanyaan, Kuis }) {
     }
 }
 
-export default (connect(mapStateToProps, mapDispatchToProps)(JenisTiket));
+export default (connect(mapStateToProps, mapDispatchToProps)(AnggotaUnit));
   

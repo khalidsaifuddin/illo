@@ -209,95 +209,18 @@ class Beranda extends Component {
         
         this.props.getNotifikasiRedisBelumDibaca({pengguna_id: JSON.parse(localStorage.getItem('user')).pengguna_id, tipe: 'belum_dibaca'}).then((result)=>{
             
-          document.title = '(' + result.payload.total + ') Diskuis - Pendidikan Digital'
+          // document.title = '(' + result.payload.total + ') Diskuis - Pendidikan Digital'
           
-          //   this.setState({
-        //     notifikasi: result.payload
-        //   })
-        // })
-        // this.props.getNotifikasi(this.state.routeParamsNotifikasi).then((result)=>{
-          // this.props.getPertanyaan(this.state.routeParams).then((result)=>{
-            this.setState({
-              // pertanyaan: this.props.pertanyaan,
-              // notifikasi: this.props.notifikasi,
-              // loadingPertanyaan: false,
-              notifikasi: result.payload,
-              routeParamsMapel: {
-                limit: 5,
-                trending: 'Y'
-              }
-            },()=>{
-              // this.props.getLinimasa(this.state.routeParamsNotifikasi).then((result)=>{
-              //   this.setState({
-              //     linimasa: {
-              //       rows: [
-              //         ...this.state.linimasa.rows,
-              //         ...this.props.linimasa.rows
-              //       ],
-              //       total: (parseInt(this.state.linimasa.total)+parseInt(this.props.linimasa.total))
-              //     }
-              //   });
-              // });
-              
-              this.props.getMapel(this.state.routeParamsMapel).then((result)=>{
-                this.setState({
-                  mapel: this.props.mapel
-                },()=>{
-                  localStorage.setItem('getMapel:'+JSON.parse(localStorage.getItem('user')).pengguna_id, JSON.stringify(this.props.mapel))
-                })
-              });
-
-              this.props.getAktivitas(this.state.routeParamsNotifikasi).then((result)=>{
-                this.setState({
-                  aktivitas: {
-                    rows: [
-                      ...this.state.aktivitas.rows,
-                      ...this.props.aktivitas.rows
-                    ],
-                    total: (parseInt(this.state.aktivitas.total)+parseInt(this.props.aktivitas.total))
-                  }
-                },()=>{
-                  localStorage.setItem('getAktivitas:'+JSON.parse(localStorage.getItem('user')).pengguna_id, JSON.stringify(this.state.aktivitas))
-                });
-              });
-            });
-          // });
+          this.setState({
+            notifikasi: result.payload,
+            routeParamsMapel: {
+              limit: 5,
+              trending: 'Y'
+            }
+          },()=>{
+            
+          });
   
-        });
-
-        this.props.getKuisDiikuti(this.state.routeParamsNotifikasi).then((result)=>{
-          
-        });  
-        
-        this.props.getRuangDiikuti(this.state.routeParamsNotifikasi).then((result)=>{
-          
-        });  
-        
-        this.props.getLeaderboardPengguna({pengguna_id: JSON.parse(localStorage.getItem('user')).pengguna_id}).then((result)=>{
-          
-        });  
-        
-        this.props.getKuisTrending(this.state.routeParams).then((result)=>{
-          this.setState({
-            ...this.state,
-            kuis_trending: this.props.kuis_trending
-          },()=>{
-
-            localStorage.setItem('getKuisTrending:'+JSON.parse(localStorage.getItem('user')).pengguna_id, JSON.stringify(this.props.kuis_trending))
-
-          })
-        }); 
-
-        this.props.getRataKuis(this.state.routeParamsNotifikasi).then((result)=>{
-          //do nothing
-          this.setState({
-            ...this.state,
-            rata_kuis: this.props.rata_kuis[0]
-          },()=>{
-
-            localStorage.setItem('getRataKuis:'+JSON.parse(localStorage.getItem('user')).pengguna_id, JSON.stringify(this.props.rata_kuis[0]))
-
-          })
         });
 
         this.props.getPengaturanPengguna(this.state.routeParamsNotifikasi).then((result)=>{

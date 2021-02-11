@@ -359,6 +359,16 @@ class app extends Component {
                   </AccordionContent>
                 </ListItem>
                 }
+                {(localStorage.getItem('user') !== null && localStorage.getItem('user') !== '') && (localStorage.getItem('sekolah_id_beranda') === '' || localStorage.getItem('sekolah_id_beranda') === null) &&
+                <ListItem noChevron link="/DaftarTiket/" view=".view-main" panelClose panel-close title="Tiket dan Dukungan">
+                  <i slot="media" className="f7-icons">smallcircle_fill_circle_fill</i>
+                </ListItem>
+                }
+                {(localStorage.getItem('user') !== null && localStorage.getItem('user') !== '') && (localStorage.getItem('sekolah_id_beranda') === '' || localStorage.getItem('sekolah_id_beranda') === null) &&
+                <ListItem noChevron link="/KelolaTiket/" view=".view-main" panelClose panel-close title="Kelola Tiket">
+                  <i slot="media" className="f7-icons">smallcircle_fill_circle</i>
+                </ListItem>
+                }
                 {/* <ListItem noChevron link="/JenisTiket/" view=".view-main" panelClose panel-close title="Jenis Tiket" className="itemSub">
                   <i slot="media" className="f7-icons">doc_text</i>
                 </ListItem> */}

@@ -41,6 +41,12 @@ import DataMaster from '../pages/DataMaster/DataMaster';
 import FormJenisTiket from '../pages/DataMaster/FormJenisTiket';
 import Unit from '../pages/DataMaster/Unit';
 import FormUnit from '../pages/DataMaster/FormUnit';
+import DaftarTiket from '../pages/Tiket/DaftarTiket';
+import FormTiket from '../pages/Tiket/FormTiket';
+import TampilTiket from '../pages/Tiket/TampilTiket';
+import KelolaTiket from '../pages/Tiket/KelolaTiket';
+import AnggotaUnit from '../pages/DataMaster/AnggotaUnit';
+import FormAnggotaUnit from '../pages/DataMaster/FormAnggotaUnit';
 
 // console.log(localStorage.getItem('kode_aplikasi'));
 
@@ -214,12 +220,40 @@ var routes = [
     component: FormUnit,
   },
   {
+    path: '/AnggotaUnit/:unit_id',
+    component: AnggotaUnit,
+  },
+  {
+    path: '/FormAnggotaUnit/:unit_id',
+    component: FormAnggotaUnit,
+  },
+  {
     path: '/FormUnit/:unit_id/:induk_unit_id',
     component: FormUnit,
   },
   {
     path: '/DataMaster/',
     component: DataMaster,
+  },
+  {
+    path: '/DaftarTiket/',
+    component: DaftarTiket,
+  },
+  {
+    path: '/DaftarTiket/:pengguna_id',
+    component: DaftarTiket,
+  },
+  {
+    path: '/KelolaTiket/',
+    component: KelolaTiket,
+  },
+  {
+    path: '/FormTiket/',
+    component: FormTiket,
+  },
+  {
+    path: '/TampilTiket/:tiket_id',
+    component: TampilTiket,
   },
   {
     path: '/left-page-1/',
