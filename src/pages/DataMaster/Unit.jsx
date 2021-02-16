@@ -121,7 +121,7 @@ class Unit extends Component {
         return (
             <Page name="Unit" hideBarsOnScroll style={{paddingBottom:'100px', boxSizing:'content-box'}}>
                 <Navbar sliding={false} backLink="Kembali" onBackClick={this.backClick}>
-                    <NavTitle sliding>Unit</NavTitle>
+                    <NavTitle sliding>Unit Dukungan</NavTitle>
                     
                 </Navbar>
                 

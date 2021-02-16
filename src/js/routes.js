@@ -47,6 +47,8 @@ import TampilTiket from '../pages/Tiket/TampilTiket';
 import KelolaTiket from '../pages/Tiket/KelolaTiket';
 import AnggotaUnit from '../pages/DataMaster/AnggotaUnit';
 import FormAnggotaUnit from '../pages/DataMaster/FormAnggotaUnit';
+import KategoriProduk from '../pages/DataMaster/KategoriProduk';
+import FormKategoriProduk from '../pages/DataMaster/FormKategoriProduk';
 
 // console.log(localStorage.getItem('kode_aplikasi'));
 
@@ -190,6 +192,18 @@ var routes = [
   {
     path: '/pengaturanPengguna/:pengguna_id/:sekolah_id',
     component: pengaturanPengguna,
+  },
+  {
+    path: '/KategoriProduk/',
+    component: KategoriProduk,
+  },
+  {
+    path: '/FormKategoriProduk/',
+    component: FormKategoriProduk,
+  },
+  {
+    path: '/FormKategoriProduk/:kategori_produk_id',
+    component: FormKategoriProduk,
   },
   {
     path: '/JenisTiket/',

@@ -51,12 +51,57 @@ class DataMaster extends Component {
                     <Col width="0" tabletWidth="10" desktopWidth="10"></Col>
                     <Col width="100" tabletWidth="80" desktopWidth="80">
                         
-                        <Row>
+                        <Row style={{justifyContent:'end'}}>
+                            <Col width="50" tabletWidth="25">
+                                <Link href="/KategoriProduk/" style={{width:'100%'}}>
+                                    <Card style={{background:'url(./static/icons/produk.jpg)', backgroundSize:'cover', minHeight:'100px', width:'100%'}}>
+                                        <CardContent className="kontenMenu">
+                                            Kategori Produk
+                                        </CardContent>
+                                    </Card>
+                                </Link>
+                            </Col>
+                            <Col width="50" tabletWidth="25">
+                                <Link href="/Produk/" style={{width:'100%'}}>
+                                    <Card style={{background:'url(./static/icons/produk.jpg)', backgroundSize:'cover', minHeight:'100px', width:'100%'}}>
+                                        <CardContent className="kontenMenu">
+                                            Produk
+                                        </CardContent>
+                                    </Card>
+                                </Link>
+                            </Col>
+                            <Col width="50" tabletWidth="25">
+                                <Link href="/Pengguna/" style={{width:'100%'}}>
+                                    <Card style={{background:'url(./static/icons/pengguna.jpg)', backgroundSize:'cover', minHeight:'100px', width:'100%'}}>
+                                        <CardContent className="kontenMenu">
+                                            Pengguna
+                                        </CardContent>
+                                    </Card>
+                                </Link>
+                            </Col>
+                            <Col width="50" tabletWidth="25">
+                                <Link href="/Pengguna/" style={{width:'100%'}}>
+                                    <Card style={{background:'url(./static/icons/pengguna.jpg)', backgroundSize:'cover', minHeight:'100px', width:'100%'}}>
+                                        <CardContent className="kontenMenu">
+                                            Mitra
+                                        </CardContent>
+                                    </Card>
+                                </Link>
+                            </Col>
+                            <Col width="50" tabletWidth="25">
+                                <Link href="/UnitPenjualan/" style={{width:'100%'}}>
+                                    <Card style={{background:'url(./static/icons/sales.jpg)', backgroundSize:'cover', minHeight:'100px', width:'100%'}}>
+                                        <CardContent className="kontenMenu">
+                                            Unit Penjualan
+                                        </CardContent>
+                                    </Card>
+                                </Link>
+                            </Col>
                             <Col width="50" tabletWidth="25">
                                 <Link href="/Unit/" style={{width:'100%'}}>
                                     <Card style={{background:'url(./static/icons/6308.png)', backgroundSize:'cover', minHeight:'100px', width:'100%'}}>
                                         <CardContent className="kontenMenu">
-                                            Unit
+                                            Unit Dukungan
                                         </CardContent>
                                     </Card>
                                 </Link>

@@ -14,3 +14,4 @@ export * from './Langganan.actions';
 export * from './Poin.actions';
 export * from './Pesan.actions';
 export * from './Tiket.actions';
+export * from './Produk.actions';

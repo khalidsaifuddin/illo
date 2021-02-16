@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {
-    Page, Navbar, NavTitle, NavTitleLarge, List, ListInput, ListItem, ListItemContent, Block, Button, CardHeader, Row, Col, Card, CardContent, CardFooter, Link, NavRight, Subnavbar, BlockTitle, Searchbar, Segmented, Tabs, Tab, Chip, Icon, Popover, Progressbar
+    Popup, Page, Navbar, NavTitle, NavTitleLarge, List, ListInput, ListItem, ListItemContent, Block, Button, CardHeader, Row, Col, Card, CardContent, CardFooter, Link, NavRight, Subnavbar, BlockTitle, Searchbar, Segmented, Tabs, Tab, Chip, Icon, Popover, Progressbar
 } from 'framework7-react';
 
 import { bindActionCreators } from 'redux';
@@ -12,7 +12,7 @@ import moment from 'moment';
 
 import localForage from 'localforage';
 
-class JenisTiket extends Component {
+class KategoriProduk extends Component {
     state = {
         error: null,
         loadingKuis: false,
@@ -21,10 +21,11 @@ class JenisTiket extends Component {
             start:0,
             limit:20
         },
-        jenis_tiket: {
+        kategori_produk: {
             rows: [],
             total: 0
-        }
+        },
+        popupFilter: false
     }
 
     bulan = [
@@ -63,9 +64,9 @@ class JenisTiket extends Component {
 
     componentDidMount = () => {
         this.$f7.dialog.preloader('Memuat data...')
-        this.props.getJenisTiket(this.state.routeParams).then((result)=>{
+        this.props.getKategoriProduk(this.state.routeParams).then((result)=>{
             this.setState({
-                jenis_tiket: result.payload
+                kategori_produk: result.payload
             },()=>{
                 this.$f7.dialog.close()
             })
@@ -73,23 +74,23 @@ class JenisTiket extends Component {
     }
 
     tambah = () => {
-        this.$f7router.navigate("/FormJenisTiket/")
+        this.$f7router.navigate("/FormKategoriProduk/")
     }
 
-    edit = (jenis_tiket_id) => {
-        this.$f7router.navigate('/FormJenisTiket/'+jenis_tiket_id)
+    edit = (kategori_produk_id) => {
+        this.$f7router.navigate('/FormKategoriProduk/'+kategori_produk_id)
     }
 
-    hapus = (jenis_tiket_id) => {
+    hapus = (kategori_produk_id) => {
         this.$f7.dialog.confirm('Apakah Anda yakin ingin menghapus data ini?', 'Konfirmasi Hapus',()=>{
             this.$f7.dialog.preloader('Menyimpan...')
-            this.props.simpanJenisTiket({jenis_tiket_id: jenis_tiket_id, soft_delete:1}).then((result)=>{
+            this.props.simpanKategoriProduk({kategori_produk_id: kategori_produk_id, soft_delete:1}).then((result)=>{
                 this.$f7.dialog.close()
                 if(result.payload.sukses){
 
-                    this.props.getJenisTiket(this.state.routeParams).then((result)=>{
+                    this.props.getKategoriProduk(this.state.routeParams).then((result)=>{
                         this.setState({
-                            jenis_tiket: result.payload
+                            kategori_produk: result.payload
                         })
                     })
 
@@ -106,15 +107,118 @@ class JenisTiket extends Component {
         })
         
     }
+
+    cariKeyword = (e) => {
+        // console.log(e.currentTarget.value)
+        this.setState({
+            routeParams: {
+                ...this.state.routeParams,
+                keyword: e.currentTarget.value
+            }
+        })
+    }
+
+    setValue = (type) => (e) => {
+
+        this.setState({
+            routeParams: {
+                ...this.state.routeParams,
+                [type]: e.target.value
+            }
+        },()=>{
+            console.log(this.state)
+        })
+    }
+
+    filter = () => {
+        this.setState({popupFilter:!this.state.popupFilter})
+    }
+
+    tampilFilter = () => {
+        this.$f7.dialog.preloader()
+        this.props.getKategoriProduk(this.state.routeParams).then((result)=>{
+            this.setState({
+                kategori_produk: result.payload,
+                popupFilter: !this.state.popupFilter
+            },()=>{
+                this.$f7.dialog.close()
+            })
+        })
+    }
+
+    resetFilter = () => {
+        this.$f7.dialog.preloader()
+
+        this.setState({
+            routeParams: {
+                ...this.state.routeParams,
+                keyword: null
+            }
+        },()=>{
+
+            this.props.getKategoriProduk(this.state.routeParams).then((result)=>{
+                this.setState({
+                    kategori_produk: result.payload,
+                    popupFilter: !this.state.popupFilter
+                },()=>{
+                    this.$f7.dialog.close()
+                })
+            })
+
+        })
+
+    }
     
     render()
     {
         return (
-            <Page name="JenisTiket" className="halamanJenisTiket" hideBarsOnScroll style={{paddingBottom:'100px', boxSizing:'content-box'}}>
+            <Page name="KategoriProduk" className="halamanJenisTiket" hideBarsOnScroll style={{paddingBottom:'100px', boxSizing:'content-box'}}>
                 <Navbar sliding={false} backLink="Kembali" onBackClick={this.backClick}>
-                    <NavTitle sliding>Jenis Tiket</NavTitle>
-                    
+                    <NavTitle sliding>Kategori Produk</NavTitle>
+                    {/* <NavRight>
+                        <Button raised fill>
+                            <i className="icons f7-icons" style={{fontSize:'20px'}}>arrow_right_arrow_left_square</i>
+                            Filter
+                        </Button>
+                    </NavRight> */}
                 </Navbar>
+
+                <Popup className="demo-popup" opened={this.state.popupFilter} onPopupClosed={() => this.setState({popupFilter : false})}>
+                    <Page>
+                        <Navbar title="Filter Kategori Produk">
+                            <NavRight>
+                                <Link popupClose>Tutup</Link>
+                            </NavRight>
+                        </Navbar>
+                        <Block style={{marginTop:'0px', paddingLeft:'0px', paddingRight:'0px'}}>
+                            <List>
+                                <Searchbar
+                                    className="searchbar-demo"
+                                    placeholder="Nama Kategori Produk"
+                                    searchContainer=".search-list"
+                                    searchIn=".item-title"
+                                    onChange={this.cariKeyword}
+                                ></Searchbar>
+                            </List>
+                        </Block>
+                        <Block>
+                            <Row>
+                                <Col width="50">
+                                    <Button raised onClick={this.resetFilter}>
+                                        <i className="icons f7-icons" style={{fontSize:'20px'}}>arrow_counterclockwise</i>&nbsp;
+                                        Reset Filter
+                                    </Button>
+                                </Col>
+                                <Col width="50">
+                                    <Button raised fill onClick={this.tampilFilter}>
+                                        <i className="icons f7-icons" style={{fontSize:'20px'}}>arrow_right_arrow_left_square</i>&nbsp;
+                                        Tampilkan Data
+                                    </Button>
+                                </Col>
+                            </Row>
+                        </Block>
+                    </Page>
+                </Popup>
                 
                 <Row noGap>
                     <Col width="0" tabletWidth="10" desktopWidth="10"></Col>
@@ -130,22 +234,26 @@ class JenisTiket extends Component {
                                                     <a onClick={this.klikPrev} href="#" className={"link "+(this.state.routeParams.start < 1 ? "disabled" : "" )}>
                                                     <i className="icon icon-prev color-gray"></i>
                                                     </a>
-                                                    <a onClick={this.klikNext} href="#" className={"link "+((parseInt(this.state.routeParams.start)+20) >= parseInt(this.state.jenis_tiket.total) ? "disabled" : "" )}>
+                                                    <a onClick={this.klikNext} href="#" className={"link "+((parseInt(this.state.routeParams.start)+20) >= parseInt(this.state.kategori_produk.total) ? "disabled" : "" )}>
                                                         <i className="icon icon-next color-gray"></i>
                                                     </a>
-                                                    <span className="data-table-pagination-label">{(this.state.routeParams.start+1)}-{(this.state.routeParams.start)+parseInt(this.state.routeParams.limit) <= parseInt(this.state.jenis_tiket.total) ? (this.state.routeParams.start)+parseInt(this.state.routeParams.limit) : parseInt(this.state.jenis_tiket.total)} dari {this.formatAngka(this.state.jenis_tiket.total)} jenis tiket</span>
+                                                    <span className="data-table-pagination-label">{(this.state.routeParams.start+1)}-{(this.state.routeParams.start)+parseInt(this.state.routeParams.limit) <= parseInt(this.state.kategori_produk.total) ? (this.state.routeParams.start)+parseInt(this.state.routeParams.limit) : parseInt(this.state.kategori_produk.total)} dari {this.formatAngka(this.state.kategori_produk.total)} kategori produk</span>
                                                 </div>
                                             </div>
                                         </div>
                                     </Col>
                                     <Col width="100" tabletWidth="100" style={{textAlign:'right'}}>
+                                        <Button onClick={this.filter} raised style={{display:'inline-flex', marginTop:'-60px', marginRight:'4px'}}>
+                                            <i className="icons f7-icons" style={{fontSize:'20px'}}>arrow_right_arrow_left_square</i>
+                                            Filter
+                                        </Button>
                                         <Button raised fill style={{display:'inline-flex', marginTop:'-60px'}} onClick={this.tambah}>
                                             <i className="f7-icons" style={{fontSize:'20px'}}>plus</i>&nbsp;
                                             Tambah
                                         </Button>
                                     </Col>
                                     <Col width="100" tabletWidth="100">
-                                        {this.state.jenis_tiket.total < 1 &&
+                                        {this.state.kategori_produk.total < 1 &&
                                         <div style={{width:'100%', textAlign:'center', marginBottom:'50px'}}>
                                             <img src="./static/icons/189.jpg" style={{width:'60%'}} /> 
                                             <br/>
@@ -153,7 +261,7 @@ class JenisTiket extends Component {
                                             Silakan klik tombol tambah diatas untuk membuat data baru   
                                         </div>
                                         }
-                                        {this.state.jenis_tiket.rows.map((option)=>{
+                                        {this.state.kategori_produk.rows.map((option)=>{
                                             let last_update = '';
                                             last_update = moment(option.last_update).format('D') + ' ' + this.bulan_singkat[(moment(option.last_update).format('M')-1)] + ' ' + moment(option.last_update).format('YYYY') + ', ' + moment(option.last_update).format('H') + ':' + moment(option.last_update).format('mm');
 
@@ -162,7 +270,7 @@ class JenisTiket extends Component {
                                             }
 
                                             return (
-                                                <Card key={option.jenis_tiket_id} style={{marginLeft:'0px', marginRight:'0px'}}>
+                                                <Card key={option.kategori_produk_id} style={{marginLeft:'0px', marginRight:'0px'}}>
                                                     <CardContent style={{padding:'8px'}}>
                                                         <Row>
                                                             <Col width="15" tabletWidth="15" desktopWidth="10" style={{textAlign:'center'}}>
@@ -173,38 +281,33 @@ class JenisTiket extends Component {
                                                                 <div style={{fontSize:'10px'}}>
                                                                     {option.keterangan &&
                                                                     <>
-                                                                    {option.keterangan}&nbsp;&bull;&nbsp;
+                                                                    {option.keterangan}
+                                                                    {/* &nbsp;&bull;&nbsp; */}
                                                                     </>
                                                                     }
-                                                                    {/* {option.pembuat &&
-                                                                    <>
-                                                                    Oleh {option.pembuat}
-                                                                    </>
-                                                                    } */}
                                                                     <div style={{fontSize:'10px'}}>
                                                                         Update Terakhir: {last_update}
                                                                     </div>
-                                                                    {option.unit &&
-                                                                    // <div className="hilangDiDesktop" style={{fontSize:'10px', textAlign:'right', marginRight:'-40px', marginTop:'-14px'}}>
+                                                                    {option.jumlah_produk &&
                                                                     <div className="hilangDiDesktop" style={{fontSize:'10px'}}>
-                                                                    {option.unit}
+                                                                    {option.jumlah_produk}
                                                                     </div>
                                                                     }
                                                                 </div>
                                                             </Col>
                                                             <Col width="0" tabletWidth="20" desktopWidth="20" style={{textAlign:'right'}} className="hilangDiMobile">
-                                                                {option.unit &&
+                                                                {option.jumlah_produk &&
                                                                 <div style={{fontSize:'10px'}}>
-                                                                {option.unit}
+                                                                {option.jumlah_produk}
                                                                 </div>
                                                                 }
                                                             </Col>
                                                             <Col width="10" tabletWidth="10" desktopWidth="10" style={{textAlign:'right'}}>
-                                                                <Button popoverOpen={".popover-menu-"+option.jenis_tiket_id}><i className="icons f7-icons">ellipsis_vertical</i></Button>
-                                                                <Popover className={"popover-menu-"+option.jenis_tiket_id} style={{minWidth:'300px'}}>
+                                                                <Button popoverOpen={".popover-menu-"+option.kategori_produk_id}><i className="icons f7-icons">ellipsis_vertical</i></Button>
+                                                                <Popover className={"popover-menu-"+option.kategori_produk_id} style={{minWidth:'300px'}}>
                                                                     <List>
-                                                                        <ListItem link="#" popoverClose title="Edit" onClick={()=>this.edit(option.jenis_tiket_id)} />
-                                                                        <ListItem link="#" popoverClose title="Hapus" onClick={()=>this.hapus(option.jenis_tiket_id)} />
+                                                                        <ListItem link="#" popoverClose title="Edit" onClick={()=>this.edit(option.kategori_produk_id)} />
+                                                                        <ListItem link="#" popoverClose title="Hapus" onClick={()=>this.hapus(option.kategori_produk_id)} />
                                                                     </List>
                                                                 </Popover>
                                                             </Col>
@@ -231,8 +334,8 @@ function mapDispatchToProps(dispatch) {
     return bindActionCreators({
       updateWindowDimension: Actions.updateWindowDimension,
       setLoading: Actions.setLoading,
-      getJenisTiket: Actions.getJenisTiket,
-      simpanJenisTiket: Actions.simpanJenisTiket,
+      getKategoriProduk: Actions.getKategoriProduk,
+      simpanKategoriProduk: Actions.simpanKategoriProduk,
       generateUUID: Actions.generateUUID
     }, dispatch);
 }
@@ -244,5 +347,5 @@ function mapStateToProps({ App, Pertanyaan, Kuis }) {
     }
 }
 
-export default (connect(mapStateToProps, mapDispatchToProps)(JenisTiket));
+export default (connect(mapStateToProps, mapDispatchToProps)(KategoriProduk));
   

@@ -318,11 +318,11 @@ body {
   background-repeat: no-repeat;
   background-position: center;
 
-  /* background-image: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%); */
+  /* background-image: linear-gradient(to right, #000000, #0f9b0f); */
   background-image: url("/static/icons/bg1.png");
   background: url("/static/icons/bg1.png"), #8fd3f4;  
-  background-image: url("/static/icons/bg1.png"), -webkit-linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%); 
-  background-image: url("/static/icons/bg1.png"), linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%); 
+  background-image: url("/static/icons/bg1.png"), -webkit-linear-gradient(to right, #000000, #0f9b0f); 
+  background-image: url("/static/icons/bg1.png"), linear-gradient(to right, #000000, #0f9b0f); 
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
@@ -681,8 +681,8 @@ body {
 
   background-image: url("/static/icons/bg1.png");
   background: url("/static/icons/bg1.png"), #8fd3f4;  
-  background-image: url("/static/icons/bg1.png"), -webkit-linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%); 
-  background-image: url("/static/icons/bg1.png"), linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%); 
+  background-image: url("/static/icons/bg1.png"), -webkit-linear-gradient(to right, #000000, #0f9b0f); 
+  background-image: url("/static/icons/bg1.png"), linear-gradient(to right, #000000, #0f9b0f); 
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
@@ -696,8 +696,8 @@ body {
 .backgroundGame {
   background-image: url("/static/icons/bg1.png");
   background: url("/static/icons/bg1.png"), #8fd3f4;  
-  background-image: url("/static/icons/bg1.png"), -webkit-linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%); 
-  background-image: url("/static/icons/bg1.png"), linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%); 
+  background-image: url("/static/icons/bg1.png"), -webkit-linear-gradient(to right, #000000, #0f9b0f); 
+  background-image: url("/static/icons/bg1.png"), linear-gradient(to right, #000000, #0f9b0f); 
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
@@ -1323,8 +1323,8 @@ h2 {
 .navbar .navbar-inner{
   background-image: url("/static/icons/bg1.png");
   background: url("/static/icons/bg1.png"), #8fd3f4;  
-  background-image: url("/static/icons/bg1.png"), -webkit-linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%); 
-  background-image: url("/static/icons/bg1.png"), linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%); 
+  background-image: url("/static/icons/bg1.png"), -webkit-linear-gradient(to right, #000000, #0f9b0f); 
+  background-image: url("/static/icons/bg1.png"), linear-gradient(to right, #000000, #0f9b0f); 
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
@@ -1385,3 +1385,11 @@ h2 {
 .kontenMenuBerandaKecil::after {
   background:white;
 }
+
+/* .halamanJenisTiket { */
+  /* background: url("/static/icons/4074_copy.png"); */
+  /* background-size: cover; */
+  /* width: 100%; */
+  /* height: 100%; */
+  /* display: block; */
+/* } */

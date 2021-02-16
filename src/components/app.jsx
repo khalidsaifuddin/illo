@@ -350,7 +350,22 @@ class app extends Component {
                     {/* <ListItem noChevron link="/DataMaster/" view=".view-main" panelClose panel-close title="Data Master">
                       <i slot="media" className="f7-icons">cube_box</i>
                     </ListItem> */}
-                    <ListItem noChevron link="/Unit/" view=".view-main" panelClose panel-close title="Unit" className="itemSub">
+                    <ListItem noChevron link="/KategoriProduk/" view=".view-main" panelClose panel-close title="Kategori Produk" className="itemSub">
+                      <i slot="media" className="f7-icons">doc_text</i>
+                    </ListItem>
+                    <ListItem noChevron link="/Produk/" view=".view-main" panelClose panel-close title="Produk" className="itemSub">
+                      <i slot="media" className="f7-icons">doc_text</i>
+                    </ListItem>
+                    <ListItem noChevron link="/Pengguna/" view=".view-main" panelClose panel-close title="Pengguna" className="itemSub">
+                      <i slot="media" className="f7-icons">doc_text</i>
+                    </ListItem>
+                    <ListItem noChevron link="/Pengguna/" view=".view-main" panelClose panel-close title="Mitra" className="itemSub">
+                      <i slot="media" className="f7-icons">doc_text</i>
+                    </ListItem>
+                    <ListItem noChevron link="/UnitPenjualan/" view=".view-main" panelClose panel-close title="Unit Penjualan" className="itemSub">
+                      <i slot="media" className="f7-icons">doc_text</i>
+                    </ListItem>
+                    <ListItem noChevron link="/Unit/" view=".view-main" panelClose panel-close title="Unit Dukungan" className="itemSub">
                       <i slot="media" className="f7-icons">doc_text</i>
                     </ListItem>
                     <ListItem noChevron link="/JenisTiket/" view=".view-main" panelClose panel-close title="Jenis Tiket" className="itemSub">
