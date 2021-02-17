@@ -11,6 +11,7 @@ import Guru from './Guru.reducers';
 import Tugas from './Tugas.reducers';
 import Poin from './Poin.reducers';
 import Pesan from './Pesan.reducers';
+import Produk from './Produk.reducers';
 
 const rootReducer = combineReducers({
     App,
@@ -24,7 +25,8 @@ const rootReducer = combineReducers({
     Guru,
     Tugas,
     Poin,
-    Pesan
+    Pesan,
+    Produk
 });
 
 export default rootReducer;

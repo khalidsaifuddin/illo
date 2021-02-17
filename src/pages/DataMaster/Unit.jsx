@@ -129,7 +129,7 @@ class Unit extends Component {
                     <Col width="0" tabletWidth="10" desktopWidth="10"></Col>
                     <Col width="100" tabletWidth="80" desktopWidth="80">
                         
-                        <Card>
+                        <Card style={{marginBottom:'50px'}}>
                             <CardContent style={{padding:'8px'}}>
                                 <Row>
                                     <Col width="100" tabletWidth="100">
@@ -174,29 +174,31 @@ class Unit extends Component {
                                                 <Card key={option.unit_id} style={{marginLeft:'0px', marginRight:'0px'}}>
                                                     <CardContent style={{padding:'8px'}}>
                                                         <Row>
-                                                            <Col width="15" tabletWidth="15" desktopWidth="10" style={{textAlign:'center'}}>
+                                                            {/* <Col width="15" tabletWidth="15" desktopWidth="10" style={{textAlign:'center'}}>
+                                                            </Col> */}
+                                                            <Col width="65" tabletWidth="55" desktopWidth="60" style={{display:'inline-flex'}}>
                                                                 <img src={"./static/icons/illo-logo-icon.png"} style={{height:'45px', width:'45px', borderRadius:'50%', marginRight:'0px'}} />
-                                                            </Col>
-                                                            <Col width="65" tabletWidth="55" desktopWidth="60">
-                                                                <b>{option.nama}</b>
-                                                                <div style={{fontSize:'12px'}}>
-                                                                    {option.keterangan &&
-                                                                    <>
-                                                                    {option.keterangan}&nbsp;&bull;&nbsp;
-                                                                    </>
-                                                                    }
-                                                                    {option.alamat &&
-                                                                    <>
-                                                                    {option.alamat}
-                                                                    </>
-                                                                    }
-                                                                    {option.induk_unit &&
-                                                                    <div className="hilangDiDesktop">
-                                                                    Sub Unit <b>{option.induk_unit}</b>
-                                                                    </div>
-                                                                    }
-                                                                    <div style={{fontSize:'10px'}}>
-                                                                        {last_update}
+                                                                <div style={{marginLeft:'16px'}}>
+                                                                    <b>{option.nama}</b>
+                                                                    <div style={{fontSize:'12px'}}>
+                                                                        {option.keterangan &&
+                                                                        <>
+                                                                        {option.keterangan}&nbsp;&bull;&nbsp;
+                                                                        </>
+                                                                        }
+                                                                        {option.alamat &&
+                                                                        <>
+                                                                        {option.alamat}
+                                                                        </>
+                                                                        }
+                                                                        {option.induk_unit &&
+                                                                        <div className="hilangDiDesktop">
+                                                                        Sub Unit <b>{option.induk_unit}</b>
+                                                                        </div>
+                                                                        }
+                                                                        <div style={{fontSize:'10px'}}>
+                                                                            {last_update}
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </Col>

@@ -49,6 +49,8 @@ import AnggotaUnit from '../pages/DataMaster/AnggotaUnit';
 import FormAnggotaUnit from '../pages/DataMaster/FormAnggotaUnit';
 import KategoriProduk from '../pages/DataMaster/KategoriProduk';
 import FormKategoriProduk from '../pages/DataMaster/FormKategoriProduk';
+import Produk from '../pages/DataMaster/Produk';
+import FormProduk from '../pages/DataMaster/FormProduk';
 
 // console.log(localStorage.getItem('kode_aplikasi'));
 
@@ -192,6 +194,18 @@ var routes = [
   {
     path: '/pengaturanPengguna/:pengguna_id/:sekolah_id',
     component: pengaturanPengguna,
+  },
+  {
+    path: '/Produk/',
+    component: Produk,
+  },
+  {
+    path: '/FormProduk/',
+    component: FormProduk,
+  },
+  {
+    path: '/FormProduk/:produk_id',
+    component: FormProduk,
   },
   {
     path: '/KategoriProduk/',

@@ -1393,3 +1393,75 @@ h2 {
   /* height: 100%; */
   /* display: block; */
 /* } */
+
+.teksQuill .item-inner {
+  display: block;
+  font-size: 13px;
+  color:#434343;
+}
+
+.gambar_produk {
+  min-width: 200px;
+  height: 240px;
+  border-radius: 10px;
+  border:1px solid #eee;
+  background-color: #434343;
+  margin-right: 8px;
+  
+}
+
+.kotak_gambar {
+  margin-top: 16px;
+  display: flex;
+  margin-bottom: 24px;
+  width: 100%;
+  overflow: auto;
+}
+
+.buttonGambar {
+  position: relative;
+  color:white;
+  background: rgb(0,0,0,0.7);
+  border-radius: 0px;
+  font-weight: bold;
+}
+
+.listHarga ul {
+  margin-left: -60px;
+}
+
+.kotakProduk {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.boxProduk {
+  width: 165px;
+  margin: 8px;
+  height: 256px;
+  border-radius: 20px;
+}
+
+.gambarProduk {
+  height: 164px;
+  border: 0px solid #eee;
+  margin-left: -8px;
+  margin-right: -8px;
+  margin-top: -8px;
+  border-radius: 20px 20px 0px 0px;
+}
+
+.namaProduk {
+  margin-top: 8px;
+  font-size: 13px;
+  font-weight: bold;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-clamp: 2;
+  -webkit-line-clamp: 2;
+}
+
+.hargaProduk {
+  font-size: 15px;
+}

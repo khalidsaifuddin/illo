@@ -12,7 +12,7 @@ import moment from 'moment';
 
 import localForage from 'localforage';
 
-class KategoriProduk extends Component {
+class Produk extends Component {
     state = {
         error: null,
         loadingKuis: false,
@@ -21,7 +21,7 @@ class KategoriProduk extends Component {
             start:0,
             limit:20
         },
-        kategori_produk: {
+        produk: {
             rows: [],
             total: 0
         },
@@ -64,9 +64,9 @@ class KategoriProduk extends Component {
 
     componentDidMount = () => {
         this.$f7.dialog.preloader('Memuat data...')
-        this.props.getKategoriProduk(this.state.routeParams).then((result)=>{
+        this.props.getProduk(this.state.routeParams).then((result)=>{
             this.setState({
-                kategori_produk: result.payload
+                produk: result.payload
             },()=>{
                 this.$f7.dialog.close()
             })
@@ -74,23 +74,23 @@ class KategoriProduk extends Component {
     }
 
     tambah = () => {
-        this.$f7router.navigate("/FormKategoriProduk/")
+        this.$f7router.navigate("/FormProduk/")
     }
 
-    edit = (kategori_produk_id) => {
-        this.$f7router.navigate('/FormKategoriProduk/'+kategori_produk_id)
+    edit = (produk_id) => {
+        this.$f7router.navigate('/FormProduk/'+produk_id)
     }
 
-    hapus = (kategori_produk_id) => {
+    hapus = (produk_id) => {
         this.$f7.dialog.confirm('Apakah Anda yakin ingin menghapus data ini?', 'Konfirmasi Hapus',()=>{
             this.$f7.dialog.preloader('Menyimpan...')
-            this.props.simpanKategoriProduk({kategori_produk_id: kategori_produk_id, soft_delete:1}).then((result)=>{
+            this.props.simpanProduk({produk_id: produk_id, soft_delete:1}).then((result)=>{
                 this.$f7.dialog.close()
                 if(result.payload.sukses){
 
-                    this.props.getKategoriProduk(this.state.routeParams).then((result)=>{
+                    this.props.getProduk(this.state.routeParams).then((result)=>{
                         this.setState({
-                            kategori_produk: result.payload
+                            produk: result.payload
                         })
                     })
 
@@ -136,9 +136,9 @@ class KategoriProduk extends Component {
 
     tampilFilter = () => {
         this.$f7.dialog.preloader()
-        this.props.getKategoriProduk(this.state.routeParams).then((result)=>{
+        this.props.getProduk(this.state.routeParams).then((result)=>{
             this.setState({
-                kategori_produk: result.payload,
+                produk: result.payload,
                 popupFilter: !this.state.popupFilter
             },()=>{
                 this.$f7.dialog.close()
@@ -156,9 +156,9 @@ class KategoriProduk extends Component {
             }
         },()=>{
 
-            this.props.getKategoriProduk(this.state.routeParams).then((result)=>{
+            this.props.getProduk(this.state.routeParams).then((result)=>{
                 this.setState({
-                    kategori_produk: result.payload,
+                    produk: result.payload,
                     popupFilter: !this.state.popupFilter
                 },()=>{
                     this.$f7.dialog.close()
@@ -172,9 +172,9 @@ class KategoriProduk extends Component {
     render()
     {
         return (
-            <Page name="KategoriProduk" className="halamanJenisTiket" hideBarsOnScroll style={{paddingBottom:'100px', boxSizing:'content-box'}}>
+            <Page name="Produk" className="halamanJenisTiket" hideBarsOnScroll style={{paddingBottom:'100px', boxSizing:'content-box'}}>
                 <Navbar sliding={false} backLink="Kembali" onBackClick={this.backClick}>
-                    <NavTitle sliding>Kategori Produk</NavTitle>
+                    <NavTitle sliding>Produk</NavTitle>
                     {/* <NavRight>
                         <Button raised fill>
                             <i className="icons f7-icons" style={{fontSize:'20px'}}>arrow_right_arrow_left_square</i>
@@ -185,7 +185,7 @@ class KategoriProduk extends Component {
 
                 <Popup className="demo-popup" opened={this.state.popupFilter} onPopupClosed={() => this.setState({popupFilter : false})}>
                     <Page>
-                        <Navbar title="Filter Kategori Produk">
+                        <Navbar title="Filter Produk">
                             <NavRight>
                                 <Link popupClose>Tutup</Link>
                             </NavRight>
@@ -194,7 +194,7 @@ class KategoriProduk extends Component {
                             <List>
                                 <Searchbar
                                     className="searchbar-demo"
-                                    placeholder="Nama Kategori Produk"
+                                    placeholder="Nama Produk"
                                     searchContainer=".search-list"
                                     searchIn=".item-title"
                                     onChange={this.cariKeyword}
@@ -234,10 +234,10 @@ class KategoriProduk extends Component {
                                                     <a onClick={this.klikPrev} href="#" className={"link "+(this.state.routeParams.start < 1 ? "disabled" : "" )}>
                                                     <i className="icon icon-prev color-gray"></i>
                                                     </a>
-                                                    <a onClick={this.klikNext} href="#" className={"link "+((parseInt(this.state.routeParams.start)+20) >= parseInt(this.state.kategori_produk.total) ? "disabled" : "" )}>
+                                                    <a onClick={this.klikNext} href="#" className={"link "+((parseInt(this.state.routeParams.start)+20) >= parseInt(this.state.produk.total) ? "disabled" : "" )}>
                                                         <i className="icon icon-next color-gray"></i>
                                                     </a>
-                                                    <span className="data-table-pagination-label">{(this.state.routeParams.start+1)}-{(this.state.routeParams.start)+parseInt(this.state.routeParams.limit) <= parseInt(this.state.kategori_produk.total) ? (this.state.routeParams.start)+parseInt(this.state.routeParams.limit) : parseInt(this.state.kategori_produk.total)} dari {this.formatAngka(this.state.kategori_produk.total)} kategori produk</span>
+                                                    <span className="data-table-pagination-label">{(this.state.routeParams.start+1)}-{(this.state.routeParams.start)+parseInt(this.state.routeParams.limit) <= parseInt(this.state.produk.total) ? (this.state.routeParams.start)+parseInt(this.state.routeParams.limit) : parseInt(this.state.produk.total)} dari {this.formatAngka(this.state.produk.total)} Produk</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -253,7 +253,7 @@ class KategoriProduk extends Component {
                                         </Button>
                                     </Col>
                                     <Col width="100" tabletWidth="100">
-                                        {this.state.kategori_produk.total < 1 &&
+                                        {this.state.produk.total < 1 &&
                                         <div style={{width:'100%', textAlign:'center', marginBottom:'50px'}}>
                                             <img src="./static/icons/189.jpg" style={{width:'60%'}} /> 
                                             <br/>
@@ -261,7 +261,8 @@ class KategoriProduk extends Component {
                                             Silakan klik tombol tambah diatas untuk membuat data baru   
                                         </div>
                                         }
-                                        {this.state.kategori_produk.rows.map((option)=>{
+                                        <div className="kotakProduk">
+                                        {this.state.produk.rows.map((option)=>{
                                             let last_update = '';
                                             last_update = moment(option.last_update).format('D') + ' ' + this.bulan_singkat[(moment(option.last_update).format('M')-1)] + ' ' + moment(option.last_update).format('YYYY') + ', ' + moment(option.last_update).format('H') + ':' + moment(option.last_update).format('mm');
 
@@ -270,47 +271,34 @@ class KategoriProduk extends Component {
                                             }
 
                                             return (
-                                                <Card key={option.kategori_produk_id} style={{marginLeft:'0px', marginRight:'0px'}}>
+                                                <Card key={option.produk_id} className="boxProduk">
                                                     <CardContent style={{padding:'8px'}}>
-                                                        <Row>
-                                                            {/* <Col width="15" tabletWidth="15" desktopWidth="10" style={{textAlign:'center'}}>
-                                                                <img src={"./static/icons/illo-logo-icon.png"} style={{height:'45px', width:'45px', borderRadius:'50%', marginRight:'0px'}} />
-                                                            </Col> */}
-                                                            <Col width="90" tabletWidth="70" desktopWidth="70" style={{display:'inline-flex'}}>
-                                                                <img src={"./static/icons/illo-logo-icon.png"} style={{height:'45px', width:'45px', borderRadius:'50%', marginRight:'0px'}} />
-                                                                <div style={{marginLeft:'16px'}}>
-                                                                    <b>{option.nama}</b>
-                                                                    <div style={{fontSize:'10px'}}>
-                                                                        {option.keterangan &&
-                                                                        <>
-                                                                        {option.keterangan}
-                                                                        {/* &nbsp;&bull;&nbsp; */}
-                                                                        </>
-                                                                        }
-                                                                        <div style={{fontSize:'10px'}}>
-                                                                            Update Terakhir: {last_update}
-                                                                        </div>
-                                                                        {option.jumlah_produk &&
-                                                                        <div className="hilangDiDesktop" style={{fontSize:'10px'}}>
-                                                                        {option.jumlah_produk}
-                                                                        </div>
-                                                                        }
-                                                                    </div>
+                                                        <div className="gambarProduk" style={{
+                                                            backgroundImage:'url('+localStorage.getItem('api_base')+(option.gambar_produk.length > 0 ? option.gambar_produk[0].nama_file : '/assets/berkas/3577232-1.jpg')+')', 
+                                                            backgroundSize:'cover',
+                                                            backgroundPosition:'center'
+                                                        }}>&nbsp;</div>
+                                                        <Row noGap>
+                                                            <Col width="85">
+                                                                <div className="namaProduk">
+                                                                    {option.nama}
+                                                                </div>
+                                                                <div className="namaProduk" style={{fontSize:'10px', fontWeight:'normal', marginTop:'0px'}}>
+                                                                    {option.keterangan ? option.keterangan.replace(/(<([^>]+)>)/gi, "") : ''}
+                                                                </div>
+                                                                <div className="hargaProduk">
+                                                                    Rp {(option.harga_produk.length > 0 ? this.formatAngka(option.harga_produk[0].nominal) : '0')}
+                                                                </div>
+                                                                <div className="namaProduk" style={{fontSize:'10px', color:'#b3b3b3'}}>
+                                                                    {option.kategori_produk}
                                                                 </div>
                                                             </Col>
-                                                            <Col width="0" tabletWidth="20" desktopWidth="20" style={{textAlign:'right'}} className="hilangDiMobile">
-                                                                {option.jumlah_produk &&
-                                                                <div style={{fontSize:'10px'}}>
-                                                                {option.jumlah_produk}
-                                                                </div>
-                                                                }
-                                                            </Col>
-                                                            <Col width="10" tabletWidth="10" desktopWidth="10" style={{textAlign:'right'}}>
-                                                                <Button popoverOpen={".popover-menu-"+option.kategori_produk_id}><i className="icons f7-icons">ellipsis_vertical</i></Button>
-                                                                <Popover className={"popover-menu-"+option.kategori_produk_id} style={{minWidth:'300px'}}>
+                                                            <Col width="15">
+                                                                <Button popoverOpen={".popover-menu-"+option.produk_id}><i className="icons f7-icons" style={{fontSize:'18px', display:'inline-flex', textAlign:'right'}}>ellipsis_vertical</i></Button>
+                                                                <Popover className={"popover-menu-"+option.produk_id} style={{minWidth:'150px'}}>
                                                                     <List>
-                                                                        <ListItem link="#" popoverClose title="Edit" onClick={()=>this.edit(option.kategori_produk_id)} />
-                                                                        <ListItem link="#" popoverClose title="Hapus" onClick={()=>this.hapus(option.kategori_produk_id)} />
+                                                                        <ListItem link="#" popoverClose title="Edit" onClick={()=>this.edit(option.produk_id)} />
+                                                                        <ListItem link="#" popoverClose title="Hapus" onClick={()=>this.hapus(option.produk_id)} />
                                                                     </List>
                                                                 </Popover>
                                                             </Col>
@@ -318,7 +306,54 @@ class KategoriProduk extends Component {
                                                     </CardContent>
                                                 </Card>
                                             )
+
+                                            // return (
+                                            //     <Card key={option.produk_id} style={{marginLeft:'0px', marginRight:'0px'}}>
+                                            //         <CardContent style={{padding:'8px'}}>
+                                            //             <Row>
+                                            //                 <Col width="15" tabletWidth="15" desktopWidth="10" style={{textAlign:'center'}}>
+                                            //                     <img src={"./static/icons/illo-logo-icon.png"} style={{height:'45px', width:'45px', borderRadius:'50%', marginRight:'0px'}} />
+                                            //                 </Col>
+                                            //                 <Col width="65" tabletWidth="55" desktopWidth="60">
+                                            //                     <b>{option.nama}</b>
+                                            //                     <div style={{fontSize:'10px'}}>
+                                            //                         {option.keterangan &&
+                                            //                         <>
+                                            //                         {option.keterangan}
+                                            //                         </>
+                                            //                         }
+                                            //                         <div style={{fontSize:'10px'}}>
+                                            //                             Update Terakhir: {last_update}
+                                            //                         </div>
+                                            //                         {option.jumlah_produk &&
+                                            //                         <div className="hilangDiDesktop" style={{fontSize:'10px'}}>
+                                            //                         {option.jumlah_produk}
+                                            //                         </div>
+                                            //                         }
+                                            //                     </div>
+                                            //                 </Col>
+                                            //                 <Col width="0" tabletWidth="20" desktopWidth="20" style={{textAlign:'right'}} className="hilangDiMobile">
+                                            //                     {option.jumlah_produk &&
+                                            //                     <div style={{fontSize:'10px'}}>
+                                            //                     {option.jumlah_produk}
+                                            //                     </div>
+                                            //                     }
+                                            //                 </Col>
+                                            //                 <Col width="10" tabletWidth="10" desktopWidth="10" style={{textAlign:'right'}}>
+                                            //                     <Button popoverOpen={".popover-menu-"+option.produk_id}><i className="icons f7-icons">ellipsis_vertical</i></Button>
+                                            //                     <Popover className={"popover-menu-"+option.produk_id} style={{minWidth:'300px'}}>
+                                            //                         <List>
+                                            //                             <ListItem link="#" popoverClose title="Edit" onClick={()=>this.edit(option.produk_id)} />
+                                            //                             <ListItem link="#" popoverClose title="Hapus" onClick={()=>this.hapus(option.produk_id)} />
+                                            //                         </List>
+                                            //                     </Popover>
+                                            //                 </Col>
+                                            //             </Row>
+                                            //         </CardContent>
+                                            //     </Card>
+                                            // )
                                         })}
+                                        </div>
                                     </Col>
                                 </Row>
                             </CardContent>
@@ -337,9 +372,10 @@ function mapDispatchToProps(dispatch) {
     return bindActionCreators({
       updateWindowDimension: Actions.updateWindowDimension,
       setLoading: Actions.setLoading,
-      getKategoriProduk: Actions.getKategoriProduk,
-      simpanKategoriProduk: Actions.simpanKategoriProduk,
-      generateUUID: Actions.generateUUID
+      getProduk: Actions.getProduk,
+      simpanProduk: Actions.simpanProduk,
+      generateUUID: Actions.generateUUID,
+      getKategoriProduk: Actions.getKategoriProduk
     }, dispatch);
 }
 
@@ -350,5 +386,5 @@ function mapStateToProps({ App, Pertanyaan, Kuis }) {
     }
 }
 
-export default (connect(mapStateToProps, mapDispatchToProps)(KategoriProduk));
+export default (connect(mapStateToProps, mapDispatchToProps)(Produk));
   

@@ -344,12 +344,12 @@ class app extends Component {
                 </ListItem>
                 }
                 {(localStorage.getItem('user') !== null && localStorage.getItem('user') !== '') && (localStorage.getItem('sekolah_id_beranda') === '' || localStorage.getItem('sekolah_id_beranda') === null) &&
-                <ListItem link="/DataMaster/" view=".view-main" panelClose panel-close accordionItem title="Data Master">
+                <ListItem view=".view-main" accordionItem title="Data Master">
                   <i slot="media" className="f7-icons">cube_box</i>
                   <AccordionContent>
-                    {/* <ListItem noChevron link="/DataMaster/" view=".view-main" panelClose panel-close title="Data Master">
+                    <ListItem noChevron link="/DataMaster/" view=".view-main" panelClose panel-close title="Semua" className="itemSub">
                       <i slot="media" className="f7-icons">cube_box</i>
-                    </ListItem> */}
+                    </ListItem>
                     <ListItem noChevron link="/KategoriProduk/" view=".view-main" panelClose panel-close title="Kategori Produk" className="itemSub">
                       <i slot="media" className="f7-icons">doc_text</i>
                     </ListItem>

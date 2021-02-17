@@ -151,7 +151,6 @@ function mapDispatchToProps(dispatch) {
       updateWindowDimension: Actions.updateWindowDimension,
       setLoading: Actions.setLoading,
       getKategoriProduk: Actions.getKategoriProduk,
-      getKategoriProduk: Actions.getKategoriProduk,
       simpanKategoriProduk: Actions.simpanKategoriProduk,
       generateUUID: Actions.generateUUID
     }, dispatch);
