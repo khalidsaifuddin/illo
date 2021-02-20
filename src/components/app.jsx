@@ -359,7 +359,7 @@ class app extends Component {
                     <ListItem noChevron link="/Pengguna/" view=".view-main" panelClose panel-close title="Pengguna" className="itemSub">
                       <i slot="media" className="f7-icons">doc_text</i>
                     </ListItem>
-                    <ListItem noChevron link="/Pengguna/" view=".view-main" panelClose panel-close title="Mitra" className="itemSub">
+                    <ListItem noChevron link="/Mitra/" view=".view-main" panelClose panel-close title="Mitra" className="itemSub">
                       <i slot="media" className="f7-icons">doc_text</i>
                     </ListItem>
                     <ListItem noChevron link="/UnitPenjualan/" view=".view-main" panelClose panel-close title="Unit Penjualan" className="itemSub">

@@ -51,6 +51,10 @@ import KategoriProduk from '../pages/DataMaster/KategoriProduk';
 import FormKategoriProduk from '../pages/DataMaster/FormKategoriProduk';
 import Produk from '../pages/DataMaster/Produk';
 import FormProduk from '../pages/DataMaster/FormProduk';
+import Pengguna from '../pages/DataMaster/Pengguna';
+import Mitra from '../pages/DataMaster/Mitra';
+import AnggotaMitra from '../pages/DataMaster/AnggotaMitra';
+import FormAnggotaMitraBaru from '../pages/DataMaster/FormAnggotaMitraBaru';
 
 // console.log(localStorage.getItem('kode_aplikasi'));
 
@@ -194,6 +198,22 @@ var routes = [
   {
     path: '/pengaturanPengguna/:pengguna_id/:sekolah_id',
     component: pengaturanPengguna,
+  },
+  {
+    path: '/Mitra/',
+    component: Mitra,
+  },
+  {
+    path: '/Pengguna/',
+    component: Pengguna,
+  },
+  {
+    path: '/AnggotaMitra/:jenis_mitra_id',
+    component: AnggotaMitra,
+  },
+  {
+    path: '/FormAnggotaMitraBaru/:jenis_mitra_id',
+    component: FormAnggotaMitraBaru,
   },
   {
     path: '/Produk/',

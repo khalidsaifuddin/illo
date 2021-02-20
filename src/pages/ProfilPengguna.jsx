@@ -522,7 +522,7 @@ class ProfilPengguna extends Component {
                         ) : (
                           <>
                             <h1 style={{fontSize:'16px'}}>{this.state.pengguna.rows[0].nama}</h1>
-                            <span>{this.state.pengguna.rows[0].username}</span>
+                            <span style={{fontSize:'12px'}}>{this.state.pengguna.rows[0].username}</span>
                           </>
                         )}
                         {/* {!this.$f7route.params['pengguna_id'] && 

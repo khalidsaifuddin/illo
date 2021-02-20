@@ -235,8 +235,8 @@ class tampilPengguna extends Component {
                                         </Button>
                                         }
                                     </Col>
-                                    <Col width="70" tabletWidth="80">
-                                        <h1 style={{marginBottom:'0px', color:'#2670AF'}}>{this.state.pengguna.nama}</h1>
+                                    <Col width="70" tabletWidth="80" style={{paddingLeft:'8px'}}>
+                                        <h1 style={{marginBottom:'0px', color:'#2670AF', marginTop:'0px'}}>{this.state.pengguna.nama}</h1>
                                         <h3 style={{marginTop:'0px', fontWeight:'normal'}}>{this.state.pengguna.username}</h3>
 
                                         <Row>
@@ -244,11 +244,11 @@ class tampilPengguna extends Component {
                                                 <Row noGap>
                                                     <Col width="50">
                                                         <i className="icon f7-icons" style={{fontSize:'20px', color:'#cccccc'}}>person_2_fill</i>&nbsp;
-                                                        <b>{this.state.pengikut}</b> Pengikut
+                                                        <b>{this.state.pengikut}</b><br/>Pengikut
                                                     </Col>
                                                     <Col width="50">
                                                         <i className="icon f7-icons" style={{fontSize:'20px', color:'#cccccc'}}>person_2_fill</i>&nbsp;
-                                                        <b>{this.state.mengikuti}</b> Mengikuti
+                                                        <b>{this.state.mengikuti}</b><br/>Mengikuti
                                                     </Col>
                                                 </Row>
                                             </Col>
@@ -264,7 +264,7 @@ class tampilPengguna extends Component {
                                                     </Col> */}
                                                 </Row>
                                             </Col>
-                                            <Col width="100" tabletWidth="50" style={{border:'0px solid #cccccc', padding:'0px', borderRadius:'8px', marginBottom:'8px'}}>
+                                            <Col width="100" tabletWidth="100" style={{border:'0px solid #cccccc', padding:'0px', borderRadius:'8px', marginBottom:'8px'}}>
                                                 {JSON.parse(localStorage.getItem('user')).pengguna_id !== this.state.pengguna.pengguna_id && this.state.status_mengikuti === 'N' &&
                                                 <Button disabled={this.state.disabledButtonMengikuti} raised fill onClick={this.ikutiPengguna} style={{display:'inline-flex'}}>
                                                     <i className="icon f7-icons" style={{fontSize:'20px', color:'#cccccc'}}>person_badge_plus_fill</i>&nbsp;

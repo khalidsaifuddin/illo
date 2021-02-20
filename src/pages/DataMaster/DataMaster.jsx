@@ -80,7 +80,7 @@ class DataMaster extends Component {
                                 </Link>
                             </Col>
                             <Col width="50" tabletWidth="25">
-                                <Link href="/Pengguna/" style={{width:'100%'}}>
+                                <Link href="/Mitra/" style={{width:'100%'}}>
                                     <Card style={{background:'url(./static/icons/pengguna.jpg)', backgroundSize:'cover', minHeight:'100px', width:'100%'}}>
                                         <CardContent className="kontenMenu">
                                             Mitra

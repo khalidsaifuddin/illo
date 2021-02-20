@@ -16,7 +16,8 @@ export const SET_JUDUL_KANAN = '[APP] SET JUDUL KANAN';
 export const SET_ISI_KANAN = '[APP] SET ISI KANAN';
 export const LOGIN = '[APP] LOGIN';
 export const DAFTAR = '[APP] DAFTAR';
-export const GET_PENGGUNA = '[APP] GET PENGGUNA';
+export const GET_PENGGUNA = '[APP] GET_PENGGUNA';
+export const SIMPAN_PENGGUNA = '[APP] SIMPAN_PENGGUNA';
 export const SET_PENGGUNA = '[APP] SET PENGGUNA';
 export const SIMPAN_PENGGUNA_MANUAL = '[APP] SIMPAN_PENGGUNA_MANUAL';
 export const BUAT_PENGGUNA = '[APP] BUAT PENGGUNA';
@@ -293,6 +294,22 @@ export function getPengguna(routeParams)
         request.then((response) =>
             dispatch({
                 type   : GET_PENGGUNA,
+                payload: response.data,
+                routeParams
+            })
+        );
+}
+
+export function simpanPengguna(routeParams)
+{
+    const request = axios.post(localStorage.getItem('api_base')+'/api/Otentikasi/simpanPengguna', {
+        ...routeParams
+    });
+
+    return (dispatch) =>
+        request.then((response) =>
+            dispatch({
+                type   : SIMPAN_PENGGUNA,
                 payload: response.data,
                 routeParams
             })

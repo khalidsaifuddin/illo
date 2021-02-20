@@ -12,20 +12,22 @@ import moment from 'moment';
 
 import localForage from 'localforage';
 
-class Produk extends Component {
+class AnggotaMitra extends Component {
     state = {
         error: null,
         loadingKuis: false,
         loadingPengguna: false,
         routeParams: {
+            jenis_mitra_id: this.$f7route.params['jenis_mitra_id'] ? this.$f7route.params['jenis_mitra_id'] : null,
             start:0,
             limit:20
         },
-        produk: {
+        anggota_mitra: {
             rows: [],
             total: 0
         },
-        popupFilter: false
+        popupFilter: false,
+        jenis_mitra: {}
     }
 
     bulan = [
@@ -64,33 +66,46 @@ class Produk extends Component {
 
     componentDidMount = () => {
         this.$f7.dialog.preloader('Memuat data...')
-        this.props.getProduk(this.state.routeParams).then((result)=>{
+
+        this.props.getJenisMitra(this.state.routeParams).then((result)=>{
             this.setState({
-                produk: result.payload
+                jenis_mitra: result.payload.rows[0]
             },()=>{
-                this.$f7.dialog.close()
+
+                this.props.getAnggotaMitra(this.state.routeParams).then((result)=>{
+                    this.setState({
+                        anggota_mitra: result.payload
+                    },()=>{
+                        this.$f7.dialog.close()
+                    })
+                })
+
             })
         })
+
     }
 
-    tambah = () => {
-        this.$f7router.navigate("/FormProduk/")
+    tambah = (jenis_mitra_id) => {
+
+
+
+        this.$f7router.navigate("/FormAnggotaMitra/"+jenis_mitra_id)
     }
 
-    edit = (produk_id) => {
-        this.$f7router.navigate('/FormProduk/'+produk_id)
+    edit = (jenis_mitra_id, pengguna_id) => {
+        this.$f7router.navigate('/FormAnggotaMitra/'+jenis_mitra_id+'/'+pengguna_id)
     }
 
-    hapus = (produk_id) => {
+    hapus = (pengguna_id) => {
         this.$f7.dialog.confirm('Apakah Anda yakin ingin menghapus data ini?', 'Konfirmasi Hapus',()=>{
             this.$f7.dialog.preloader('Menyimpan...')
-            this.props.simpanProduk({produk_id: produk_id, soft_delete:1}).then((result)=>{
+            this.props.simpanAnggotaMitra({pengguna_id: pengguna_id, soft_delete:1}).then((result)=>{
                 this.$f7.dialog.close()
                 if(result.payload.sukses){
 
-                    this.props.getProduk(this.state.routeParams).then((result)=>{
+                    this.props.getAnggotaMitra(this.state.routeParams).then((result)=>{
                         this.setState({
-                            produk: result.payload
+                            anggota_mitra: result.payload
                         })
                     })
 
@@ -136,9 +151,9 @@ class Produk extends Component {
 
     tampilFilter = () => {
         this.$f7.dialog.preloader()
-        this.props.getProduk(this.state.routeParams).then((result)=>{
+        this.props.getAnggotaMitra({...this.state.routeParams, start: 0}).then((result)=>{
             this.setState({
-                produk: result.payload,
+                anggota_mitra: result.payload,
                 popupFilter: !this.state.popupFilter
             },()=>{
                 this.$f7.dialog.close()
@@ -156,9 +171,9 @@ class Produk extends Component {
             }
         },()=>{
 
-            this.props.getProduk(this.state.routeParams).then((result)=>{
+            this.props.getAnggotaMitra(this.state.routeParams).then((result)=>{
                 this.setState({
-                    produk: result.payload,
+                    anggota_mitra: result.payload,
                     popupFilter: !this.state.popupFilter
                 },()=>{
                     this.$f7.dialog.close()
@@ -168,24 +183,64 @@ class Produk extends Component {
         })
 
     }
+
+    klikNext = () => {
+        // alert('tes');
+        this.$f7.dialog.preloader()
+        
+        this.setState({
+            ...this.state,
+            loading: true,
+            routeParams: {
+                ...this.state.routeParams,
+                start: (parseInt(this.state.routeParams.start) + parseInt(this.state.routeParams.limit))
+            }
+        },()=>{
+            this.props.getAnggotaMitra(this.state.routeParams).then((result)=>{
+                this.setState({
+                    anggota_mitra: result.payload,
+                    loading: false
+                },()=>{
+                    this.$f7.dialog.close()
+                });
+            });
+        })
+    }
+    
+    klikPrev = () => {
+        // alert('tes');
+        this.$f7.dialog.preloader()
+        
+        this.setState({
+            ...this.state,
+            loading: true,
+            routeParams: {
+                ...this.state.routeParams,
+                start: (parseInt(this.state.routeParams.start) - parseInt(this.state.routeParams.limit))
+            }
+        },()=>{
+            this.props.getAnggotaMitra(this.state.routeParams).then((result)=>{
+                this.setState({
+                    anggota_mitra: result.payload,
+                    loading: false
+                },()=>{
+                    this.$f7.dialog.close()
+                });
+            });
+        })
+    }
     
     render()
     {
         return (
-            <Page name="Produk" className="halamanJenisTiket" hideBarsOnScroll style={{paddingBottom:'100px', boxSizing:'content-box'}}>
+            <Page name="AnggotaMitra" className="halamanJenisTiket" hideBarsOnScroll style={{paddingBottom:'100px', boxSizing:'content-box'}}>
                 <Navbar sliding={false} backLink="Kembali" onBackClick={this.backClick}>
-                    <NavTitle sliding>Produk</NavTitle>
-                    {/* <NavRight>
-                        <Button raised fill>
-                            <i className="icons f7-icons" style={{fontSize:'20px'}}>arrow_right_arrow_left_square</i>
-                            Filter
-                        </Button>
-                    </NavRight> */}
+                    <NavTitle sliding>Anggota {this.state.jenis_mitra.nama}</NavTitle>
                 </Navbar>
 
                 <Popup className="demo-popup" opened={this.state.popupFilter} onPopupClosed={() => this.setState({popupFilter : false})}>
                     <Page>
-                        <Navbar title="Filter Produk">
+                        <Navbar title="Filter AnggotaMitra">
                             <NavRight>
                                 <Link popupClose>Tutup</Link>
                             </NavRight>
@@ -194,7 +249,7 @@ class Produk extends Component {
                             <List>
                                 <Searchbar
                                     className="searchbar-demo"
-                                    placeholder="Nama Produk"
+                                    placeholder="Nama Anggota Mitra"
                                     searchContainer=".search-list"
                                     searchIn=".item-title"
                                     onChange={this.cariKeyword}
@@ -234,10 +289,10 @@ class Produk extends Component {
                                                     <a onClick={this.klikPrev} href="#" className={"link "+(this.state.routeParams.start < 1 ? "disabled" : "" )}>
                                                     <i className="icon icon-prev color-gray"></i>
                                                     </a>
-                                                    <a onClick={this.klikNext} href="#" className={"link "+((parseInt(this.state.routeParams.start)+20) >= parseInt(this.state.produk.total) ? "disabled" : "" )}>
+                                                    <a onClick={this.klikNext} href="#" className={"link "+((parseInt(this.state.routeParams.start)+20) >= parseInt(this.state.anggota_mitra.total) ? "disabled" : "" )}>
                                                         <i className="icon icon-next color-gray"></i>
                                                     </a>
-                                                    <span className="data-table-pagination-label">{(this.state.routeParams.start+1)}-{(this.state.routeParams.start)+parseInt(this.state.routeParams.limit) <= parseInt(this.state.produk.total) ? (this.state.routeParams.start)+parseInt(this.state.routeParams.limit) : parseInt(this.state.produk.total)} dari {this.formatAngka(this.state.produk.total)} Produk</span>
+                                                    <span className="data-table-pagination-label">{(this.state.routeParams.start+1)}-{(this.state.routeParams.start)+parseInt(this.state.routeParams.limit) <= parseInt(this.state.anggota_mitra.total) ? (this.state.routeParams.start)+parseInt(this.state.routeParams.limit) : parseInt(this.state.anggota_mitra.total)} dari {this.formatAngka(this.state.anggota_mitra.total)} Anggota Mitra</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -247,13 +302,20 @@ class Produk extends Component {
                                             <i className="icons f7-icons" style={{fontSize:'20px'}}>arrow_right_arrow_left_square</i>
                                             Filter
                                         </Button>
-                                        <Button raised fill style={{display:'inline-flex', marginTop:'-60px'}} onClick={this.tambah}>
+                                        {/* <Button raised fill style={{display:'inline-flex', marginTop:'-60px'}} onClick={()=>this.tambah(this.$f7route.params['jenis_mitra_id'])}> */}
+                                        <Button raised fill style={{display:'inline-flex', marginTop:'-60px'}} popoverOpen={".popover-tambah-menu"}>
                                             <i className="f7-icons" style={{fontSize:'20px'}}>plus</i>&nbsp;
                                             Tambah
                                         </Button>
+                                        <Popover className={"popover-tambah-menu"} style={{minWidth:'320px'}}>
+                                            <List>
+                                                <ListItem onClick={()=>this.$f7router.navigate("/FormAnggotaMitraBaru/"+this.$f7route.params['jenis_mitra_id'])} link="#" popoverClose title="Pengguna Existing" />
+                                                <ListItem onClick={()=>this.$f7router.navigate("/FormAnggotaMitra/"+this.$f7route.params['jenis_mitra_id'])} link="#" popoverClose title="Buat Pengguna Baru" />
+                                            </List>
+                                        </Popover>
                                     </Col>
                                     <Col width="100" tabletWidth="100">
-                                        {this.state.produk.total < 1 &&
+                                        {this.state.anggota_mitra.total < 1 &&
                                         <div style={{width:'100%', textAlign:'center', marginBottom:'50px'}}>
                                             <img src="./static/icons/189.jpg" style={{width:'60%'}} /> 
                                             <br/>
@@ -261,8 +323,8 @@ class Produk extends Component {
                                             Silakan klik tombol tambah diatas untuk membuat data baru   
                                         </div>
                                         }
-                                        <div className="kotakProduk">
-                                        {this.state.produk.rows.map((option)=>{
+                                        <div>
+                                        {this.state.anggota_mitra.rows.map((option)=>{
                                             let last_update = '';
                                             last_update = moment(option.last_update).format('D') + ' ' + this.bulan_singkat[(moment(option.last_update).format('M')-1)] + ' ' + moment(option.last_update).format('YYYY') + ', ' + moment(option.last_update).format('H') + ':' + moment(option.last_update).format('mm');
 
@@ -271,34 +333,39 @@ class Produk extends Component {
                                             }
 
                                             return (
-                                                <Card key={option.produk_id} className="boxProduk">
+                                                <Card key={option.pengguna_id} style={{marginLeft:'0px', marginRight:'0px'}}>
                                                     <CardContent style={{padding:'8px'}}>
-                                                        <div className="gambarProduk" style={{
-                                                            backgroundImage:'url('+localStorage.getItem('api_base')+(option.gambar_produk.length > 0 ? option.gambar_produk[0].nama_file : '/assets/berkas/3577232-1.jpg')+')', 
-                                                            backgroundSize:'cover',
-                                                            backgroundPosition:'center'
-                                                        }}>&nbsp;</div>
-                                                        <Row noGap>
-                                                            <Col width="85">
-                                                                <div className="namaProduk">
-                                                                    {option.nama}
-                                                                </div>
-                                                                <div className="namaProduk" style={{fontSize:'10px', fontWeight:'normal', marginTop:'0px'}}>
-                                                                    {option.keterangan ? option.keterangan.replace(/(<([^>]+)>)/gi, "") : ''}
-                                                                </div>
-                                                                <div className="hargaProduk">
-                                                                    Rp {(option.harga_produk.length > 0 ? this.formatAngka(option.harga_produk[0].nominal) : '0')}
-                                                                </div>
-                                                                <div className="namaProduk" style={{fontSize:'10px', color:'#b3b3b3'}}>
-                                                                    {option.kategori_produk}
+                                                        <Row>
+
+                                                            <Col width="90" tabletWidth="70" desktopWidth="70" style={{display:'inline-flex'}}>
+                                                                <img src={option.gambar} style={{height:'45px', width:'45px', borderRadius:'50%', marginRight:'0px'}} />
+                                                                <div style={{marginLeft:'16px'}}>
+                                                                    
+                                                                    <Link href={"/tampilPengguna/"+option.pengguna_id}><b>{option.nama}</b></Link>
+                                                                    <div style={{fontSize:'10px'}}>
+                                                                        {option.username &&
+                                                                        <>
+                                                                        {option.username}
+                                                                        </>
+                                                                        }
+                                                                        <div style={{fontSize:'10px'}}>
+                                                                            Update Terakhir: {last_update}
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className="hilangDiDesktop" style={{fontSize:'10px'}}>
+                                                                        Customer Retail
+                                                                    </div>
                                                                 </div>
                                                             </Col>
-                                                            <Col width="15">
-                                                                <Button popoverOpen={".popover-menu-"+option.produk_id}><i className="icons f7-icons" style={{fontSize:'18px', display:'inline-flex', textAlign:'right'}}>ellipsis_vertical</i></Button>
-                                                                <Popover className={"popover-menu-"+option.produk_id} style={{minWidth:'150px'}}>
+                                                            <Col width="0" tabletWidth="20" desktopWidth="20" style={{textAlign:'right'}} className="hilangDiMobile">
+                                                                <div style={{fontSize:'10px'}}>Customer Retail</div>
+                                                            </Col>
+                                                            <Col width="10" tabletWidth="10" desktopWidth="10" style={{textAlign:'right'}}>
+                                                                <Button popoverOpen={".popover-menu-"+option.pengguna_id}><i className="icons f7-icons">ellipsis_vertical</i></Button>
+                                                                <Popover className={"popover-menu-"+option.pengguna_id} style={{minWidth:'300px'}}>
                                                                     <List>
-                                                                        <ListItem link="#" popoverClose title="Edit" onClick={()=>this.edit(option.produk_id)} />
-                                                                        <ListItem link="#" popoverClose title="Hapus" onClick={()=>this.hapus(option.produk_id)} />
+                                                                        <ListItem link="#" popoverClose title="Edit" onClick={()=>this.edit(option.jenis_mitra_id, option.pengguna_id)} />
+                                                                        <ListItem link="#" popoverClose title="Nonaktifkan" onClick={()=>this.hapus(option.pengguna_id)} />
                                                                     </List>
                                                                 </Popover>
                                                             </Col>
@@ -306,52 +373,6 @@ class Produk extends Component {
                                                     </CardContent>
                                                 </Card>
                                             )
-
-                                            // return (
-                                            //     <Card key={option.produk_id} style={{marginLeft:'0px', marginRight:'0px'}}>
-                                            //         <CardContent style={{padding:'8px'}}>
-                                            //             <Row>
-                                            //                 <Col width="15" tabletWidth="15" desktopWidth="10" style={{textAlign:'center'}}>
-                                            //                     <img src={"./static/icons/illo-logo-icon.png"} style={{height:'45px', width:'45px', borderRadius:'50%', marginRight:'0px'}} />
-                                            //                 </Col>
-                                            //                 <Col width="65" tabletWidth="55" desktopWidth="60">
-                                            //                     <b>{option.nama}</b>
-                                            //                     <div style={{fontSize:'10px'}}>
-                                            //                         {option.keterangan &&
-                                            //                         <>
-                                            //                         {option.keterangan}
-                                            //                         </>
-                                            //                         }
-                                            //                         <div style={{fontSize:'10px'}}>
-                                            //                             Update Terakhir: {last_update}
-                                            //                         </div>
-                                            //                         {option.jumlah_produk &&
-                                            //                         <div className="hilangDiDesktop" style={{fontSize:'10px'}}>
-                                            //                         {option.jumlah_produk}
-                                            //                         </div>
-                                            //                         }
-                                            //                     </div>
-                                            //                 </Col>
-                                            //                 <Col width="0" tabletWidth="20" desktopWidth="20" style={{textAlign:'right'}} className="hilangDiMobile">
-                                            //                     {option.jumlah_produk &&
-                                            //                     <div style={{fontSize:'10px'}}>
-                                            //                     {option.jumlah_produk}
-                                            //                     </div>
-                                            //                     }
-                                            //                 </Col>
-                                            //                 <Col width="10" tabletWidth="10" desktopWidth="10" style={{textAlign:'right'}}>
-                                            //                     <Button popoverOpen={".popover-menu-"+option.produk_id}><i className="icons f7-icons">ellipsis_vertical</i></Button>
-                                            //                     <Popover className={"popover-menu-"+option.produk_id} style={{minWidth:'300px'}}>
-                                            //                         <List>
-                                            //                             <ListItem link="#" popoverClose title="Edit" onClick={()=>this.edit(option.produk_id)} />
-                                            //                             <ListItem link="#" popoverClose title="Hapus" onClick={()=>this.hapus(option.produk_id)} />
-                                            //                         </List>
-                                            //                     </Popover>
-                                            //                 </Col>
-                                            //             </Row>
-                                            //         </CardContent>
-                                            //     </Card>
-                                            // )
                                         })}
                                         </div>
                                     </Col>
@@ -372,10 +393,10 @@ function mapDispatchToProps(dispatch) {
     return bindActionCreators({
       updateWindowDimension: Actions.updateWindowDimension,
       setLoading: Actions.setLoading,
-      getProduk: Actions.getProduk,
-      simpanProduk: Actions.simpanProduk,
+      getAnggotaMitra: Actions.getAnggotaMitra,
+      simpanAnggotaMitra: Actions.simpanAnggotaMitra,
       generateUUID: Actions.generateUUID,
-      getKategoriProduk: Actions.getKategoriProduk
+      getJenisMitra: Actions.getJenisMitra
     }, dispatch);
 }
 
@@ -386,5 +407,5 @@ function mapStateToProps({ App, Pertanyaan, Kuis }) {
     }
 }
 
-export default (connect(mapStateToProps, mapDispatchToProps)(Produk));
+export default (connect(mapStateToProps, mapDispatchToProps)(AnggotaMitra));
   

@@ -15,3 +15,4 @@ export * from './Poin.actions';
 export * from './Pesan.actions';
 export * from './Tiket.actions';
 export * from './Produk.actions';
+export * from './Mitra.actions';

@@ -47,11 +47,11 @@ module.exports = {
  },
   devtool: env === 'production' ? 'source-map' : 'eval',
   devServer: {
-    hot: true,
+    hot: false,
     open: true,
     compress: true,
     contentBase: '/www/',
-    disableHostCheck: true,
+    disableHostCheck: false,
     watchOptions: {
       poll: 1000,
     },

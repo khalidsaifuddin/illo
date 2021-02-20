@@ -658,7 +658,7 @@ body {
 }
 
 .merahAtas {
-  min-height: 170px;
+  min-height: 180px;
   background-attachment: fixed;
   /* background-image: linear-gradient(to top, #f43b47 0%, #a30606 100%); */
   /* margin-top: -70px; */
@@ -1436,10 +1436,17 @@ h2 {
 }
 
 .boxProduk {
-  width: 165px;
+  width: 160px;
   margin: 8px;
   height: 256px;
   border-radius: 20px;
+}
+
+@media only screen and (max-width: 500px) {
+  .boxProduk {
+    width: 45%;
+    margin:8px;
+  }
 }
 
 .gambarProduk {
@@ -1464,4 +1471,14 @@ h2 {
 
 .hargaProduk {
   font-size: 15px;
+}
+
+.boxGambar {
+  border:0px solid #ccc;
+  margin-left: -8px;
+  margin-right: -8px;
+  margin-top: -8px;
+  margin-bottom: 16px;
+  border-radius: 20px 20px 0px 0px;
+  min-height: 175px;
 }
