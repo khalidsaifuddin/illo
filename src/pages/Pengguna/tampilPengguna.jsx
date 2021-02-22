@@ -236,8 +236,8 @@ class tampilPengguna extends Component {
                                         }
                                     </Col>
                                     <Col width="70" tabletWidth="80" style={{paddingLeft:'8px'}}>
-                                        <h1 style={{marginBottom:'0px', color:'#2670AF', marginTop:'0px'}}>{this.state.pengguna.nama}</h1>
-                                        <h3 style={{marginTop:'0px', fontWeight:'normal'}}>{this.state.pengguna.username}</h3>
+                                        <h1 style={{marginBottom:'0px', color:'#2670AF', marginTop:'0px', fontSize:'15px'}}>{this.state.pengguna.nama}</h1>
+                                        <h3 style={{marginTop:'0px', fontWeight:'normal', fontSize:'12px'}}>{this.state.pengguna.username}</h3>
 
                                         <Row>
                                             <Col width="100" tabletWidth="50" style={{border:'1px solid #cccccc', padding:'8px', borderRadius:'8px', marginBottom:'8px'}}>

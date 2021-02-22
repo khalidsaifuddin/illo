@@ -2,7 +2,7 @@ import axios from 'axios/index';
 
 export const GET_JENIS_MITRA = '[NOTIFIKASI] GET_JENIS_MITRA';
 export const GET_ANGGOTA_MITRA = '[NOTIFIKASI] GET_ANGGOTA_MITRA';
-export const SIMPAN_ANGGOTA_MITRA = '[NOTIFIKASI] SIMPAN_ANGGOTA_MITRA';
+export const SIMPAN_MITRA = '[NOTIFIKASI] SIMPAN_MITRA';
 
 export function getJenisMitra(routeParams)
 {
@@ -36,16 +36,16 @@ export function getAnggotaMitra(routeParams)
         );
 }
 
-export function simpanAnggotaMitra(routeParams)
+export function simpanMitra(routeParams)
 {
-    const request = axios.post(localStorage.getItem('api_base')+'/api/Mitra/simpanAnggotaMitra', {
+    const request = axios.post(localStorage.getItem('api_base')+'/api/Mitra/simpanMitra', {
         ...routeParams
     });
 
     return (dispatch) =>
         request.then((response) =>
             dispatch({
-                type   : SIMPAN_ANGGOTA_MITRA,
+                type   : SIMPAN_MITRA,
                 payload: response.data,
                 routeParams
             })

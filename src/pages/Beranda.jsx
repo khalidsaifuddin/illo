@@ -614,7 +614,7 @@ class Beranda extends Component {
                   </Offline>
                   <Row noGap>
                     
-                    <Col width="100" tabletWidth="50" style={{paddingLeft:'8px'}}>
+                    {/* <Col width="100" tabletWidth="50" style={{paddingLeft:'8px'}}>
                       <Row>
                         <Col width="20" tabletwidth="15" desktopWidth="15">
                           <Link href={"/tampilPengguna/"+JSON.parse(localStorage.getItem('user')).pengguna_id} style={{color:'white'}}>
@@ -646,11 +646,7 @@ class Beranda extends Component {
                             </Col>
                             <Col width="40">
                             <Link href="#" popoverOpen=".popover-menu-rata"><i className="icon f7-icons" style={{fontSize:'18px', color:'white'}}>question_circle_fill</i></Link>&nbsp;Deposit Wallet<br/>
-                              {/* <i className="icon f7-icons" style={{fontSize:'20px', color:'#FDDD02'}}>gamecontroller_alt_fill</i>&nbsp; */}
                               Rp <b style={{fontSize:'20px', fontWeight:'bold'}}>0</b>
-                              {/* {this.state.rata_kuis &&
-                              <div style={{fontSize:'10px'}}>dari total {this.state.rata_kuis.total} kuis</div>
-                              } */}
                             </Col>
                           </Row>
                         </Col>
@@ -662,7 +658,7 @@ class Beranda extends Component {
                       <Popover className="popover-menu-poin">
                         <div style={{margin:'8px'}}>Poin adalah poin yang Kamu dapat dari aktivitas kamu di diskuis seperti mengerjakan kuis, membuat kuis, dll</div>
                       </Popover>
-                    </Col>
+                    </Col> */}
                     
 
                     {/* <Col width="100">
@@ -879,6 +875,49 @@ class Beranda extends Component {
 
                       <Card className="cardBorder-20 hilangDiDesktop">
                         <CardContent className="cari_kuis ikutiKuisBeranda">
+                          <Row>
+                            <Col width="20" tabletwidth="15" desktopWidth="15">
+                              <Link href={"/tampilPengguna/"+JSON.parse(localStorage.getItem('user')).pengguna_id} style={{color:'#434343'}}>
+                                <img style={{width:'50px', height:'50px', borderRadius:'50%', marginLeft:'0px', border:'1px solid #cccccc'}} src={JSON.parse(localStorage.getItem('user')).gambar} />
+                              </Link>
+                            </Col>
+                            <Col width="80" tabletwidth="85" desktopWidth="85" style={{paddingLeft:'0px'}}>
+                              <Link href={"/tampilPengguna/"+JSON.parse(localStorage.getItem('user')).pengguna_id} style={{color:'#434343'}}>
+                                <b style={{fontSize:'14px', fontWeight:'bold'}}>{JSON.parse(localStorage.getItem('user')).nama}</b><br/>
+                              </Link>
+                              <br/>
+                              <Link href={"/tampilPengguna/"+JSON.parse(localStorage.getItem('user')).pengguna_id} style={{color:'#434343'}}>
+                                <span style={{fontSize:'10px'}}>{JSON.parse(localStorage.getItem('user')).username}</span><br/>
+                              </Link>
+                              
+                            </Col>
+                            <Col width="100">
+                              <br/>
+                              <Row>
+                                <Col width="30" style={{fontSize:'10px'}}>
+                                  <Link href="#" popoverOpen=".popover-menu-poin"><i className="icon f7-icons" style={{fontSize:'18px', color:'#434343'}}>question_circle_fill</i></Link>&nbsp;Poin:<br/>
+                                  <i className="icon f7-icons" style={{fontSize:'13px', color:'#FDDD02'}}>money_dollar_circle_fill</i>&nbsp;<b className="angkaPoin">0</b>
+                                  <div style={{fontSize:'10px'}}>Riwayat Poin</div>
+                                </Col>
+                                <Col width="30" style={{fontSize:'10px'}}>
+                                  Produk Dibeli:<br/>
+                                  <i className="icon f7-icons" style={{fontSize:'13px', color:'#FDDD02'}}>cube_box</i>&nbsp;<b className="angkaPoin">0</b>
+                                  <div style={{fontSize:'10px'}}>Produk</div>
+                                </Col>
+                                <Col width="40" style={{fontSize:'10px'}}>
+                                <Link href="#" popoverOpen=".popover-menu-rata"><i className="icon f7-icons" style={{fontSize:'13px', color:'#434343'}}>question_circle_fill</i></Link>&nbsp;Deposit Wallet<br/>
+                                  Rp <b style={{fontSize:'20px', fontWeight:'bold'}}>0</b>
+                                </Col>
+                              </Row>
+                            </Col>
+                          </Row>
+
+                          <Popover className="popover-menu-rata">
+                            <div style={{margin:'8px'}}>Skor rata-rata adalah skor rata-rata dari total kuis yang telah Kamu ikuti</div>
+                          </Popover>
+                          <Popover className="popover-menu-poin">
+                            <div style={{margin:'8px'}}>Poin adalah poin yang Kamu dapat dari aktivitas kamu di diskuis seperti mengerjakan kuis, membuat kuis, dll</div>
+                          </Popover>
                           {/* <Row>
                             <Col width="0" tabletWidth="0"></Col>
                             <Col width="100" tabletWidth="100">
@@ -978,7 +1017,50 @@ class Beranda extends Component {
                       </Card>
 
                       <Card className="cardBorder-20 hilangDiMobile">
-                        <CardContent className="cari_kuis ikutiKuisBeranda">
+                        <CardContent className="cari_kuis ikutiKuisBeranda" style={{padding:'8px'}}>
+                          <Row>
+                            <Col width="100" tabletwidth="100" desktopWidth="100">
+                              <Link href={"/tampilPengguna/"+JSON.parse(localStorage.getItem('user')).pengguna_id} style={{color:'#434343'}}>
+                                <img style={{width:'50px', height:'50px', borderRadius:'50%', marginLeft:'0px', border:'1px solid #cccccc'}} src={JSON.parse(localStorage.getItem('user')).gambar} />
+                              </Link>
+                            </Col>
+                            <Col width="100" tabletwidth="100" desktopWidth="100" style={{paddingLeft:'0px'}}>
+                              <Link href={"/tampilPengguna/"+JSON.parse(localStorage.getItem('user')).pengguna_id} style={{color:'#434343'}}>
+                                <b style={{fontSize:'15px', fontWeight:'bold'}}>{JSON.parse(localStorage.getItem('user')).nama}</b><br/>
+                              </Link>
+                              <br/>
+                              <Link href={"/tampilPengguna/"+JSON.parse(localStorage.getItem('user')).pengguna_id} style={{color:'#434343'}}>
+                                <span style={{fontSize:'11px'}}>{JSON.parse(localStorage.getItem('user')).username}</span><br/>
+                              </Link>
+                              
+                            </Col>
+                            <Col width="100">
+                              <br/>
+                              <Row>
+                                <Col width="30" style={{fontSize:'10px'}}>
+                                  <Link href="#" popoverOpen=".popover-menu-poin"><i className="icon f7-icons" style={{fontSize:'12px', color:'#434343'}}>question_circle_fill</i></Link>&nbsp;Poin:<br/>
+                                  <i className="icon f7-icons" style={{fontSize:'13px', color:'#FDDD02'}}>money_dollar_circle_fill</i>&nbsp;<b className="angkaPoin">0</b>
+                                  <div style={{fontSize:'10px'}}>Riwayat Poin</div>
+                                </Col>
+                                <Col width="30" style={{fontSize:'10px'}}>
+                                  Produk Dibeli:<br/>
+                                  <i className="icon f7-icons" style={{fontSize:'13px', color:'#FDDD02'}}>cube_box</i>&nbsp;<b className="angkaPoin">0</b>
+                                  <div style={{fontSize:'10px'}}>Produk</div>
+                                </Col>
+                                <Col width="40" style={{fontSize:'10px'}}>
+                                <Link href="#" popoverOpen=".popover-menu-rata"><i className="icon f7-icons" style={{fontSize:'13px', color:'#434343'}}>question_circle_fill</i></Link>&nbsp;Deposit Wallet<br/>
+                                  Rp <b style={{fontSize:'20px', fontWeight:'bold'}}>0</b>
+                                </Col>
+                              </Row>
+                            </Col>
+                          </Row>
+
+                          <Popover className="popover-menu-rata">
+                            <div style={{margin:'8px'}}>Skor rata-rata adalah skor rata-rata dari total kuis yang telah Kamu ikuti</div>
+                          </Popover>
+                          <Popover className="popover-menu-poin">
+                            <div style={{margin:'8px'}}>Poin adalah poin yang Kamu dapat dari aktivitas kamu di diskuis seperti mengerjakan kuis, membuat kuis, dll</div>
+                          </Popover>
                           {/* <Row>
                             <Col width="0" tabletWidth="0"></Col>
                             <Col width="100" tabletWidth="100">

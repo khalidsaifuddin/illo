@@ -229,6 +229,16 @@ class AnggotaMitra extends Component {
             });
         })
     }
+
+    tambahDownline = (jenis_mitra_id, pengguna_id) => {
+        // alert(jenis_mitra_id + ' - ' + pengguna_id)
+        this.$f7router.navigate('/FormAnggotaMitrabaru/'+(parseInt(jenis_mitra_id)-1)+'/'+pengguna_id)
+    }
+    
+    daftarDownline = (jenis_mitra_id, pengguna_id) => {
+        // alert(jenis_mitra_id + ' - ' + pengguna_id)
+
+    }
     
     render()
     {
@@ -299,19 +309,31 @@ class AnggotaMitra extends Component {
                                     </Col>
                                     <Col width="100" tabletWidth="100" style={{textAlign:'right'}}>
                                         <Button onClick={this.filter} raised style={{display:'inline-flex', marginTop:'-60px', marginRight:'4px'}}>
-                                            <i className="icons f7-icons" style={{fontSize:'20px'}}>arrow_right_arrow_left_square</i>
+                                            <i className="icons f7-icons" style={{fontSize:'20px'}}>arrow_right_arrow_left_square</i>&nbsp;
                                             Filter
                                         </Button>
                                         {/* <Button raised fill style={{display:'inline-flex', marginTop:'-60px'}} onClick={()=>this.tambah(this.$f7route.params['jenis_mitra_id'])}> */}
+                                        {parseInt(this.$f7route.params['jenis_mitra_id']) !== 2 &&
                                         <Button raised fill style={{display:'inline-flex', marginTop:'-60px'}} popoverOpen={".popover-tambah-menu"}>
                                             <i className="f7-icons" style={{fontSize:'20px'}}>plus</i>&nbsp;
                                             Tambah
                                         </Button>
+                                        }
+                                        {parseInt(this.$f7route.params['jenis_mitra_id']) === 2 &&
+                                        <Button raised style={{display:'inline-flex', marginTop:'-60px'}} popoverOpen={".popover-informasi"}>
+                                            <i className="f7-icons" style={{fontSize:'20px'}}>question_circle</i>
+                                        </Button>
+                                        }
                                         <Popover className={"popover-tambah-menu"} style={{minWidth:'320px'}}>
                                             <List>
                                                 <ListItem onClick={()=>this.$f7router.navigate("/FormAnggotaMitraBaru/"+this.$f7route.params['jenis_mitra_id'])} link="#" popoverClose title="Pengguna Existing" />
                                                 <ListItem onClick={()=>this.$f7router.navigate("/FormAnggotaMitra/"+this.$f7route.params['jenis_mitra_id'])} link="#" popoverClose title="Buat Pengguna Baru" />
                                             </List>
+                                        </Popover>
+                                        <Popover className={"popover-informasi"} style={{minWidth:'320px'}}>
+                                            <div style={{margin:'8px'}}>
+                                                Semua pengguna yang terdaftar di aplikasi ini adalah privileged customer bila yang bersangkutan belum terdaftar sebagai reseller, agen, atau distributor
+                                            </div>
                                         </Popover>
                                     </Col>
                                     <Col width="100" tabletWidth="100">
@@ -337,7 +359,7 @@ class AnggotaMitra extends Component {
                                                     <CardContent style={{padding:'8px'}}>
                                                         <Row>
 
-                                                            <Col width="90" tabletWidth="70" desktopWidth="70" style={{display:'inline-flex'}}>
+                                                            <Col width="90" tabletWidth="60" desktopWidth="60" style={{display:'inline-flex'}}>
                                                                 <img src={option.gambar} style={{height:'45px', width:'45px', borderRadius:'50%', marginRight:'0px'}} />
                                                                 <div style={{marginLeft:'16px'}}>
                                                                     
@@ -352,20 +374,46 @@ class AnggotaMitra extends Component {
                                                                             Update Terakhir: {last_update}
                                                                         </div>
                                                                     </div>
-                                                                    <div className="hilangDiDesktop" style={{fontSize:'10px'}}>
-                                                                        Customer Retail
+                                                                    <div className="hilangDiDesktop" style={{fontSize:'10px', borderTop:'1px solid #eee', marginTop:'8px', paddingTop:'4px'}}>
+                                                                        {/* {option.jenis_mitra} */}
+                                                                        <div style={{fontSize:'10px'}}>
+                                                                            {option.induk_mitra &&
+                                                                                <>
+                                                                                Induk {parseInt(option.induk_mitra.jenis_mitra_id) === 5 ? 'Distributor' : 'Agen'} <b>{option.induk_mitra.nama}</b>&nbsp;|&nbsp;
+                                                                                </>
+                                                                            }
+                                                                            <b>{option.jenis_mitra}</b> <b>{parseInt(option.jenis_mitra_id) === 5 ? option.provinsi : (parseInt(option.jenis_mitra_id) === 4 ? option.kabupaten : option.kecamatan)}</b>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </Col>
-                                                            <Col width="0" tabletWidth="20" desktopWidth="20" style={{textAlign:'right'}} className="hilangDiMobile">
-                                                                <div style={{fontSize:'10px'}}>Customer Retail</div>
+                                                            <Col width="0" tabletWidth="30" desktopWidth="30" style={{textAlign:'right'}} className="hilangDiMobile">
+                                                                {/* <div style={{fontSize:'10px'}}>{option.jenis_mitra}</div> */}
+                                                                {option.induk_mitra &&
+                                                                <div style={{fontSize:'10px'}}>
+                                                                    Induk {parseInt(option.induk_mitra.jenis_mitra_id) === 5 ? 'Distributor' : 'Agen'} <b>{option.induk_mitra.nama}</b>
+                                                                </div>
+                                                                }
+                                                                <div style={{fontSize:'10px'}}>
+                                                                    {option.jenis_mitra} wilayah {parseInt(option.jenis_mitra_id) === 5 ? option.provinsi : (parseInt(option.jenis_mitra_id) === 4 ? option.kabupaten : option.kecamatan)}
+                                                                </div>
                                                             </Col>
                                                             <Col width="10" tabletWidth="10" desktopWidth="10" style={{textAlign:'right'}}>
                                                                 <Button popoverOpen={".popover-menu-"+option.pengguna_id}><i className="icons f7-icons">ellipsis_vertical</i></Button>
                                                                 <Popover className={"popover-menu-"+option.pengguna_id} style={{minWidth:'300px'}}>
                                                                     <List>
-                                                                        <ListItem link="#" popoverClose title="Edit" onClick={()=>this.edit(option.jenis_mitra_id, option.pengguna_id)} />
-                                                                        <ListItem link="#" popoverClose title="Nonaktifkan" onClick={()=>this.hapus(option.pengguna_id)} />
+                                                                        {parseInt(option.jenis_mitra_id) === 5 &&
+                                                                        <ListItem link="#" popoverClose title={"Tambah "+(parseInt(option.jenis_mitra_id) === 5 ? "Agen" : (parseInt(option.jenis_mitra_id) === 4 ? "Reseller" : null))} onClick={()=>this.tambahDownline(option.jenis_mitra_id, option.pengguna_id)} />
+                                                                        }
+                                                                        {parseInt(option.jenis_mitra_id) === 5 &&
+                                                                        <ListItem link="#" popoverClose title={"Daftar "+(parseInt(option.jenis_mitra_id) === 5 ? "Agen" : (parseInt(option.jenis_mitra_id) === 4 ? "Reseller" : null))} onClick={()=>this.daftarDownline(option.jenis_mitra_id, option.pengguna_id)} />
+                                                                        }
+                                                                        {parseInt(option.jenis_mitra_id) === 4 &&
+                                                                        <ListItem link="#" popoverClose title={"Tambah "+(parseInt(option.jenis_mitra_id) === 5 ? "Agen" : (parseInt(option.jenis_mitra_id) === 4 ? "Reseller" : null))} onClick={()=>this.tambahDownline(option.jenis_mitra_id, option.pengguna_id)} />
+                                                                        }
+                                                                        {parseInt(option.jenis_mitra_id) === 4 &&
+                                                                        <ListItem link="#" popoverClose title={"Daftar "+(parseInt(option.jenis_mitra_id) === 5 ? "Agen" : (parseInt(option.jenis_mitra_id) === 4 ? "Reseller" : null))} onClick={()=>this.daftarDownline(option.jenis_mitra_id, option.pengguna_id)} />
+                                                                        }
                                                                     </List>
                                                                 </Popover>
                                                             </Col>

@@ -708,7 +708,8 @@ body {
 }
 
 .cardAtas {
-  margin-top:-52px;
+  /* margin-top:-52px; */
+  margin-top:-245px;
   border-radius: 20px;
 }
 
@@ -1025,7 +1026,7 @@ h2 {
 }
 
 .ikutiKuisBeranda {
-  background: url('/static/icons/joy.png');
+  /* background: url('/static/icons/joy.png'); */
   background-size: cover;
   background-position: center;
   border-radius: 20px;

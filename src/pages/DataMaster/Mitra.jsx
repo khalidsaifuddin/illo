@@ -98,7 +98,7 @@ class Mitra extends Component {
                                 <Row noGap>
                                     {this.state.jenis_mitra.rows.map((option)=>{
                                         return (
-                                            <Col width="50">
+                                            <Col width="100" tabletWidth="50">
                                                 <Card style={{marginTop:'4px'}}>
                                                     <CardContent style={{padding:'8px'}}>
                                                         <div className="boxGambar" style={{backgroundImage: 'url('+localStorage.getItem('api_base')+option.gambar+')', backgroundSize: 'cover', backgroundPosition: 'center'}}>&nbsp;</div>
@@ -108,7 +108,7 @@ class Mitra extends Component {
                                                                     {option.nama}
                                                                 </div>
                                                                 <div style={{marginBottom:'12px', fontSize:'12px'}}>
-                                                                    0 anggota
+                                                                    {option.jumlah_anggota} anggota
                                                                 </div>
                                                             </Col>
                                                             <Col width="15">

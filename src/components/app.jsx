@@ -375,6 +375,11 @@ class app extends Component {
                 </ListItem>
                 }
                 {(localStorage.getItem('user') !== null && localStorage.getItem('user') !== '') && (localStorage.getItem('sekolah_id_beranda') === '' || localStorage.getItem('sekolah_id_beranda') === null) &&
+                <ListItem noChevron link="/Penjualan/" view=".view-main" panelClose panel-close title="Transaksi">
+                  <i slot="media" className="f7-icons">money_dollar_circle</i>
+                </ListItem>
+                }
+                {(localStorage.getItem('user') !== null && localStorage.getItem('user') !== '') && (localStorage.getItem('sekolah_id_beranda') === '' || localStorage.getItem('sekolah_id_beranda') === null) &&
                 <ListItem noChevron link="/DaftarTiket/" view=".view-main" panelClose panel-close title="Tiket dan Dukungan">
                   <i slot="media" className="f7-icons">smallcircle_fill_circle_fill</i>
                 </ListItem>

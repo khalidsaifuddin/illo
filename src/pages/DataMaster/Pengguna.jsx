@@ -331,12 +331,12 @@ class Pengguna extends Component {
                                                                         </div>
                                                                     </div>
                                                                     <div className="hilangDiDesktop" style={{fontSize:'10px'}}>
-                                                                        Customer Retail
+                                                                        {option.jenis_mitra}
                                                                     </div>
                                                                 </div>
                                                             </Col>
                                                             <Col width="0" tabletWidth="20" desktopWidth="20" style={{textAlign:'right'}} className="hilangDiMobile">
-                                                                <div style={{fontSize:'10px'}}>Customer Retail</div>
+                                                                <div style={{fontSize:'10px'}}>{option.jenis_mitra}</div>
                                                             </Col>
                                                             <Col width="10" tabletWidth="10" desktopWidth="10" style={{textAlign:'right'}}>
                                                                 <Button popoverOpen={".popover-menu-"+option.pengguna_id}><i className="icons f7-icons">ellipsis_vertical</i></Button>
