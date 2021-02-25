@@ -35,6 +35,8 @@ import io from 'socket.io-client';
 
 import 'framework7-icons';
 
+import localForage from 'localforage';
+
 class app extends Component {
   state = {
     // Framework7 Parameters
@@ -218,6 +220,31 @@ class app extends Component {
 
       }
       // Call F7 APIs here
+      if(parseInt(localStorage.getItem('sudah_login')) === 1){
+
+        this.props.getAnggotaUnit({pengguna_id: JSON.parse(localStorage.getItem('user')).pengguna_id}).then((result)=>{
+          if(result.payload.total > 0){
+            //ada
+            localStorage.setItem('unit_layanan', JSON.stringify(result.payload))
+          }else{
+            //tidak ada
+            localStorage.setItem('unit_layanan', '')
+          }
+        })
+        
+        this.props.getAnggotaMitra({pengguna_id: JSON.parse(localStorage.getItem('user')).pengguna_id}).then((result)=>{
+          if(result.payload.total > 0){
+            //ada
+            localStorage.setItem('mitra', JSON.stringify(result.payload))
+          }else{
+            //tidak ada
+            localStorage.setItem('mitra', '')
+          }
+        })
+
+      }
+
+
     })
 
     // console.log(this);
@@ -343,7 +370,14 @@ class app extends Component {
                   <i slot="media" className="f7-icons">rocket</i>
                 </ListItem>
                 }
-                {(localStorage.getItem('user') !== null && localStorage.getItem('user') !== '') && (localStorage.getItem('sekolah_id_beranda') === '' || localStorage.getItem('sekolah_id_beranda') === null) &&
+                {
+                (localStorage.getItem('user') !== null && 
+                localStorage.getItem('user') !== '') && 
+                (
+                  localStorage.getItem('sekolah_id_beranda') === '' || 
+                  localStorage.getItem('sekolah_id_beranda') === null
+                ) &&
+                parseInt(JSON.parse(localStorage.getItem('user')).a_admin) ===  1 &&
                 <ListItem view=".view-main" accordionItem title="Data Master">
                   <i slot="media" className="f7-icons">cube_box</i>
                   <AccordionContent>
@@ -374,17 +408,36 @@ class app extends Component {
                   </AccordionContent>
                 </ListItem>
                 }
-                {(localStorage.getItem('user') !== null && localStorage.getItem('user') !== '') && (localStorage.getItem('sekolah_id_beranda') === '' || localStorage.getItem('sekolah_id_beranda') === null) &&
-                <ListItem noChevron link="/Penjualan/" view=".view-main" panelClose panel-close title="Transaksi">
+                {
+                (
+                  localStorage.getItem('user') !== null && 
+                  localStorage.getItem('user') !== ''
+                ) && 
+                (
+                  localStorage.getItem('sekolah_id_beranda') === '' || 
+                  localStorage.getItem('sekolah_id_beranda') === null
+                ) &&
+                <ListItem view=".view-main" accordionItem title="Transaksi">
                   <i slot="media" className="f7-icons">money_dollar_circle</i>
+                  <AccordionContent>
+                    <ListItem noChevron link="/Penjualan/" view=".view-main" panelClose panel-close title="Penjualan" className="itemSub">
+                      <i slot="media" className="f7-icons">tray_arrow_up</i>
+                    </ListItem>
+                    <ListItem noChevron link="/Pembelian/" view=".view-main" panelClose panel-close title="Pembelian" className="itemSub">
+                      <i slot="media" className="f7-icons">tray_arrow_down</i>
+                    </ListItem>
+                  </AccordionContent>
                 </ListItem>
+                // <ListItem noChevron link="/Penjualan/" view=".view-main" panelClose panel-close title="Transaksi">
+                //   <i slot="media" className="f7-icons">money_dollar_circle</i>
+                // </ListItem>
                 }
-                {(localStorage.getItem('user') !== null && localStorage.getItem('user') !== '') && (localStorage.getItem('sekolah_id_beranda') === '' || localStorage.getItem('sekolah_id_beranda') === null) &&
+                {localStorage.getItem('unit_layanan') === '' &&
                 <ListItem noChevron link="/DaftarTiket/" view=".view-main" panelClose panel-close title="Tiket dan Dukungan">
                   <i slot="media" className="f7-icons">smallcircle_fill_circle_fill</i>
                 </ListItem>
                 }
-                {(localStorage.getItem('user') !== null && localStorage.getItem('user') !== '') && (localStorage.getItem('sekolah_id_beranda') === '' || localStorage.getItem('sekolah_id_beranda') === null) &&
+                {(((localStorage.getItem('unit_layanan') && localStorage.getItem('unit_layanan') !== '') && parseInt(JSON.parse(localStorage.getItem('unit_layanan')).total) > 0) || parseInt(JSON.parse(localStorage.getItem('user')).a_admin) === 1) &&
                 <ListItem noChevron link="/KelolaTiket/" view=".view-main" panelClose panel-close title="Kelola Tiket">
                   <i slot="media" className="f7-icons">smallcircle_fill_circle</i>
                 </ListItem>
@@ -641,7 +694,9 @@ function mapDispatchToProps(dispatch) {
     setTabActive: Actions.setTabActive,
     getNotifikasi: Actions.getNotifikasi,
     getNotifikasiRedisBelumDibaca: Actions.getNotifikasiRedisBelumDibaca,
-    getDaftarPesan: Actions.getDaftarPesan
+    getDaftarPesan: Actions.getDaftarPesan,
+    getAnggotaUnit: Actions.getAnggotaUnit,
+    getAnggotaMitra: Actions.getAnggotaMitra
   }, dispatch);
 }
 

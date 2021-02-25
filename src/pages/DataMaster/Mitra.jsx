@@ -93,8 +93,8 @@ class Mitra extends Component {
                     <Col width="0" tabletWidth="0" desktopWidth="10"></Col>
                     <Col width="100" tabletWidth="100" desktopWidth="80">
                         
-                        <Card style={{marginBottom:'50px'}}>
-                            <CardContent style={{padding:'8px'}}>
+                        <Card noShadow noBorder style={{marginBottom:'50px', background: 'transparent'}}>
+                            <CardContent style={{padding:'4px'}}>
                                 <Row noGap>
                                     {this.state.jenis_mitra.rows.map((option)=>{
                                         return (

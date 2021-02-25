@@ -239,11 +239,11 @@ class DaftarTiket extends Component {
                 </Popup>
                 
                 <Row noGap>
-                    <Col width="0" tabletWidth="10" desktopWidth="10"></Col>
-                    <Col width="100" tabletWidth="80" desktopWidth="80">
+                    <Col width="0" tabletWidth="0" desktopWidth="10"></Col>
+                    <Col width="100" tabletWidth="100" desktopWidth="80">
                         
-                        <Card>
-                            <CardContent>
+                        <Card noShadow noBorder style={{marginBottom:'50px', background: 'transparent'}}>
+                            <CardContent style={{padding:'4px'}}>
                                 <Row>
                                     <Col width="100" tabletWidth="100">
                                         <Card>
@@ -275,7 +275,7 @@ class DaftarTiket extends Component {
                                         </div>
                                     </Col>
                                     <Col width="100" tabletWidth="100" style={{textAlign:'right'}}>
-                                        <Button raised style={{display:'inline-flex', marginTop:'-60px'}} onClick={this.filter}>
+                                        <Button raised style={{display:'inline-flex', marginTop:'-60px', marginRight:'4px'}} onClick={this.filter}>
                                             <i className="f7-icons" style={{fontSize:'20px'}}>arrow_right_arrow_left_square</i>&nbsp;
                                             Filter
                                         </Button>
@@ -324,13 +324,14 @@ class DaftarTiket extends Component {
                                                 <Card key={option.tiket_id} style={{marginLeft:'0px', marginRight:'0px'}}>
                                                     <CardContent style={{padding:'8px'}}>
                                                         <Row>
-                                                            <Col width="20" tabletWidth="15" desktopWidth="10" style={{textAlign:'center'}}>
+                                                            {/* <Col width="20" tabletWidth="15" desktopWidth="10" style={{textAlign:'center'}}>
                                                                 <img src={option.gambar_pembuat} style={{height:'45px', width:'45px', borderRadius:'50%', marginRight:'0px'}} />
-                                                            </Col>
-                                                            <Col width="80" tabletWidth="85" desktopWidth="90">
-                                                                <Row noGap>
+                                                            </Col> */}
+                                                            <Col width="100" tabletWidth="100" desktopWidth="100" style={{display:'inline-flex'}}>
+                                                                <img src={option.gambar_pembuat} style={{height:'45px', width:'45px', borderRadius:'50%', marginLeft:'4px'}} />
+                                                                <Row noGap style={{width:'100%', marginLeft:'8px'}}>
 
-                                                                    <Col width="90" tabletWidth="60" desktopWidth="65">
+                                                                    <Col width="90" tabletWidth="60" desktopWidth="60">
                                                                         <Link href={"/TampilTiket/"+option.tiket_id}><b>{option.judul}</b></Link>
                                                                         <div style={{fontSize:'10px', marginTop:'8px'}}>
                                                                             {option.pembuat &&
@@ -351,7 +352,7 @@ class DaftarTiket extends Component {
                                                                             {option.status_tiket}
                                                                         </Button>
                                                                     </Col>
-                                                                    <Col width="10" tabletWidth="10" desktopWidth="5" style={{textAlign:'right'}}>
+                                                                    <Col width="10" tabletWidth="10" desktopWidth="10" style={{textAlign:'right'}}>
                                                                         <Button style={{display:'inline-flex'}} popoverOpen={".popover-menu-"+option.tiket_id}><i className="icons f7-icons">ellipsis_vertical</i></Button>
                                                                         <Popover className={"popover-menu-"+option.tiket_id} style={{minWidth:'200px'}}>
                                                                             <List>
@@ -360,7 +361,7 @@ class DaftarTiket extends Component {
                                                                         </Popover>
                                                                     </Col>
                                                                     <Col width="100">
-                                                                        <div className="kotakKontenTiket" style={{fontSize:'10px', width:'100%', overflow:'hidden', marginBottom:'8px', borderTop:'1px solid #eee', borderBottom:'1px solid #eee', marginTop:'4px'}}>
+                                                                        <div className="kotakKontenTiket" style={{fontSize:'10px', width:'100%', overflow:'hidden', marginBottom:'8px', borderTop:'0px solid #eee', borderBottom:'0px solid #eee', marginTop:'4px'}}>
                                                                             {option.konten_strip.substring(0,200)} {option.konten_strip.length > 200 && <span>...</span>}
                                                                         </div>
                                                                         <div style={{fontSize:'10px'}}>
@@ -394,7 +395,7 @@ class DaftarTiket extends Component {
                         </Card>
                     
                     </Col>
-                    <Col width="0" tabletWidth="10" desktopWidth="10"></Col>
+                    <Col width="0" tabletWidth="0" desktopWidth="10"></Col>
                 </Row>
 
             </Page>

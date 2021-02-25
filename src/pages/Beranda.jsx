@@ -873,6 +873,7 @@ class Beranda extends Component {
                         </CardContent>
                       </Card>
 
+                      {parseInt(localStorage.getItem('sudah_login')) == 1 &&
                       <Card className="cardBorder-20 hilangDiDesktop">
                         <CardContent className="cari_kuis ikutiKuisBeranda">
                           <Row>
@@ -892,19 +893,19 @@ class Beranda extends Component {
                               
                             </Col>
                             <Col width="100">
-                              <br/>
-                              <Row>
-                                <Col width="30" style={{fontSize:'10px'}}>
-                                  <Link href="#" popoverOpen=".popover-menu-poin"><i className="icon f7-icons" style={{fontSize:'18px', color:'#434343'}}>question_circle_fill</i></Link>&nbsp;Poin:<br/>
+                              <Row style={{marginTop:'8px'}}>
+                                <Col width="33" style={{fontSize:'10px'}}>
+                                  <Link href="#" popoverOpen=".popover-menu-poin"><i className="icon f7-icons" style={{fontSize:'13px', color:'#434343'}}>question_circle_fill</i></Link>&nbsp;Poin:<br/>
                                   <i className="icon f7-icons" style={{fontSize:'13px', color:'#FDDD02'}}>money_dollar_circle_fill</i>&nbsp;<b className="angkaPoin">0</b>
                                   <div style={{fontSize:'10px'}}>Riwayat Poin</div>
                                 </Col>
-                                <Col width="30" style={{fontSize:'10px'}}>
-                                  Produk Dibeli:<br/>
+                                <Col width="33" style={{fontSize:'10px'}}>
+                                  <Link href="#" popoverOpen=".popover-menu-poin"><i className="icon f7-icons" style={{fontSize:'13px', color:'#434343'}}>question_circle_fill</i></Link>&nbsp;Produk Dibeli:<br/>
+                                  {/* Produk Dibeli:<br/> */}
                                   <i className="icon f7-icons" style={{fontSize:'13px', color:'#FDDD02'}}>cube_box</i>&nbsp;<b className="angkaPoin">0</b>
                                   <div style={{fontSize:'10px'}}>Produk</div>
                                 </Col>
-                                <Col width="40" style={{fontSize:'10px'}}>
+                                <Col width="33" style={{fontSize:'10px'}}>
                                 <Link href="#" popoverOpen=".popover-menu-rata"><i className="icon f7-icons" style={{fontSize:'13px', color:'#434343'}}>question_circle_fill</i></Link>&nbsp;Deposit Wallet<br/>
                                   Rp <b style={{fontSize:'20px', fontWeight:'bold'}}>0</b>
                                 </Col>
@@ -947,6 +948,7 @@ class Beranda extends Component {
                           </Row> */}
                         </CardContent>
                       </Card>
+                      }
                       <AktivitasSosial tipe="publik" />
                     </Col>
                     <Col width="100" tabletWidth="40">
@@ -1015,7 +1017,8 @@ class Beranda extends Component {
                         
                         </CardContent>
                       </Card>
-
+                        
+                      {parseInt(localStorage.getItem('sudah_login')) == 1 &&
                       <Card className="cardBorder-20 hilangDiMobile">
                         <CardContent className="cari_kuis ikutiKuisBeranda" style={{padding:'8px'}}>
                           <Row>
@@ -1037,17 +1040,17 @@ class Beranda extends Component {
                             <Col width="100">
                               <br/>
                               <Row>
-                                <Col width="30" style={{fontSize:'10px'}}>
+                                <Col width="33" style={{fontSize:'10px'}}>
                                   <Link href="#" popoverOpen=".popover-menu-poin"><i className="icon f7-icons" style={{fontSize:'12px', color:'#434343'}}>question_circle_fill</i></Link>&nbsp;Poin:<br/>
                                   <i className="icon f7-icons" style={{fontSize:'13px', color:'#FDDD02'}}>money_dollar_circle_fill</i>&nbsp;<b className="angkaPoin">0</b>
                                   <div style={{fontSize:'10px'}}>Riwayat Poin</div>
                                 </Col>
-                                <Col width="30" style={{fontSize:'10px'}}>
-                                  Produk Dibeli:<br/>
+                                <Col width="33" style={{fontSize:'10px'}}>
+                                  <Link href="#" popoverOpen=".popover-menu-poin"><i className="icon f7-icons" style={{fontSize:'13px', color:'#434343'}}>question_circle_fill</i></Link>&nbsp;Produk Dibeli:<br/>
                                   <i className="icon f7-icons" style={{fontSize:'13px', color:'#FDDD02'}}>cube_box</i>&nbsp;<b className="angkaPoin">0</b>
                                   <div style={{fontSize:'10px'}}>Produk</div>
                                 </Col>
-                                <Col width="40" style={{fontSize:'10px'}}>
+                                <Col width="33" style={{fontSize:'10px'}}>
                                 <Link href="#" popoverOpen=".popover-menu-rata"><i className="icon f7-icons" style={{fontSize:'13px', color:'#434343'}}>question_circle_fill</i></Link>&nbsp;Deposit Wallet<br/>
                                   Rp <b style={{fontSize:'20px', fontWeight:'bold'}}>0</b>
                                 </Col>
@@ -1089,6 +1092,7 @@ class Beranda extends Component {
                           </Row> */}
                         </CardContent>
                       </Card>
+                      }
 
                       <Card className={"cardBorder-20"}>
                         <CardContent>

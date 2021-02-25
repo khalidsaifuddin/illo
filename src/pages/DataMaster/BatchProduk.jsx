@@ -12,16 +12,17 @@ import moment from 'moment';
 
 import localForage from 'localforage';
 
-class Pengguna extends Component {
+class BatchProduk extends Component {
     state = {
         error: null,
         loadingKuis: false,
         loadingPengguna: false,
         routeParams: {
             start:0,
-            limit:20
+            limit:20,
+            produk_id: this.$f7route.params['produk_id']
         },
-        pengguna: {
+        batch: {
             rows: [],
             total: 0
         },
@@ -64,9 +65,9 @@ class Pengguna extends Component {
 
     componentDidMount = () => {
         this.$f7.dialog.preloader('Memuat data...')
-        this.props.getPengguna(this.state.routeParams).then((result)=>{
+        this.props.getBatch(this.state.routeParams).then((result)=>{
             this.setState({
-                pengguna: result.payload
+                batch: result.payload
             },()=>{
                 this.$f7.dialog.close()
             })
@@ -74,23 +75,23 @@ class Pengguna extends Component {
     }
 
     tambah = () => {
-        this.$f7router.navigate("/FormPengguna/")
+        this.$f7router.navigate("/FormBatch/"+this.$f7route.params['produk_id'])
     }
 
-    edit = (pengguna_id) => {
-        this.$f7router.navigate('/FormPengguna/'+pengguna_id)
+    edit = (batch_id) => {
+        this.$f7router.navigate('/FormBatch/'+this.$f7route.params['produk_id']+'/'+batch_id)
     }
 
-    hapus = (pengguna_id) => {
+    hapus = (batch_id) => {
         this.$f7.dialog.confirm('Apakah Anda yakin ingin menghapus data ini?', 'Konfirmasi Hapus',()=>{
             this.$f7.dialog.preloader('Menyimpan...')
-            this.props.simpanPengguna({pengguna_id: pengguna_id, soft_delete:1}).then((result)=>{
+            this.props.simpanBatch({batch_id: batch_id, soft_delete:1}).then((result)=>{
                 this.$f7.dialog.close()
                 if(result.payload.sukses){
 
-                    this.props.getPengguna(this.state.routeParams).then((result)=>{
+                    this.props.getBatch(this.state.routeParams).then((result)=>{
                         this.setState({
-                            pengguna: result.payload
+                            batch: result.payload
                         })
                     })
 
@@ -136,9 +137,9 @@ class Pengguna extends Component {
 
     tampilFilter = () => {
         this.$f7.dialog.preloader()
-        this.props.getPengguna({...this.state.routeParams, start: 0}).then((result)=>{
+        this.props.getBatch(this.state.routeParams).then((result)=>{
             this.setState({
-                pengguna: result.payload,
+                batch: result.payload,
                 popupFilter: !this.state.popupFilter
             },()=>{
                 this.$f7.dialog.close()
@@ -156,9 +157,9 @@ class Pengguna extends Component {
             }
         },()=>{
 
-            this.props.getPengguna(this.state.routeParams).then((result)=>{
+            this.props.getBatch(this.state.routeParams).then((result)=>{
                 this.setState({
-                    pengguna: result.payload,
+                    batch: result.payload,
                     popupFilter: !this.state.popupFilter
                 },()=>{
                     this.$f7.dialog.close()
@@ -168,64 +169,18 @@ class Pengguna extends Component {
         })
 
     }
-
-    klikNext = () => {
-        // alert('tes');
-        this.$f7.dialog.preloader()
-        
-        this.setState({
-            ...this.state,
-            loading: true,
-            routeParams: {
-                ...this.state.routeParams,
-                start: (parseInt(this.state.routeParams.start) + parseInt(this.state.routeParams.limit))
-            }
-        },()=>{
-            this.props.getPengguna(this.state.routeParams).then((result)=>{
-                this.setState({
-                    pengguna: result.payload,
-                    loading: false
-                },()=>{
-                    this.$f7.dialog.close()
-                });
-            });
-        })
-    }
-    
-    klikPrev = () => {
-        // alert('tes');
-        this.$f7.dialog.preloader()
-        
-        this.setState({
-            ...this.state,
-            loading: true,
-            routeParams: {
-                ...this.state.routeParams,
-                start: (parseInt(this.state.routeParams.start) - parseInt(this.state.routeParams.limit))
-            }
-        },()=>{
-            this.props.getPengguna(this.state.routeParams).then((result)=>{
-                this.setState({
-                    pengguna: result.payload,
-                    loading: false
-                },()=>{
-                    this.$f7.dialog.close()
-                });
-            });
-        })
-    }
     
     render()
     {
         return (
-            <Page name="Pengguna" className="halamanJenisTiket" hideBarsOnScroll style={{paddingBottom:'100px', boxSizing:'content-box'}}>
+            <Page name="BatchProduk" className="halamanJenisTiket" hideBarsOnScroll style={{paddingBottom:'100px', boxSizing:'content-box'}}>
                 <Navbar sliding={false} backLink="Kembali" onBackClick={this.backClick}>
-                    <NavTitle sliding>Pengguna</NavTitle>
+                    <NavTitle sliding>Batch Produk</NavTitle>
                 </Navbar>
 
                 <Popup className="demo-popup" opened={this.state.popupFilter} onPopupClosed={() => this.setState({popupFilter : false})}>
                     <Page>
-                        <Navbar title="Filter Pengguna">
+                        <Navbar title="Filter Batch">
                             <NavRight>
                                 <Link popupClose>Tutup</Link>
                             </NavRight>
@@ -234,7 +189,7 @@ class Pengguna extends Component {
                             <List>
                                 <Searchbar
                                     className="searchbar-demo"
-                                    placeholder="Nama Pengguna"
+                                    placeholder="Nama Batch"
                                     searchContainer=".search-list"
                                     searchIn=".item-title"
                                     onChange={this.cariKeyword}
@@ -274,10 +229,10 @@ class Pengguna extends Component {
                                                     <a onClick={this.klikPrev} href="#" className={"link "+(this.state.routeParams.start < 1 ? "disabled" : "" )}>
                                                     <i className="icon icon-prev color-gray"></i>
                                                     </a>
-                                                    <a onClick={this.klikNext} href="#" className={"link "+((parseInt(this.state.routeParams.start)+20) >= parseInt(this.state.pengguna.total) ? "disabled" : "" )}>
+                                                    <a onClick={this.klikNext} href="#" className={"link "+((parseInt(this.state.routeParams.start)+20) >= parseInt(this.state.batch.total) ? "disabled" : "" )}>
                                                         <i className="icon icon-next color-gray"></i>
                                                     </a>
-                                                    <span className="data-table-pagination-label">{(this.state.routeParams.start+1)}-{(this.state.routeParams.start)+parseInt(this.state.routeParams.limit) <= parseInt(this.state.pengguna.total) ? (this.state.routeParams.start)+parseInt(this.state.routeParams.limit) : parseInt(this.state.pengguna.total)} dari {this.formatAngka(this.state.pengguna.total)} Pengguna</span>
+                                                    <span className="data-table-pagination-label">{(this.state.routeParams.start+1)}-{(this.state.routeParams.start)+parseInt(this.state.routeParams.limit) <= parseInt(this.state.batch.total) ? (this.state.routeParams.start)+parseInt(this.state.routeParams.limit) : parseInt(this.state.batch.total)} dari {this.formatAngka(this.state.batch.total)} Batch</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -293,7 +248,7 @@ class Pengguna extends Component {
                                         </Button>
                                     </Col>
                                     <Col width="100" tabletWidth="100">
-                                        {this.state.pengguna.total < 1 &&
+                                        {this.state.batch.total < 1 &&
                                         <div style={{width:'100%', textAlign:'center', marginBottom:'50px'}}>
                                             <img src="./static/icons/189.jpg" style={{width:'60%'}} /> 
                                             <br/>
@@ -301,8 +256,7 @@ class Pengguna extends Component {
                                             Silakan klik tombol tambah diatas untuk membuat data baru   
                                         </div>
                                         }
-                                        <div>
-                                        {this.state.pengguna.rows.map((option)=>{
+                                        {this.state.batch.rows.map((option)=>{
                                             let last_update = '';
                                             last_update = moment(option.last_update).format('D') + ' ' + this.bulan_singkat[(moment(option.last_update).format('M')-1)] + ' ' + moment(option.last_update).format('YYYY') + ', ' + moment(option.last_update).format('H') + ':' + moment(option.last_update).format('mm');
 
@@ -311,119 +265,52 @@ class Pengguna extends Component {
                                             }
 
                                             return (
-                                                <Card key={option.pengguna_id} style={{marginLeft:'0px', marginRight:'0px'}}>
+                                                <Card key={option.batch_id} style={{marginLeft:'0px', marginRight:'0px'}}>
                                                     <CardContent style={{padding:'8px'}}>
                                                         <Row>
-
                                                             <Col width="90" tabletWidth="70" desktopWidth="70" style={{display:'inline-flex'}}>
-                                                                <img src={option.gambar} style={{height:'45px', width:'45px', borderRadius:'50%', marginRight:'0px'}} />
+                                                                {/* <img src={"./static/icons/illo-logo-icon.png"} style={{height:'45px', width:'45px', borderRadius:'50%', marginRight:'0px'}} /> */}
                                                                 <div style={{marginLeft:'16px'}}>
-                                                                    
-                                                                    <Link href={"/tampilPengguna/"+option.pengguna_id}><b>{option.nama}</b></Link>
+                                                                    <b>{option.kode_batch} - {option.nama}</b>
                                                                     <div style={{fontSize:'10px'}}>
-                                                                        {option.username &&
+                                                                        {option.keterangan &&
                                                                         <>
-                                                                        {option.username}
+                                                                        {option.keterangan ? option.keterangan.replace(/(<([^>]+)>)/gi, "") : ''}
+                                                                        {/* &nbsp;&bull;&nbsp; */}
                                                                         </>
                                                                         }
                                                                         <div style={{fontSize:'10px'}}>
                                                                             Update Terakhir: {last_update}
                                                                         </div>
-                                                                    </div>
-                                                                    <div className="hilangDiDesktop" style={{fontSize:'10px'}}>
-                                                                        {option.jenis_mitra}
+                                                                        {option.stok &&
+                                                                        <div className="hilangDiDesktop" style={{fontSize:'12px'}}>
+                                                                            Jumlah Stok: {option.stok}
+                                                                        </div>
+                                                                        }
                                                                     </div>
                                                                 </div>
                                                             </Col>
                                                             <Col width="0" tabletWidth="20" desktopWidth="20" style={{textAlign:'right'}} className="hilangDiMobile">
-                                                                <div style={{fontSize:'10px'}}>{option.jenis_mitra}</div>
+                                                                {option.stok &&
+                                                                <div style={{fontSize:'12px'}}>
+                                                                    Jumlah Stok: {option.stok}
+                                                                </div>
+                                                                }
                                                             </Col>
                                                             <Col width="10" tabletWidth="10" desktopWidth="10" style={{textAlign:'right'}}>
-                                                                <Button popoverOpen={".popover-menu-"+option.pengguna_id}><i className="icons f7-icons">ellipsis_vertical</i></Button>
-                                                                <Popover className={"popover-menu-"+option.pengguna_id} style={{minWidth:'300px'}}>
+                                                                <Button popoverOpen={".popover-menu-"+option.batch_id}><i className="icons f7-icons">ellipsis_vertical</i></Button>
+                                                                <Popover className={"popover-menu-"+option.batch_id} style={{minWidth:'300px'}}>
                                                                     <List>
-                                                                        <ListItem link="#" popoverClose title="Edit" onClick={()=>this.edit(option.pengguna_id)} />
-                                                                        <ListItem link="#" popoverClose title="Nonaktifkan" onClick={()=>this.hapus(option.pengguna_id)} />
+                                                                        <ListItem link="#" popoverClose title="Edit" onClick={()=>this.edit(option.batch_id)} />
+                                                                        <ListItem link="#" popoverClose title="Hapus" onClick={()=>this.hapus(option.batch_id)} />
                                                                     </List>
                                                                 </Popover>
                                                             </Col>
                                                         </Row>
                                                     </CardContent>
                                                 </Card>
-                                                // <Card key={option.pengguna_id} className="boxProduk">
-                                                //     <CardContent style={{padding:'8px'}}>
-                                                //         <div className="gambarProduk" style={{
-                                                //             backgroundImage:'url('+localStorage.getItem('api_base')+(option.gambar.length > 0 ? option.gambar : '/assets/berkas/3577232-1.jpg')+')', 
-                                                //             backgroundSize:'cover',
-                                                //             backgroundPosition:'center'
-                                                //         }}>&nbsp;</div>
-                                                //         <Row noGap>
-                                                //             <Col width="85">
-                                                //                 <div className="namaProduk">
-                                                //                     {option.nama}
-                                                //                 </div>
-                                                //             </Col>
-                                                //             <Col width="15">
-                                                //                 <Button popoverOpen={".popover-menu-"+option.pengguna_id}><i className="icons f7-icons" style={{fontSize:'18px', display:'inline-flex', textAlign:'right'}}>ellipsis_vertical</i></Button>
-                                                //                 <Popover className={"popover-menu-"+option.pengguna_id} style={{minWidth:'150px'}}>
-                                                //                     <List>
-                                                //                         <ListItem link="#" popoverClose title="Edit" onClick={()=>this.edit(option.pengguna_id)} />
-                                                //                         <ListItem link="#" popoverClose title="Hapus" onClick={()=>this.hapus(option.pengguna_id)} />
-                                                //                     </List>
-                                                //                 </Popover>
-                                                //             </Col>
-                                                //         </Row>
-                                                //     </CardContent>
-                                                // </Card>
                                             )
-
-                                            // return (
-                                            //     <Card key={option.pengguna_id} style={{marginLeft:'0px', marginRight:'0px'}}>
-                                            //         <CardContent style={{padding:'8px'}}>
-                                            //             <Row>
-                                            //                 <Col width="15" tabletWidth="15" desktopWidth="10" style={{textAlign:'center'}}>
-                                            //                     <img src={"./static/icons/illo-logo-icon.png"} style={{height:'45px', width:'45px', borderRadius:'50%', marginRight:'0px'}} />
-                                            //                 </Col>
-                                            //                 <Col width="65" tabletWidth="55" desktopWidth="60">
-                                            //                     <b>{option.nama}</b>
-                                            //                     <div style={{fontSize:'10px'}}>
-                                            //                         {option.keterangan &&
-                                            //                         <>
-                                            //                         {option.keterangan}
-                                            //                         </>
-                                            //                         }
-                                            //                         <div style={{fontSize:'10px'}}>
-                                            //                             Update Terakhir: {last_update}
-                                            //                         </div>
-                                            //                         {option.jumlah_produk &&
-                                            //                         <div className="hilangDiDesktop" style={{fontSize:'10px'}}>
-                                            //                         {option.jumlah_produk}
-                                            //                         </div>
-                                            //                         }
-                                            //                     </div>
-                                            //                 </Col>
-                                            //                 <Col width="0" tabletWidth="20" desktopWidth="20" style={{textAlign:'right'}} className="hilangDiMobile">
-                                            //                     {option.jumlah_produk &&
-                                            //                     <div style={{fontSize:'10px'}}>
-                                            //                     {option.jumlah_produk}
-                                            //                     </div>
-                                            //                     }
-                                            //                 </Col>
-                                            //                 <Col width="10" tabletWidth="10" desktopWidth="10" style={{textAlign:'right'}}>
-                                            //                     <Button popoverOpen={".popover-menu-"+option.pengguna_id}><i className="icons f7-icons">ellipsis_vertical</i></Button>
-                                            //                     <Popover className={"popover-menu-"+option.pengguna_id} style={{minWidth:'300px'}}>
-                                            //                         <List>
-                                            //                             <ListItem link="#" popoverClose title="Edit" onClick={()=>this.edit(option.pengguna_id)} />
-                                            //                             <ListItem link="#" popoverClose title="Hapus" onClick={()=>this.hapus(option.pengguna_id)} />
-                                            //                         </List>
-                                            //                     </Popover>
-                                            //                 </Col>
-                                            //             </Row>
-                                            //         </CardContent>
-                                            //     </Card>
-                                            // )
                                         })}
-                                        </div>
                                     </Col>
                                 </Row>
                             </CardContent>
@@ -442,8 +329,8 @@ function mapDispatchToProps(dispatch) {
     return bindActionCreators({
       updateWindowDimension: Actions.updateWindowDimension,
       setLoading: Actions.setLoading,
-      getPengguna: Actions.getPengguna,
-      simpanPengguna: Actions.simpanPengguna,
+      getBatch: Actions.getBatch,
+      simpanBatch: Actions.simpanBatch,
       generateUUID: Actions.generateUUID
     }, dispatch);
 }
@@ -455,5 +342,5 @@ function mapStateToProps({ App, Pertanyaan, Kuis }) {
     }
 }
 
-export default (connect(mapStateToProps, mapDispatchToProps)(Pengguna));
+export default (connect(mapStateToProps, mapDispatchToProps)(BatchProduk));
   

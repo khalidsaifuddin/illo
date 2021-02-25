@@ -12,6 +12,77 @@ import moment from 'moment';
 
 import localForage from 'localforage';
 
+class CardKanban extends Component {
+    render () {
+        return (
+            <Card key={this.props.option.tiket_id} style={{marginLeft:'0px', marginRight:'0px'}}>
+                <CardContent style={{padding:'8px'}}>
+                    <Row>
+                        <Col width="100" tabletWidth="100" desktopWidth="100" style={{display:'inline-flex'}}>
+                            <img src={this.props.option.gambar_pembuat} style={{height:'45px', width:'45px', borderRadius:'50%', marginLeft:'4px'}} />
+                            <Row noGap style={{width:'100%', marginLeft:'8px'}}>
+
+                                <Col width="80" tabletWidth="80" desktopWidth="80">
+                                    <Link href={"/TampilTiket/"+this.props.option.tiket_id}><b>{this.props.option.judul}</b></Link>
+                                    <div style={{fontSize:'10px', marginTop:'8px'}}>
+                                        {this.props.option.pembuat &&
+                                        <>
+                                        Oleh <b>{this.props.option.pembuat}</b>&nbsp;&bull;&nbsp;
+                                        </>
+                                        }
+                                        {this.props.last_update}
+                                    </div>
+                                </Col>
+                                <Col width="20" tabletWidth="20" desktopWidth="20" style={{textAlign:'right'}}>
+                                    <Button style={{display:'inline-flex'}} popoverOpen={".popover-menu-"+this.props.option.tiket_id}><i className="icons f7-icons">ellipsis_vertical</i></Button>
+                                    <Popover className={"popover-menu-"+this.props.option.tiket_id} style={{minWidth:'200px'}}>
+                                        <List>
+                                            <ListItem link="#" popoverClose title="Rincian" onClick={()=>this.edit(this.props.option.tiket_id)} />
+                                            <ListItem link="#" popoverClose title="Ubah Status" onClick={()=>this.ubahStatus(this.props.option.tiket_id)} />
+                                        </List>
+                                    </Popover>
+                                </Col>
+                                <Col width="100">
+                                    <div className="kotakKontenTiket" style={{fontSize:'10px', width:'100%', overflow:'hidden', marginBottom:'8px', borderTop:'0px solid #eee', borderBottom:'0px solid #eee', marginTop:'4px'}}>
+                                        {this.props.option.konten_strip.substring(0,200)} {this.props.option.konten_strip.length > 200 && <span>...</span>}
+                                    </div>
+                                    <div style={{fontSize:'10px'}}>
+                                        {this.props.option.keterangan &&
+                                        <>
+                                        {this.props.option.keterangan}&nbsp;&bull;&nbsp;
+                                        </>
+                                        }
+                                    </div>
+                                </Col>
+                                <Col width="100" style={{textAlign:'right'}}>
+                                    <Button className={"color-theme-"+this.props.warna_prioritas} raised fill small style={{display:'inline-flex', fontSize:'8px', padding:'4px', height:'17px', marginBottom:'4px'}}>
+                                        <i className='f7-icons' style={{fontSize:'12px'}}>speedometer</i>&nbsp;
+                                        {this.props.option.prioritas_tiket}
+                                    </Button>
+                                    <Button className={"color-theme-"+(parseInt(this.props.option.status_tiket_id) === 2 ? 'teal' : 'gray')} raised fill small style={{display:'inline-flex', fontSize:'8px', padding:'4px', height:'17px', marginLeft:'4px', marginBottom:'4px'}}>
+                                        <i className='f7-icons' style={{fontSize:'12px'}}>ticket</i>&nbsp;
+                                        {this.props.option.status_tiket}
+                                    </Button>
+                                </Col>
+                                <Col width="100" className="hilangDiDesktop">
+                                    <Button className={"color-theme-"+this.props.warna_prioritas} raised fill small style={{display:'inline-flex', fontSize:'10px', padding:'4px', height:'20px', marginBottom:'4px'}}>
+                                        <i className='f7-icons' style={{fontSize:'15px'}}>speedometer</i>&nbsp;
+                                        {this.props.option.prioritas_tiket}
+                                    </Button>
+                                    <Button className={"color-theme-"+(parseInt(this.props.option.status_tiket_id) === 2 ? 'teal' : 'gray')} raised fill small style={{display:'inline-flex', fontSize:'10px', padding:'4px', height:'20px', marginLeft:'4px', marginBottom:'4px'}}>
+                                        <i className='f7-icons' style={{fontSize:'15px'}}>ticket</i>&nbsp;
+                                        {this.props.option.status_tiket}
+                                    </Button>
+                                </Col>
+                            </Row>
+                        </Col>
+                    </Row>
+                </CardContent>
+            </Card>
+        )
+    }
+}
+
 class DaftarTiket extends Component {
     state = {
         error: null,
@@ -30,6 +101,7 @@ class DaftarTiket extends Component {
             total: 0
         },
         popupFilter: false,
+        popupTampilan: false,
         status_tiket: {
             rows: [],
             total: 0
@@ -37,6 +109,25 @@ class DaftarTiket extends Component {
         prioritas_tiket: {
             rows: [],
             total: 0
+        },
+        tampilan: 'kanban',
+        tiket_kanban: {
+            1:{
+                rows: [],
+                total: 0
+            },
+            2:{
+                rows: [],
+                total: 0
+            },
+            3:{
+                rows: [],
+                total: 0
+            },
+            4:{
+                rows: [],
+                total: 0
+            }
         }
     }
 
@@ -75,23 +166,58 @@ class DaftarTiket extends Component {
     }
 
     componentDidMount = () => {
-        this.props.getTiket(this.state.routeParams).then((result)=>{
-            this.setState({
-                tiket: result.payload
-            },()=>{
-                this.props.getStatusTiket(this.state.routeParams).then((result)=>{
-                    this.setState({
-                        status_tiket: result.payload
-                    },()=>{
-                        this.props.getPrioritasTiket(this.state.routeParams).then((result)=>{
-                            this.setState({
-                                prioritas_tiket: result.payload
+
+        if(this.state.tampilan === 'list'){
+            
+            this.props.getTiket({...this.state.routeParams, limit: 20, status_tiket_id: null}).then((result)=>{
+                this.setState({
+                    tiket: result.payload
+                },()=>{
+                    this.props.getStatusTiket(this.state.routeParams).then((result)=>{
+                        this.setState({
+                            status_tiket: result.payload
+                        },()=>{
+                            this.props.getPrioritasTiket(this.state.routeParams).then((result)=>{
+                                this.setState({
+                                    prioritas_tiket: result.payload
+                                })
                             })
                         })
                     })
                 })
             })
-        })
+
+        }else{
+            this.props.getStatusTiket({...this.state.routeParams}).then((result)=>{
+                this.setState({
+                    status_tiket: result.payload
+                },()=>{
+
+                    this.state.status_tiket.rows.map((option)=>{
+                        this.props.getTiket({...this.state.routeParams, status_tiket_id: option.status_tiket_id}).then((result)=>{
+                            this.setState({
+                                tiket_kanban: {
+                                    ...this.state.tiket_kanban,
+                                    [option.status_tiket_id]: result.payload
+                                }
+                            })
+                        })
+                    })
+
+                    setTimeout(() => {
+                        console.log(this.state)
+
+                        this.props.getPrioritasTiket(this.state.routeParams).then((result)=>{
+                            this.setState({
+                                prioritas_tiket: result.payload
+                            })
+                        })
+                    }, 3000);
+
+                })
+            })
+        }
+
     }
 
     tambah = () => {
@@ -104,6 +230,10 @@ class DaftarTiket extends Component {
 
     filter = () => {
         this.setState({popupFilter:!this.state.popupFilter})
+    }
+    
+    tampilan = () => {
+        this.setState({popupTampilan:!this.state.popupTampilan})
     }
 
     tampilFilter = () => {
@@ -164,14 +294,59 @@ class DaftarTiket extends Component {
             console.log(this.state)
         })
     }
+
+    ubahTampilan = (tipe) => {
+        this.setState({
+            tampilan:tipe, 
+            popupTampilan:false
+        },()=>{
+            this.componentDidMount()
+        })
+    }
     
     render()
     {
         return (
-            <Page name="DaftarTiket" hideBarsOnScroll style={{paddingBottom:'100px', boxSizing:'content-box'}}>
+            <Page className="kelolaTiket" name="DaftarTiket" hideBarsOnScroll style={{paddingBottom:'100px', boxSizing:'content-box'}}>
                 <Navbar sliding={false} backLink="Kembali" onBackClick={this.backClick}>
                     <NavTitle sliding>Daftar Tiket</NavTitle>
                 </Navbar>
+
+                <Popup className="demo-popup" opened={this.state.popupTampilan} onPopupClosed={() => this.setState({popupTampilan : false})}>
+                    <Page>
+                        <Navbar title="Pengaturan Tampilan">
+                            <NavRight>
+                                <Link popupClose>Tutup</Link>
+                            </NavRight>
+                        </Navbar>
+                        <Block style={{marginTop:'0px', paddingLeft:'0px', paddingRight:'0px'}}>
+                            <Row noGap>
+                                <Col width="50" style={{textAlign:'right'}}>
+                                    <Link onClick={()=>this.ubahTampilan('kanban')}>
+                                        <Card>
+                                            <CardContent style={{textAlign:'center'}}>
+                                                <img src="./static/icons/kanban.png" style={{height:'100px'}} />
+                                                <br/>
+                                                <BlockTitle className="blocktitle_netral">Kanban</BlockTitle>
+                                            </CardContent>
+                                        </Card>
+                                    </Link>
+                                </Col>
+                                <Col width="50">
+                                    <Link onClick={()=>this.ubahTampilan('list')}>
+                                        <Card>
+                                            <CardContent style={{textAlign:'center'}}>
+                                                <img src="./static/icons/list.png" style={{height:'100px'}} />
+                                                <br/>
+                                                <BlockTitle className="blocktitle_netral">Daftar</BlockTitle>
+                                            </CardContent>
+                                        </Card>
+                                    </Link>
+                                </Col>
+                            </Row>
+                        </Block>
+                    </Page>
+                </Popup>
 
                 <Popup className="demo-popup" opened={this.state.popupFilter} onPopupClosed={() => this.setState({popupFilter : false})}>
                     <Page>
@@ -238,13 +413,13 @@ class DaftarTiket extends Component {
                         </Block>
                     </Page>
                 </Popup>
-                
+                {this.state.tampilan === 'list' &&
                 <Row noGap>
-                    <Col width="0" tabletWidth="10" desktopWidth="10"></Col>
-                    <Col width="100" tabletWidth="80" desktopWidth="80">
+                    <Col width="0" tabletWidth="0" desktopWidth="10"></Col>
+                    <Col width="100" tabletWidth="100" desktopWidth="80">
                         
-                        <Card>
-                            <CardContent>
+                        <Card noShadow noBorder style={{marginBottom:'50px', background: 'transparent'}}>
+                            <CardContent style={{padding:'4px'}}>
                                 <Row>
                                     {/* <Col width="100" tabletWidth="100">
                                         <Card>
@@ -276,6 +451,10 @@ class DaftarTiket extends Component {
                                         </div>
                                     </Col>
                                     <Col width="100" tabletWidth="100" style={{textAlign:'right'}}>
+                                        <Button style={{display:'inline-flex', marginTop:'-60px', marginRight:'4px'}} onClick={this.tampilan}>
+                                            <i className="f7-icons" style={{fontSize:'20px'}}>rectangle_grid_1x2</i>&nbsp;
+                                            Tampilan
+                                        </Button>
                                         <Button style={{display:'inline-flex', marginTop:'-60px'}} onClick={this.filter}>
                                             <i className="f7-icons" style={{fontSize:'20px'}}>arrow_right_arrow_left_square</i>&nbsp;
                                             Filter
@@ -321,11 +500,11 @@ class DaftarTiket extends Component {
                                                 <Card key={option.tiket_id} style={{marginLeft:'0px', marginRight:'0px'}}>
                                                     <CardContent style={{padding:'8px'}}>
                                                         <Row>
-                                                            <Col width="20" tabletWidth="15" desktopWidth="10" style={{textAlign:'center'}}>
-                                                                <img src={option.gambar_pembuat} style={{height:'45px', width:'45px', borderRadius:'50%', marginRight:'0px'}} />
-                                                            </Col>
-                                                            <Col width="80" tabletWidth="85" desktopWidth="90">
-                                                                <Row noGap>
+                                                            {/* <Col width="20" tabletWidth="15" desktopWidth="10" style={{textAlign:'center'}}> */}
+                                                            {/* </Col> */}
+                                                            <Col width="100" tabletWidth="100" desktopWidth="100" style={{display:'inline-flex'}}>
+                                                                <img src={option.gambar_pembuat} style={{height:'45px', width:'45px', borderRadius:'50%', marginLeft:'4px'}} />
+                                                                <Row noGap style={{width:'100%', marginLeft:'8px'}}>
 
                                                                     <Col width="90" tabletWidth="60" desktopWidth="65">
                                                                         <Link href={"/TampilTiket/"+option.tiket_id}><b>{option.judul}</b></Link>
@@ -357,7 +536,7 @@ class DaftarTiket extends Component {
                                                                         </Popover>
                                                                     </Col>
                                                                     <Col width="100">
-                                                                        <div className="kotakKontenTiket" style={{fontSize:'10px', width:'100%', overflow:'hidden', marginBottom:'8px', borderTop:'1px solid #eee', borderBottom:'1px solid #eee', marginTop:'4px'}}>
+                                                                        <div className="kotakKontenTiket" style={{fontSize:'10px', width:'100%', overflow:'hidden', marginBottom:'8px', borderTop:'0px solid #eee', borderBottom:'0px solid #eee', marginTop:'4px'}}>
                                                                             {option.konten_strip.substring(0,200)} {option.konten_strip.length > 200 && <span>...</span>}
                                                                         </div>
                                                                         <div style={{fontSize:'10px'}}>
@@ -391,9 +570,226 @@ class DaftarTiket extends Component {
                         </Card>
                     
                     </Col>
-                    <Col width="0" tabletWidth="10" desktopWidth="10"></Col>
+                    <Col width="0" tabletWidth="0" desktopWidth="10"></Col>
                 </Row>
+                }
+                {this.state.tampilan === 'kanban' &&
+                <Row>
+                    <Col width="100">
+                        <Card>
+                            <CardContent style={{padding:'4px'}}>
+                                <Row>
+                                    <Col width="100" tabletWidth="100" style={{textAlign:'right'}}>
+                                        <Button style={{display:'inline-flex', marginRight:'4px'}} onClick={this.tampilan}>
+                                            <i className="f7-icons" style={{fontSize:'20px'}}>rectangle_grid_1x2</i>&nbsp;
+                                            Tampilan
+                                        </Button>
+                                        <Button style={{display:'inline-flex'}} onClick={this.filter}>
+                                            <i className="f7-icons" style={{fontSize:'20px'}}>arrow_right_arrow_left_square</i>&nbsp;
+                                            Filter
+                                        </Button>
+                                    </Col>
+                                </Row>
+                            </CardContent>
+                        </Card>
+                        <Card noShadow noBorder style={{marginBottom:'50px', background: 'transparent'}}>
+                            <CardContent style={{padding:'4px', display:'inline-flex', width:'100%', overflow:'scroll', minHeight:'700px'}}>  
 
+                                <Card className="kotakKanban">
+                                    <CardHeader style={{fontWeight:'bold'}}>
+                                        Open
+                                    </CardHeader>
+                                    {/* <CardKanban testing="ini isinya" /> */}
+                                    <CardContent className="isiKanban">
+                                        {this.state.tiket_kanban[1].total < 1 &&
+                                        <div className="aktivitasKosong" style={{minHeight:'50px'}}>
+                                            Belum ada data
+                                        </div>
+                                        }
+                                        {this.state.tiket_kanban[1].rows.map((option)=>{
+                                            let last_update = '';
+                                            let warna_prioritas = 'blue'
+
+                                            last_update = moment(option.last_update).format('D') + ' ' + this.bulan_singkat[(moment(option.last_update).format('M')-1)] + ' ' + moment(option.last_update).format('YYYY') + ', ' + moment(option.last_update).format('H') + ':' + moment(option.last_update).format('mm');
+
+                                            if(moment(option.last_update).format('D') + ' ' + this.bulan_singkat[(moment(option.last_update).format('M')-1)] + ' ' + moment(option.last_update).format('YYYY') === moment().format('D') + ' ' + this.bulan_singkat[(moment().format('M')-1)] + ' ' + moment().format('YYYY')){
+                                                last_update = 'Hari ini, ' + moment(option.last_update).format('H') + ':' + moment(option.last_update).format('mm');
+                                            }
+
+                                            switch (parseInt(option.prioritas_tiket_id)) {
+                                                case 1:
+                                                    warna_prioritas = 'black'
+                                                    break;
+                                                case 2:
+                                                    warna_prioritas = 'red'
+                                                    break;
+                                                case 3:
+                                                    warna_prioritas = 'deeporange'
+                                                    break;
+                                                case 4:
+                                                    warna_prioritas = 'yellow'
+                                                    break;
+                                                default:
+                                                    break;
+                                            }
+
+                                            if(parseInt(option.status_tiket_id) === 1){
+
+                                                return (
+                                                    <CardKanban option={option} warna_prioritas={warna_prioritas} last_update={last_update} />
+                                                )
+                                            }
+                                        })}
+                                    </CardContent>
+                                </Card>
+                                <Card className="kotakKanban">
+                                    <CardHeader style={{fontWeight:'bold'}}>
+                                        Dalam Penanganan
+                                    </CardHeader>
+                                    <CardContent className="isiKanban">
+                                        {this.state.tiket_kanban[4].total < 1 &&
+                                        <div className="aktivitasKosong" style={{minHeight:'50px'}}>
+                                            Belum ada data
+                                        </div>
+                                        }
+                                        {this.state.tiket_kanban[4].rows.map((option)=>{
+                                            let last_update = '';
+                                            let warna_prioritas = 'blue'
+
+                                            last_update = moment(option.last_update).format('D') + ' ' + this.bulan_singkat[(moment(option.last_update).format('M')-1)] + ' ' + moment(option.last_update).format('YYYY') + ', ' + moment(option.last_update).format('H') + ':' + moment(option.last_update).format('mm');
+
+                                            if(moment(option.last_update).format('D') + ' ' + this.bulan_singkat[(moment(option.last_update).format('M')-1)] + ' ' + moment(option.last_update).format('YYYY') === moment().format('D') + ' ' + this.bulan_singkat[(moment().format('M')-1)] + ' ' + moment().format('YYYY')){
+                                                last_update = 'Hari ini, ' + moment(option.last_update).format('H') + ':' + moment(option.last_update).format('mm');
+                                            }
+
+                                            switch (parseInt(option.prioritas_tiket_id)) {
+                                                case 1:
+                                                    warna_prioritas = 'black'
+                                                    break;
+                                                case 2:
+                                                    warna_prioritas = 'red'
+                                                    break;
+                                                case 3:
+                                                    warna_prioritas = 'deeporange'
+                                                    break;
+                                                case 4:
+                                                    warna_prioritas = 'yellow'
+                                                    break;
+                                                default:
+                                                    break;
+                                            }
+
+                                            if(parseInt(option.status_tiket_id) === 4){
+
+                                                return (
+                                                    <CardKanban option={option} warna_prioritas={warna_prioritas} last_update={last_update} />
+                                                )
+                                            }
+                                        })}
+                                    </CardContent>
+                                </Card>
+                                <Card className="kotakKanban">
+                                    <CardHeader style={{fontWeight:'bold'}}>
+                                        Solved
+                                    </CardHeader>
+                                    <CardContent className="isiKanban">
+                                        {this.state.tiket_kanban[2].total < 1 &&
+                                        <div className="aktivitasKosong" style={{minHeight:'50px'}}>
+                                            Belum ada data
+                                        </div>
+                                        }
+                                        {this.state.tiket_kanban[2].rows.map((option)=>{
+                                            let last_update = '';
+                                            let warna_prioritas = 'blue'
+
+                                            last_update = moment(option.last_update).format('D') + ' ' + this.bulan_singkat[(moment(option.last_update).format('M')-1)] + ' ' + moment(option.last_update).format('YYYY') + ', ' + moment(option.last_update).format('H') + ':' + moment(option.last_update).format('mm');
+
+                                            if(moment(option.last_update).format('D') + ' ' + this.bulan_singkat[(moment(option.last_update).format('M')-1)] + ' ' + moment(option.last_update).format('YYYY') === moment().format('D') + ' ' + this.bulan_singkat[(moment().format('M')-1)] + ' ' + moment().format('YYYY')){
+                                                last_update = 'Hari ini, ' + moment(option.last_update).format('H') + ':' + moment(option.last_update).format('mm');
+                                            }
+
+                                            switch (parseInt(option.prioritas_tiket_id)) {
+                                                case 1:
+                                                    warna_prioritas = 'black'
+                                                    break;
+                                                case 2:
+                                                    warna_prioritas = 'red'
+                                                    break;
+                                                case 3:
+                                                    warna_prioritas = 'deeporange'
+                                                    break;
+                                                case 4:
+                                                    warna_prioritas = 'yellow'
+                                                    break;
+                                                default:
+                                                    break;
+                                            }
+
+                                            if(parseInt(option.status_tiket_id) === 2){
+
+                                                return (
+                                                    <CardKanban option={option} warna_prioritas={warna_prioritas} last_update={last_update} />
+                                                )
+                                            }
+                                        })}
+                                    </CardContent>
+                                </Card>
+                                <Card className="kotakKanban">
+                                    <CardHeader style={{fontWeight:'bold'}}>
+                                        Pending
+                                    </CardHeader>
+                                    <CardContent className="isiKanban">
+                                        {this.state.tiket_kanban[3].total < 1 &&
+                                        <div className="aktivitasKosong" style={{minHeight:'50px'}}>
+                                            Belum ada data
+                                        </div>
+                                        }
+                                        {this.state.tiket_kanban[3].rows.map((option)=>{
+                                            let last_update = '';
+                                            let warna_prioritas = 'blue'
+
+                                            last_update = moment(option.last_update).format('D') + ' ' + this.bulan_singkat[(moment(option.last_update).format('M')-1)] + ' ' + moment(option.last_update).format('YYYY') + ', ' + moment(option.last_update).format('H') + ':' + moment(option.last_update).format('mm');
+
+                                            if(moment(option.last_update).format('D') + ' ' + this.bulan_singkat[(moment(option.last_update).format('M')-1)] + ' ' + moment(option.last_update).format('YYYY') === moment().format('D') + ' ' + this.bulan_singkat[(moment().format('M')-1)] + ' ' + moment().format('YYYY')){
+                                                last_update = 'Hari ini, ' + moment(option.last_update).format('H') + ':' + moment(option.last_update).format('mm');
+                                            }
+
+                                            switch (parseInt(option.prioritas_tiket_id)) {
+                                                case 1:
+                                                    warna_prioritas = 'black'
+                                                    break;
+                                                case 2:
+                                                    warna_prioritas = 'red'
+                                                    break;
+                                                case 3:
+                                                    warna_prioritas = 'deeporange'
+                                                    break;
+                                                case 4:
+                                                    warna_prioritas = 'yellow'
+                                                    break;
+                                                default:
+                                                    break;
+                                            }
+
+                                            if(parseInt(option.status_tiket_id) === 3){
+
+                                                return (
+                                                    <CardKanban option={option} warna_prioritas={warna_prioritas} last_update={last_update} />
+                                                )
+                                            }
+                                        })}
+                                    </CardContent>
+                                </Card>
+                                <Card noShadow noBorder style={{marginBottom:'50px', background: 'transparent', maxWidth:'0px'}}>
+                                    <CardContent style={{padding:'4px', display:'inline-flex', width:'100%', overflow:'scroll'}}>  
+                                        &nbsp;
+                                    </CardContent>
+                                </Card>
+                            </CardContent>
+                        </Card>
+                    </Col>
+                </Row>
+                }
             </Page>
         )
     }

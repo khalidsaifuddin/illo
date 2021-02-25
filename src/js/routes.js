@@ -57,6 +57,8 @@ import AnggotaMitra from '../pages/DataMaster/AnggotaMitra';
 import FormAnggotaMitraBaru from '../pages/DataMaster/FormAnggotaMitraBaru';
 import FormAnggotaMitra from '../pages/DataMaster/FormAnggotaMitra';
 import Penjualan from '../pages/Penjualan/Penjualan';
+import BatchProduk from '../pages/DataMaster/BatchProduk';
+import FormBatch from '../pages/DataMaster/FormBatch';
 
 // console.log(localStorage.getItem('kode_aplikasi'));
 
@@ -200,6 +202,18 @@ var routes = [
   {
     path: '/pengaturanPengguna/:pengguna_id/:sekolah_id',
     component: pengaturanPengguna,
+  },
+  {
+    path: '/BatchProduk/:produk_id',
+    component: BatchProduk,
+  },
+  {
+    path: '/FormBatch/:produk_id',
+    component: FormBatch,
+  },
+  {
+    path: '/FormBatch/:produk_id/:batch_id',
+    component: FormBatch,
   },
   {
     path: '/Mitra/',

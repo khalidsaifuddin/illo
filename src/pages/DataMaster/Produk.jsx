@@ -80,6 +80,10 @@ class Produk extends Component {
     edit = (produk_id) => {
         this.$f7router.navigate('/FormProduk/'+produk_id)
     }
+    
+    batch = (produk_id) => {
+        this.$f7router.navigate('/BatchProduk/'+produk_id)
+    }
 
     hapus = (produk_id) => {
         this.$f7.dialog.confirm('Apakah Anda yakin ingin menghapus data ini?', 'Konfirmasi Hapus',()=>{
@@ -224,8 +228,8 @@ class Produk extends Component {
                     <Col width="0" tabletWidth="0" desktopWidth="10"></Col>
                     <Col width="100" tabletWidth="100" desktopWidth="80">
                         
-                        <Card style={{marginBottom:'50px'}}>
-                            <CardContent>
+                        <Card noShadow noBorder style={{marginBottom:'50px', background: 'transparent'}}>
+                            <CardContent style={{padding:'4px'}}>
                                 <Row>
                                     <Col width="100" tabletWidth="100">
                                         <div className="data-table" style={{overflowY:'hidden'}}>
@@ -299,6 +303,7 @@ class Produk extends Component {
                                                                     <List>
                                                                         <ListItem link="#" popoverClose title="Edit" onClick={()=>this.edit(option.produk_id)} />
                                                                         <ListItem link="#" popoverClose title="Hapus" onClick={()=>this.hapus(option.produk_id)} />
+                                                                        <ListItem link="#" popoverClose title="Batch & Stok" onClick={()=>this.batch(option.produk_id)} />
                                                                     </List>
                                                                 </Popover>
                                                             </Col>

@@ -6,6 +6,8 @@ export const GET_PRODUK = '[PRODUK] GET_PRODUK';
 export const SIMPAN_PRODUK = '[PRODUK] SIMPAN_PRODUK';
 export const GET_HARGA_PRODUK = '[PRODUK] GET_HARGA_PRODUK';
 export const GET_GAMBAR_PRODUK = '[PRODUK] GET_GAMBAR_PRODUK';
+export const GET_BATCH = '[PRODUK] GET_BATCH';
+export const SIMPAN_BATCH = '[PRODUK] SIMPAN_BATCH';
 
 export function getGambarProduk(routeParams)
 {
@@ -90,6 +92,38 @@ export function getProduk(routeParams)
 export function simpanProduk(routeParams)
 {
     const request = axios.post(localStorage.getItem('api_base')+'/api/Produk/simpanProduk', {
+        ...routeParams
+    });
+
+    return (dispatch) =>
+        request.then((response) =>
+            dispatch({
+                type   : SIMPAN_PRODUK,
+                payload: response.data,
+                routeParams
+            })
+        );
+}
+
+export function getBatch(routeParams)
+{
+    const request = axios.post(localStorage.getItem('api_base')+'/api/Produk/getBatch', {
+        ...routeParams
+    });
+
+    return (dispatch) =>
+        request.then((response) =>
+            dispatch({
+                type   : GET_BATCH,
+                payload: response.data,
+                routeParams
+            })
+        );
+}
+
+export function simpanBatch(routeParams)
+{
+    const request = axios.post(localStorage.getItem('api_base')+'/api/Produk/simpanBatch', {
         ...routeParams
     });
 

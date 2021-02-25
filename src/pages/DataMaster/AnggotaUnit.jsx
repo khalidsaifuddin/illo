@@ -102,16 +102,21 @@ class AnggotaUnit extends Component {
         this.$f7router.navigate('/AnggotaUnit/'+unit_id)
     }
 
-    hapus = (unit_id) => {
+    hapus = (pengguna_id) => {
         this.$f7.dialog.confirm('Apakah Anda yakin ingin menghapus data ini?', 'Konfirmasi Hapus',()=>{
             this.$f7.dialog.preloader('Menyimpan...')
-            this.props.simpanUnit({unit_id: unit_id, soft_delete:1}).then((result)=>{
+
+            this.props.simpanAnggotaUnit({
+                pengguna_id: pengguna_id, 
+                unit_id: this.$f7route.params['unit_id'],
+                soft_delete:1
+            }).then((result)=>{
                 this.$f7.dialog.close()
                 if(result.payload.sukses){
 
-                    this.props.getUnit(this.state.routeParams).then((result)=>{
+                    this.props.getAnggotaUnit(this.state.routeParams).then((result)=>{
                         this.setState({
-                            unit: result.payload
+                            anggota_unit: result.payload
                         })
                     })
 
@@ -217,7 +222,7 @@ class AnggotaUnit extends Component {
                                                                 <Popover className={"popover-menu-"+option.anggota_unit_id} style={{minWidth:'300px'}}>
                                                                     <List>
                                                                         <ListItem link="#" popoverClose title="Edit Jabatan" onClick={()=>this.edit(option.anggota_unit_id)} />
-                                                                        <ListItem link="#" popoverClose title="Hapus" onClick={()=>this.hapus(option.anggota_unit_id)} />
+                                                                        <ListItem link="#" popoverClose title="Hapus" onClick={()=>this.hapus(option.pengguna_id)} />
                                                                     </List>
                                                                 </Popover>
                                                             </Col>
@@ -245,7 +250,8 @@ function mapDispatchToProps(dispatch) {
       updateWindowDimension: Actions.updateWindowDimension,
       setLoading: Actions.setLoading,
       getUnit: Actions.getUnit,
-      getAnggotaUnit: Actions.getAnggotaUnit
+      getAnggotaUnit: Actions.getAnggotaUnit,
+      simpanAnggotaUnit: Actions.simpanAnggotaUnit
     }, dispatch);
 }
 

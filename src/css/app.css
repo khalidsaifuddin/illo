@@ -1381,6 +1381,7 @@ h2 {
 
 .kotakKontenTiket {
   background-color: white;
+  height:30px;
 }
 
 .kontenMenuBerandaKecil::after {
@@ -1483,3 +1484,20 @@ h2 {
   border-radius: 20px 20px 0px 0px;
   min-height: 175px;
 }
+
+.blocktitle_netral {
+  margin-top: 0px;
+  margin-bottom: 0px;
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+.kotakKanban {
+  min-width: 282px;
+  min-height: 600px;
+}
+
+.isiKanban {
+  padding: 8px;
+}
+

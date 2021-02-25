@@ -367,6 +367,14 @@ class FormProduk extends Component {
                             <CardContent>
                                 <List noHairlinesBetweenIos>
                                     <ListInput
+                                        label="Kode Produk"
+                                        type="text"
+                                        placeholder="Kode Produk"
+                                        clearButton
+                                        value={this.state.routeParams.kode_produk}
+                                        onChange={this.setValue('kode_produk')}
+                                    />   
+                                    <ListInput
                                         label="Nama Produk"
                                         type="text"
                                         placeholder="Nama Produk"

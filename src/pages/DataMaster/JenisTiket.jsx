@@ -120,8 +120,8 @@ class JenisTiket extends Component {
                     <Col width="0" tabletWidth="10" desktopWidth="10"></Col>
                     <Col width="100" tabletWidth="80" desktopWidth="80">
                         
-                        <Card style={{marginBottom:'50px'}}>
-                            <CardContent>
+                        <Card noShadow noBorder style={{marginBottom:'50px', background: 'transparent'}}>
+                            <CardContent style={{padding:'4px'}}>
                                 <Row>
                                     <Col width="100" tabletWidth="100">
                                         <div className="data-table" style={{overflowY:'hidden'}}>
