@@ -48,6 +48,7 @@ import KelolaTiket from '../pages/Tiket/KelolaTiket';
 import AnggotaUnit from '../pages/DataMaster/AnggotaUnit';
 import FormAnggotaUnit from '../pages/DataMaster/FormAnggotaUnit';
 import KategoriProduk from '../pages/DataMaster/KategoriProduk';
+import TampilKategoriProduk from '../pages/Produk/TampilKategoriProduk';
 import FormKategoriProduk from '../pages/DataMaster/FormKategoriProduk';
 import Produk from '../pages/DataMaster/Produk';
 import FormProduk from '../pages/DataMaster/FormProduk';
@@ -59,6 +60,8 @@ import FormAnggotaMitra from '../pages/DataMaster/FormAnggotaMitra';
 import Penjualan from '../pages/Penjualan/Penjualan';
 import BatchProduk from '../pages/DataMaster/BatchProduk';
 import FormBatch from '../pages/DataMaster/FormBatch';
+import CariProduk from '../pages/Produk/CariProduk';
+import daftarProduk from '../pages/Produk/daftarProduk';
 
 // console.log(localStorage.getItem('kode_aplikasi'));
 
@@ -220,6 +223,10 @@ var routes = [
     component: Mitra,
   },
   {
+    path: '/KategoriProduk/',
+    component: KategoriProduk,
+  },
+  {
     path: '/Pengguna/',
     component: Pengguna,
   },
@@ -260,8 +267,16 @@ var routes = [
     component: FormProduk,
   },
   {
-    path: '/KategoriProduk/',
-    component: KategoriProduk,
+    path: '/TampilKategoriProduk',
+    component: TampilKategoriProduk,
+  },
+  {
+    path: '/CariProduk',
+    component: CariProduk,
+  },
+  {
+    path: '/daftarProduk/:kategori_produk_id',
+    component: daftarProduk,
   },
   {
     path: '/FormKategoriProduk/',

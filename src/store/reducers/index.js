@@ -12,6 +12,7 @@ import Tugas from './Tugas.reducers';
 import Poin from './Poin.reducers';
 import Pesan from './Pesan.reducers';
 import Produk from './Produk.reducers';
+import Mitra from './Mitra.reducers';
 
 const rootReducer = combineReducers({
     App,
@@ -26,7 +27,8 @@ const rootReducer = combineReducers({
     Tugas,
     Poin,
     Pesan,
-    Produk
+    Produk,
+    Mitra
 });
 
 export default rootReducer;

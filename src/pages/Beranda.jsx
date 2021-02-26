@@ -1040,18 +1040,20 @@ class Beranda extends Component {
                             <Col width="100">
                               <br/>
                               <Row>
-                                <Col width="33" style={{fontSize:'10px'}}>
+                                <Col width="30" style={{fontSize:'10px'}}>
                                   <Link href="#" popoverOpen=".popover-menu-poin"><i className="icon f7-icons" style={{fontSize:'12px', color:'#434343'}}>question_circle_fill</i></Link>&nbsp;Poin:<br/>
-                                  <i className="icon f7-icons" style={{fontSize:'13px', color:'#FDDD02'}}>money_dollar_circle_fill</i>&nbsp;<b className="angkaPoin">0</b>
-                                  <div style={{fontSize:'10px'}}>Riwayat Poin</div>
+                                  {/* <i className="icon f7-icons" style={{fontSize:'13px', color:'#FDDD02'}}>money_dollar_circle_fill</i>&nbsp; */}
+                                  <b className="angkaPoin">0</b>
+                                  <div style={{fontSize:'10px'}}>Riwayat</div>
                                 </Col>
-                                <Col width="33" style={{fontSize:'10px'}}>
-                                  <Link href="#" popoverOpen=".popover-menu-poin"><i className="icon f7-icons" style={{fontSize:'13px', color:'#434343'}}>question_circle_fill</i></Link>&nbsp;Produk Dibeli:<br/>
-                                  <i className="icon f7-icons" style={{fontSize:'13px', color:'#FDDD02'}}>cube_box</i>&nbsp;<b className="angkaPoin">0</b>
+                                <Col width="35" style={{fontSize:'10px'}}>
+                                  <Link href="#" popoverOpen=".popover-menu-poin"><i className="icon f7-icons" style={{fontSize:'12px', color:'#434343'}}>question_circle_fill</i></Link>&nbsp;Produk Dibeli:<br/>
+                                  {/* <i className="icon f7-icons" style={{fontSize:'13px', color:'#FDDD02'}}>cube_box</i>&nbsp; */}
+                                  <b className="angkaPoin">0</b>
                                   <div style={{fontSize:'10px'}}>Produk</div>
                                 </Col>
-                                <Col width="33" style={{fontSize:'10px'}}>
-                                <Link href="#" popoverOpen=".popover-menu-rata"><i className="icon f7-icons" style={{fontSize:'13px', color:'#434343'}}>question_circle_fill</i></Link>&nbsp;Deposit Wallet<br/>
+                                <Col width="35" style={{fontSize:'10px'}}>
+                                <Link href="#" popoverOpen=".popover-menu-rata"><i className="icon f7-icons" style={{fontSize:'12px', color:'#434343'}}>question_circle_fill</i></Link>&nbsp;Deposit Wallet<br/>
                                   Rp <b style={{fontSize:'20px', fontWeight:'bold'}}>0</b>
                                 </Col>
                               </Row>
@@ -1090,6 +1092,31 @@ class Beranda extends Component {
                             </Col>
                             <Col width="0" tabletWidth="0"></Col>
                           </Row> */}
+                        </CardContent>
+                      </Card>
+                      }
+
+                      {this.props.anggota_mitra.total > 0 &&
+                      <Card className={"cardBorder-20"}>
+                        <CardContent>
+                          <BlockTitle style={{marginTop:'0px', marginBottom:'4px', fontSize:'15px', fontWeight:'bold', color:'#434343', marginLeft:'0px'}}>
+                            {this.props.anggota_mitra.total > 0 ? this.props.anggota_mitra.rows[0].jenis_mitra : <></>}
+                          </BlockTitle>
+                          {parseInt(this.props.anggota_mitra.rows[0].jenis_mitra_id) === 5 &&
+                          <span style={{fontSize:'10px'}}>
+                            Wilayah {this.props.anggota_mitra.total > 0 ? this.props.anggota_mitra.rows[0].provinsi : <></>}
+                          </span>
+                          }
+                          {parseInt(this.props.anggota_mitra.rows[0].jenis_mitra_id) === 4 &&
+                          <span style={{fontSize:'10px'}}>
+                            Wilayah {this.props.anggota_mitra.total > 0 ? this.props.anggota_mitra.rows[0].kabupaten : <></>}
+                          </span>
+                          }
+                          {parseInt(this.props.anggota_mitra.rows[0].jenis_mitra_id) === 3 &&
+                          <span style={{fontSize:'10px'}}>
+                            Wilayah {this.props.anggota_mitra.total > 0 ? this.props.anggota_mitra.rows[0].kecamatan : <></>}
+                          </span>
+                          }
                         </CardContent>
                       </Card>
                       }
@@ -1229,7 +1256,7 @@ function mapDispatchToProps(dispatch) {
   }, dispatch);
 }
 
-function mapStateToProps({ App, Pertanyaan, Notifikasi, Kuis, Ruang, Aktivitas, Sekolah, Poin, Pesan }) {
+function mapStateToProps({ App, Pertanyaan, Notifikasi, Kuis, Ruang, Aktivitas, Sekolah, Poin, Pesan, Mitra }) {
   return {
       window_dimension: App.window_dimension,
       loading: App.loading,
@@ -1252,7 +1279,8 @@ function mapStateToProps({ App, Pertanyaan, Notifikasi, Kuis, Ruang, Aktivitas, 
       leaderboard_pengguna: Poin.leaderboard_pengguna,
       notifikasi_belum_dibaca: Notifikasi.notifikasi_belum_dibaca,
       pesan_belum_dibaca: Pesan.pesan_belum_dibaca,
-      daftar_pesan: Pesan.daftar_pesan
+      daftar_pesan: Pesan.daftar_pesan,
+      anggota_mitra: Mitra.anggota_mitra
 
   }
 }

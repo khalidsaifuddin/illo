@@ -370,6 +370,16 @@ class app extends Component {
                   <i slot="media" className="f7-icons">rocket</i>
                 </ListItem>
                 }
+                {(localStorage.getItem('user') !== null && localStorage.getItem('user') !== '') && (localStorage.getItem('sekolah_id_beranda') === '' || localStorage.getItem('sekolah_id_beranda') === null) &&
+                <ListItem noChevron link="/CariProduk" view=".view-main" panelClose panel-close title="Cari Produk">
+                  <i slot="media" className="f7-icons">search</i>
+                </ListItem>
+                }
+                {(localStorage.getItem('user') !== null && localStorage.getItem('user') !== '') && (localStorage.getItem('sekolah_id_beranda') === '' || localStorage.getItem('sekolah_id_beranda') === null) &&
+                <ListItem noChevron link="/TampilKategoriProduk" view=".view-main" panelClose panel-close title="Kategori Produk">
+                  <i slot="media" className="f7-icons">circle_grid_hex_fill</i>
+                </ListItem>
+                }
                 {
                 (localStorage.getItem('user') !== null && 
                 localStorage.getItem('user') !== '') && 
