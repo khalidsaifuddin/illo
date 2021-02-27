@@ -59,6 +59,17 @@ class TampilKategoriProduk extends Component {
         'Des'
     ]
 
+    gradients = [
+        'linear-gradient(-45deg, #a18cd1 0%, #fbc2eb 100%)',
+        'linear-gradient(-45deg, #ff8177 0%, #ff867a 0%, #ff8c7f 21%, #f99185 52%, #cf556c 78%, #b12a5b 100%)',
+        'linear-gradient(120deg, #a6c0fe 0%, #f68084 100%)',
+        'linear-gradient(to right, #4facfe 0%, #00f2fe 100%)',
+        'linear-gradient(to top, #d299c2 0%, #fef9d7 100%)',
+        'linear-gradient(120deg, #89f7fe 0%, #66a6ff 100%)',
+        'linear-gradient(to right, #6a11cb 0%, #2575fc 100%)',
+        'linear-gradient(to right, #b8cbb8 0%, #b8cbb8 0%, #b465da 0%, #cf6cc9 33%, #ee609c 66%, #ee609c 100%)'
+      ]
+
     formatAngka = (num) => {
         return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')
     }
@@ -98,17 +109,16 @@ class TampilKategoriProduk extends Component {
                                 <Row noGap>
                                     <Col width="100" tabletWidth="50">
                                         <Link style={{width:'100%', color:'#434343'}} href={"/daftarProduk/semua"}>
-                                            <Card style={{width:'100%', marginLeft:'4px', marginRight:'4px', margin:'4px'}}>
+                                            <Card style={{width:'100%', marginLeft:'4px', marginRight:'4px', margin:'4px', background: 'linear-gradient(to top, #ffffff 0%, #f5efef 100%)'}}>
                                                 <CardContent>
                                                     <Row>
                                                         <Col width="70" style={{display:'inline-flex'}}>
                                                             <img src="./static/icons/3370s.png" style={{height:'40px'}} />
                                                             <div style={{marginLeft:'8px'}}>
                                                                 <b style={{fontSize:'18px'}}>Semua</b>
-                                                                <br/>
-                                                                <span style={{fontSize:'10px'}}>
+                                                                <div className="namaProduk" style={{width:'90%', fontSize:'10px', fontWeight:'normal', marginTop:'0px'}}>
                                                                     Semua kategori produk
-                                                                </span>
+                                                                </div>
                                                             </div>
                                                         </Col>
                                                         <Col width="30" style={{textAlign:'right'}}>
@@ -124,15 +134,16 @@ class TampilKategoriProduk extends Component {
                                         return (
                                             <Col width="100" tabletWidth="50">
                                                 <Link style={{width:'100%', color:'#434343'}} href={"/daftarProduk/"+option.kategori_produk_id}>
-                                                    <Card style={{width:'100%', marginLeft:'4px', marginRight:'4px', margin:'4px'}}>
+                                                    <Card style={{width:'100%', marginLeft:'4px', marginRight:'4px', margin:'4px', background: 'linear-gradient(to top, #ffffff 0%, #f5efef 100%)'}}>
+                                                    {/* <Card style={{width:'100%', marginLeft:'4px', marginRight:'4px', margin:'4px', background: (this.gradients[this.state.kategori_produk.rows.indexOf(option)])}}> */}
                                                         <CardContent>
                                                             <Row>
-                                                                <Col width="70" style={{display:'inline-flex'}}>
+                                                                <Col width="70" style={{display:'inline-flex', color:'#434343'}}>
                                                                     <img src="./static/icons/3370s.png" style={{height:'40px'}} />
                                                                     <div style={{marginLeft:'8px', width:'100%'}}>
                                                                         <b style={{fontSize:'18px'}}>{option.nama}</b>
                                                                         <br/>
-                                                                        <div className="namaProduk" style={{fontSize:'10px', fontWeight:'normal', marginTop:'0px'}}>
+                                                                        <div className="namaProduk" style={{width:'90%', fontSize:'10px', fontWeight:'normal', marginTop:'0px'}}>
                                                                             {option.keterangan ? option.keterangan.replace(/(<([^>]+)>)/gi, "") : <>&nbsp;</>}
                                                                         </div>
                                                                     </div>

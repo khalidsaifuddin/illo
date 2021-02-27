@@ -91,62 +91,67 @@ class daftarProduk extends Component {
                     <Col width="0" tabletWidth="0" desktopWidth="10"></Col>
                     <Col width="100" tabletWidth="100" desktopWidth="80">
                         
-                        <Card style={{marginBottom:'50px'}}>
+                        <Card noShadow noBorder style={{marginBottom:'50px', background: 'transparent'}}>
                             <CardContent>
-                                <div className="kotakProduk">
-                                {this.state.produk.rows.map((option)=>{
-                                    let last_update = '';
-                                    last_update = moment(option.last_update).format('D') + ' ' + this.bulan_singkat[(moment(option.last_update).format('M')-1)] + ' ' + moment(option.last_update).format('YYYY') + ', ' + moment(option.last_update).format('H') + ':' + moment(option.last_update).format('mm');
+                                {/* <div className="kotakProduk"> */}
+                                <Row noGap style={{justifyContent:'end'}}>
+                                    {this.state.produk.rows.map((option)=>{
+                                        let last_update = '';
+                                        last_update = moment(option.last_update).format('D') + ' ' + this.bulan_singkat[(moment(option.last_update).format('M')-1)] + ' ' + moment(option.last_update).format('YYYY') + ', ' + moment(option.last_update).format('H') + ':' + moment(option.last_update).format('mm');
 
-                                    if(moment(option.last_update).format('D') + ' ' + this.bulan_singkat[(moment(option.last_update).format('M')-1)] + ' ' + moment(option.last_update).format('YYYY') === moment().format('D') + ' ' + this.bulan_singkat[(moment().format('M')-1)] + ' ' + moment().format('YYYY')){
-                                        last_update = 'Hari ini, ' + moment(option.last_update).format('H') + ':' + moment(option.last_update).format('mm');
-                                    }
+                                        if(moment(option.last_update).format('D') + ' ' + this.bulan_singkat[(moment(option.last_update).format('M')-1)] + ' ' + moment(option.last_update).format('YYYY') === moment().format('D') + ' ' + this.bulan_singkat[(moment().format('M')-1)] + ' ' + moment().format('YYYY')){
+                                            last_update = 'Hari ini, ' + moment(option.last_update).format('H') + ':' + moment(option.last_update).format('mm');
+                                        }
 
-                                    return (
-                                        <Card key={option.produk_id} className="boxProduk">
-                                            <CardContent style={{padding:'8px'}}>
-                                                <div className="gambarProduk" style={{
-                                                    backgroundImage:'url('+localStorage.getItem('api_base')+(option.gambar_produk.length > 0 ? option.gambar_produk[0].nama_file : '/assets/berkas/3577232-1.jpg')+')', 
-                                                    backgroundSize:'cover',
-                                                    backgroundPosition:'center'
-                                                }}>&nbsp;</div>
-                                                <Row noGap>
-                                                    <Col width="85">
-                                                        <div className="namaProduk">
-                                                            {option.nama}
-                                                        </div>
-                                                        <div className="namaProduk" style={{fontSize:'10px', fontWeight:'normal', marginTop:'0px'}}>
-                                                            {option.keterangan ? option.keterangan.replace(/(<([^>]+)>)/gi, "") : <>&nbsp;</>}
-                                                        </div>
-                                                        <div className="hargaProduk">
-                                                            Rp {(option.harga_produk.length > 0 ? this.formatAngka(option.harga_produk[0].nominal) : '0')}
-                                                        </div>
-                                                        <div className="namaProduk" style={{fontSize:'10px', color:'#b3b3b3'}}>
-                                                            {option.kategori_produk}
-                                                        </div>
-                                                    </Col>
-                                                    <Col width="15">
-                                                        {/* <Button popoverOpen={".popover-menu-"+option.produk_id}><i className="icons f7-icons" style={{fontSize:'18px', display:'inline-flex', textAlign:'right'}}>ellipsis_vertical</i></Button>
-                                                        <Popover className={"popover-menu-"+option.produk_id} style={{minWidth:'150px'}}>
-                                                            <List>
-                                                                <ListItem link="#" popoverClose title="Edit" onClick={()=>this.edit(option.produk_id)} />
-                                                                <ListItem link="#" popoverClose title="Hapus" onClick={()=>this.hapus(option.produk_id)} />
-                                                                <ListItem link="#" popoverClose title="Batch & Stok" onClick={()=>this.batch(option.produk_id)} />
-                                                            </List>
-                                                        </Popover> */}
-                                                    </Col>
-                                                    <Col width="100">
-                                                        <Button className="bawahCiriBiru" raised fill style={{marginTop:'8px'}}>
-                                                            <i className="f7-icons" style={{fontSize:'20px'}}>cart_badge_plus</i>&nbsp;
-                                                            Beli
-                                                        </Button>
-                                                    </Col>
-                                                </Row>
-                                            </CardContent>
-                                        </Card>
-                                    )
-                                })}
-                                </div>
+                                        return (
+                                            <Col width="50" tabletWidth="33" desktopWidth="33">
+                                                {/* <Card key={option.produk_id} className="boxProduk"> */}
+                                                <Card key={option.produk_id} style={{margin:'8px', minHeight:'300px'}}>
+                                                    <CardContent style={{padding:'8px'}}>
+                                                        <div className="gambarProduk" style={{
+                                                            backgroundImage:'url('+localStorage.getItem('api_base')+(option.gambar_produk.length > 0 ? option.gambar_produk[0].nama_file : '/assets/berkas/3577232-1.jpg')+')', 
+                                                            backgroundSize:'cover',
+                                                            backgroundPosition:'center'
+                                                        }}>&nbsp;</div>
+                                                        <Row noGap>
+                                                            <Col width="85">
+                                                                <div className="namaProduk">
+                                                                    <Link href={"/TampilProduk/"+option.produk_id}>{option.nama}</Link>
+                                                                </div>
+                                                                <div className="namaProduk" style={{fontSize:'10px', fontWeight:'normal', marginTop:'0px'}}>
+                                                                    {option.keterangan ? option.keterangan.replace(/(<([^>]+)>)/gi, "") : <>&nbsp;</>}
+                                                                </div>
+                                                                <div className="hargaProduk">
+                                                                    Rp {(option.harga_produk.length > 0 ? this.formatAngka(option.harga_produk[0].nominal) : '0')}
+                                                                </div>
+                                                                <div className="namaProduk" style={{fontSize:'10px', color:'#b3b3b3'}}>
+                                                                    {option.kategori_produk}
+                                                                </div>
+                                                            </Col>
+                                                            <Col width="15">
+                                                                {/* <Button popoverOpen={".popover-menu-"+option.produk_id}><i className="icons f7-icons" style={{fontSize:'18px', display:'inline-flex', textAlign:'right'}}>ellipsis_vertical</i></Button>
+                                                                <Popover className={"popover-menu-"+option.produk_id} style={{minWidth:'150px'}}>
+                                                                    <List>
+                                                                        <ListItem link="#" popoverClose title="Edit" onClick={()=>this.edit(option.produk_id)} />
+                                                                        <ListItem link="#" popoverClose title="Hapus" onClick={()=>this.hapus(option.produk_id)} />
+                                                                        <ListItem link="#" popoverClose title="Batch & Stok" onClick={()=>this.batch(option.produk_id)} />
+                                                                    </List>
+                                                                </Popover> */}
+                                                            </Col>
+                                                            <Col width="100">
+                                                                <Button className="bawahCiriBiru" raised fill style={{marginTop:'8px'}}>
+                                                                    <i className="f7-icons" style={{fontSize:'20px'}}>cart_badge_plus</i>&nbsp;
+                                                                    Beli
+                                                                </Button>
+                                                            </Col>
+                                                        </Row>
+                                                    </CardContent>
+                                                </Card>
+                                            </Col>
+                                        )
+                                    })}
+                                </Row>
+                                {/* </div> */}
                             </CardContent>
                         </Card>
                     

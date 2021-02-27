@@ -62,6 +62,7 @@ import BatchProduk from '../pages/DataMaster/BatchProduk';
 import FormBatch from '../pages/DataMaster/FormBatch';
 import CariProduk from '../pages/Produk/CariProduk';
 import daftarProduk from '../pages/Produk/daftarProduk';
+import TampilProduk from '../pages/Produk/TampilProduk';
 
 // console.log(localStorage.getItem('kode_aplikasi'));
 
@@ -277,6 +278,10 @@ var routes = [
   {
     path: '/daftarProduk/:kategori_produk_id',
     component: daftarProduk,
+  },
+  {
+    path: '/TampilProduk/:produk_id',
+    component: TampilProduk
   },
   {
     path: '/FormKategoriProduk/',

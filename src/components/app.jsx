@@ -475,6 +475,15 @@ class app extends Component {
                   <ListItem noChevron link="/ProfilPengguna" view=".view-main" panelClose panel-close title="Profil Pengguna">
                     <i slot="media" className="f7-icons">person_crop_square_fill</i>
                   </ListItem>
+                  <ListItem noChevron link="/Keranjang" view=".view-main" panelClose panel-close title="Keranjang">
+                    {this.props.keranjang.total > 0 &&
+                    <div slot="after" className="badgeNotif">{this.props.keranjang.total}</div>
+                    }
+                    {this.props.keranjang.total < 1 &&
+                    <div slot="after" className="badgeNotifKosong">0</div>
+                    }
+                    <i slot="media" className="f7-icons">cart</i>
+                  </ListItem>
                   <ListItem noChevron link="/Notifikasi" view=".view-main" panelClose panel-close title="Notifikasi">
                     {this.props.notifikasi_belum_dibaca.total > 0 &&
                     <div slot="after" className="badgeNotif">{this.props.notifikasi_belum_dibaca.total}</div>
@@ -721,7 +730,8 @@ function mapStateToProps({ App, Notifikasi, Pesan }) {
       isi_panel_kanan: App.isi_panel_kanan,
       notifikasi_belum_dibaca: Notifikasi.notifikasi_belum_dibaca,
       pesan_belum_dibaca: Pesan.pesan_belum_dibaca,
-      daftar_pesan: Pesan.daftar_pesan
+      daftar_pesan: Pesan.daftar_pesan,
+      keranjang: App.keranjang
   }
 }
 

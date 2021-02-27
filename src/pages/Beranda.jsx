@@ -105,7 +105,18 @@ class Beranda extends Component {
     'Oktober',
     'November',
     'Desember'
-]
+  ]
+
+  gradients = [
+    'linear-gradient(to top, #a18cd1 0%, #fbc2eb 100%)',
+    'linear-gradient(to right, #ff8177 0%, #ff867a 0%, #ff8c7f 21%, #f99185 52%, #cf556c 78%, #b12a5b 100%)',
+    'linear-gradient(120deg, #a6c0fe 0%, #f68084 100%)',
+    'linear-gradient(to right, #4facfe 0%, #00f2fe 100%)',
+    'linear-gradient(to top, #d299c2 0%, #fef9d7 100%)',
+    'linear-gradient(120deg, #89f7fe 0%, #66a6ff 100%)',
+    'linear-gradient(to right, #6a11cb 0%, #2575fc 100%)',
+    'linear-gradient(to right, #b8cbb8 0%, #b8cbb8 0%, #b465da 0%, #cf6cc9 33%, #ee609c 66%, #ee609c 100%)'
+  ]
 
   formatAngka = (num) => {
     return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')
@@ -131,17 +142,6 @@ class Beranda extends Component {
   }   
 
   componentDidMount = () => {
-
-    // this.props.getNotifikasiRedis({pengguna_id: JSON.parse(localStorage.getItem('user')).pengguna_id, tipe: 'belum_dibaca'}).then((result)=>{
-    //   this.setState({
-    //     notifikasi: result.payload
-    //   })
-    // })
-
-    // console.log('beranda');
-    // console.log(this.state.sekolah_pengguna)
-
-    // console.log(this.props.window_dimension)
 
     if(parseInt(localStorage.getItem('sudah_login')) !== 1){
       this.$f7router.navigate('/login/');
@@ -172,32 +172,7 @@ class Beranda extends Component {
       // nggak ada
     }
 
-    // if(localStorage.getItem('current_url') !== ''){
-    //   this.$f7route.navigate(localStorage.getItem('current_url'))
-    // }
-
-    // let socket = io(localStorage.getItem('socket_url'));
-
-    // socket.on('updateUserList', (users) => {
-    //     this.setState({
-    //         users
-    //     },()=>{
-    //         // console.log(this.state.users);
-    //     });
-    // });
-
     if(parseInt(localStorage.getItem('sudah_login')) === 1){
-
-      localForage.getItem( 'daftar_kuis_tersimpan:'+JSON.parse( localStorage.getItem('user') ).pengguna_id ).then((value)=>{
-        this.setState({
-            kuis_tersimpan: {
-                rows: value,
-                total: value ? value.length : 0
-            }
-        },()=>{
-            console.log(this.state.kuis_tersimpan)
-        })
-      })
       
       this.setState({
         routeParamsNotifikasi: {
@@ -206,6 +181,8 @@ class Beranda extends Component {
           dibaca: "1"
         }
       },()=>{
+
+        this.props.getKategoriProduk({...this.state.routeParams, hitung_produk: 'Y'})
         
         this.props.getNotifikasiRedisBelumDibaca({pengguna_id: JSON.parse(localStorage.getItem('user')).pengguna_id, tipe: 'belum_dibaca'}).then((result)=>{
             
@@ -244,13 +221,9 @@ class Beranda extends Component {
                 // this.gantiDasborGameMaster()
                 this.$f7router.navigate('/BerandaSekolah/')
               }
-              // else{
-              //   localStorage.setItem('baru_login','0')
-              // }
-
+              
             }
             //end of konfig sesuai pengaturan pengguna
-
 
             //cek sekolah aktifnya
             if(this.state.pengaturan_pengguna && parseInt(this.state.pengaturan_pengguna.tampilkan_beranda_sekolah) === 1){
@@ -294,24 +267,7 @@ class Beranda extends Component {
           });
         });
 
-        this.props.getSekolahPengguna(this.state.routeParamsNotifikasi).then((result)=>{
-
-          if(this.props.sekolah_pengguna.total > 0){
-
-            this.setState({
-              ...this.state,
-              sekolah_pengguna: this.props.sekolah_pengguna
-            },()=>{
-
-              localStorage.setItem('getSekolahPengguna:'+JSON.parse(localStorage.getItem('user')).pengguna_id, JSON.stringify(this.props.sekolah_pengguna))
-
-              // console.log(localStorage.getItem('getSekolahPengguna:'+JSON.parse(localStorage.getItem('user')).pengguna_id))
-            
-            })
-
-          }
-
-        }); 
+        
 
       });
 
@@ -348,15 +304,6 @@ class Beranda extends Component {
           })
 
         }
-
-        // this.props.getNotifikasiRedisBelumDibaca({
-        //   pengguna_id: JSON.parse(localStorage.getItem('user')).pengguna_id, 
-        //   tipe: 'belum_dibaca'
-        // }).then((result)=>{
-        //   this.setState({
-        //     notifikasi: result.payload
-        //   })
-        // })
 
       })
 
@@ -1121,95 +1068,51 @@ class Beranda extends Component {
                       </Card>
                       }
 
-                      <Card className={"cardBorder-20"}>
+                      {/* <Card className={"cardBorder-20"}>
                         <CardContent>
                           <Row noGap>
                             <Col width="70">
                               <h1 className="h1-beranda">Menu Card 1</h1>
                             </Col>
                             <Col width="30">
-                              {/* <Button className="color-theme-deeporange" raised fill href={"/Leaderboard/"} style={{marginTop:'8px'}}>
-                                Semua
-                              </Button> */}
+                              
                             </Col>
                           </Row>
                           <div className="overflowCardVert">
-                            {/* {this.props.leaderboard_pengguna.total < 1 &&
-                            <>
-                            <div className="aktivitasKosong" style={{minHeight:'300px'}}>
-                                <img src="./static/icons/189.jpg" />
-                                <br/>
-                                Belum ada peringkat :(
-                                <div style={{fontSize:'10px'}}>
-                                    Kalau kamu mengikuti seseorang, atau bergabung ke dalam ruang / sekolah, peringkat mereka akan tampil di sini :)
-                                </div>
-                            </div>
-                            </>
-                            }
-                            {this.props.leaderboard_pengguna.total > 0 &&
-                            <>
-                            {this.props.leaderboard_pengguna.rows.map((option)=>{
-                                return (
-                                    <Card style={{border:(option.pengguna_id === JSON.parse(localStorage.getItem('user')).pengguna_id ? '2px solid #FF6B22' : 'none')}}>
-                                        <CardContent style={{padding:'8px'}}>
-                                          
-                                            <Row>
-                                                <Col width="10" tabletWidth="10" desktopWidth="10" style={{fontSize:'15px', fontWeight:'bold', paddingTop:'14px'}}>
-                                                    #{(this.props.leaderboard_pengguna.rows.indexOf(option)+1)}
-                                                </Col>
-                                                <Col width="20" tabletWidth="20" desktopWidth="20" style={{textAlign:'center'}}>
-                                                    <img src={option.gambar} style={{width:'40px', height:'40px', borderRadius:'50%'}} />
-                                                </Col>
-                                                <Col width="45" tabletWidth="45" desktopWidth="55">
-                                                    <Link href={"/TampilPengguna/"+option.pengguna_id} style={{fontSize:'12px'}}><b>{option.nama}</b></Link>
-                                                    <br/><span style={{fontSize:'10px'}}>{option.username}</span>
-                                                </Col>
-                                                <Col width="25" tabletWidth="25" desktopWidth="15" style={{textAlign:'right', display:(parseInt(this.props.leaderboard_pengguna.rows.indexOf(option)) === 0 ? 'inline-table' : 'block')}}>
-                                                    <b style={{fontSize:'15px', color:'#558b2f'}}>{this.formatAngka(option.poin)}</b>
-                                                    {parseInt(this.props.leaderboard_pengguna.rows.indexOf(option)) === 0 &&
-                                                    <img src="./static/icons/piala.png" style={{height:'15px', marginLeft:'4px'}} />
-                                                    }
-                                                </Col>
-                                            </Row>
-                                        </CardContent>
-                                    </Card>
-                                )
-                            })}
-                            </>
-                            } */}
+                            
                           </div>
                         </CardContent>
-                      </Card>
+                      </Card> */}
 
                       <Card className={"cardBorder-20"}>
                         <CardContent>
                           <Row noGap>
                             <Col width="70">
-                              <h1 className="h1-beranda">Kategori</h1>
+                              <h1 className="h1-beranda">Kategori Produk</h1>
                             </Col>
                             <Col width="30">
-                              <Button className="color-theme-teal" raised fill href="/kategori/" style={{marginTop:'8px'}}>
+                              <Button className="color-theme-teal" raised fill href="/TampilKategoriProduk" style={{marginTop:'8px'}}>
                                 Semua
                               </Button>
                             </Col>
                           </Row>
                           <div className="overflowCard">
-                            {/* {this.state.mapel.map((option)=>{
+                            {this.props.kategori_produk.rows.map((option)=>{
                               return (
-                                <Card className={"cardBorder-20 overflowCard-inner"} style={{margin:'8px', width:'200px', background:'url('+option.gambar_latar+') no-repeat center center / cover',minHeight:'60px', textAlign:'right',color:'white', fontWeight:'bold'}}>
+                                <Card className={"cardBorder-20 overflowCard-inner"} style={{margin:'8px', width:'200px', background:(this.gradients[this.props.kategori_produk.rows.indexOf(option)]),minHeight:'60px', textAlign:'right',color:'white', fontWeight:'bold'}}>
                                   <CardContent className="cardBorder-20" style={{minHeight:'80px',background:'rgba(0, 0, 0, 0.4)'}}>
-                                    <Link href={"/daftarKuis/"+option.mata_pelajaran_id} style={{display:'block'}}>
+                                    <Link href={"/daftarProduk/"+option.kategori_produk_id} style={{display:'block'}}>
                                         <div style={{color:'white', fontSize:'20px', textShadow:'2px 2px #434343'}}>
                                             {option.nama}
                                         </div>
                                         <div style={{color:'white',fontSize:'12px', textShadow:'2px 2px #434343'}}>
-                                            ({option.total ? option.total : '0'} kuis)
+                                            ({option.jumlah_produk ? option.jumlah_produk : '0'} Produk)
                                         </div>
                                     </Link>
                                   </CardContent>
                                 </Card>
                               )
-                            })} */}
+                            })}
                             {/* <Card className={"cardBorder-20 overflowCard-inner"}>
                               <CardContent>
                                 &nbsp;tes
@@ -1252,11 +1155,12 @@ function mapDispatchToProps(dispatch) {
     getKuis: Actions.getKuis,
     getNotifikasiRedis: Actions.getNotifikasiRedis,
     getNotifikasiRedisBelumDibaca: Actions.getNotifikasiRedisBelumDibaca,
-    getLeaderboardPengguna: Actions.getLeaderboardPengguna
+    getLeaderboardPengguna: Actions.getLeaderboardPengguna,
+    getKategoriProduk: Actions.getKategoriProduk
   }, dispatch);
 }
 
-function mapStateToProps({ App, Pertanyaan, Notifikasi, Kuis, Ruang, Aktivitas, Sekolah, Poin, Pesan, Mitra }) {
+function mapStateToProps({ App, Pertanyaan, Notifikasi, Kuis, Ruang, Aktivitas, Sekolah, Poin, Pesan, Mitra, Produk }) {
   return {
       window_dimension: App.window_dimension,
       loading: App.loading,
@@ -1280,7 +1184,8 @@ function mapStateToProps({ App, Pertanyaan, Notifikasi, Kuis, Ruang, Aktivitas, 
       notifikasi_belum_dibaca: Notifikasi.notifikasi_belum_dibaca,
       pesan_belum_dibaca: Pesan.pesan_belum_dibaca,
       daftar_pesan: Pesan.daftar_pesan,
-      anggota_mitra: Mitra.anggota_mitra
+      anggota_mitra: Mitra.anggota_mitra,
+      kategori_produk: Produk.kategori_produk
 
   }
 }

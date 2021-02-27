@@ -105,7 +105,11 @@ const initialState = {
         kumulatif: []
     },
     rata_kuis: {},
-    pengaturan_pengguna: {}
+    pengaturan_pengguna: {},
+    keranjang: {
+        rows: [],
+        total: 0
+    }
 };
 
 const appReducer = function (state = initialState, action) {
@@ -267,6 +271,13 @@ const appReducer = function (state = initialState, action) {
                 pengaturan_pengguna: action.payload
             };
         }
+        // case Actions.GET_KERANJANG:
+        // {
+        //     return {
+        //         ...state,
+        //         keranjang: action.payload
+        //     };
+        // }
         default:
         {
             return state;

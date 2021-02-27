@@ -749,7 +749,7 @@ body {
 .h1-beranda {
   margin-top: 8px;
   margin-bottom:8px;
-  font-size: 25px;
+  font-size: 20px;
   margin-left: 8px;
   color:#972D1E;
 }
@@ -1438,7 +1438,7 @@ h2 {
 }
 
 .boxProduk {
-  width: 160px;
+  /* width: 160px; */
   margin: 8px;
   height: 296px;
   border-radius: 20px;
@@ -1458,6 +1458,41 @@ h2 {
   margin-right: -8px;
   margin-top: -8px;
   border-radius: 20px 20px 0px 0px;
+}
+
+.gambarProdukTampil {
+  height: 80px;
+  min-width: 80px;
+  border: 0px solid #eee;
+  margin: 4px;
+  border-radius: 10px;
+}
+
+.hargaProdukTampil {
+  font-size: 25px;
+  font-weight: bolder;
+}
+
+.hargaProdukCoret {
+  font-size: 14px;
+  text-decoration: line-through;
+  color:#aaaaaa;
+}
+
+.jumlahStok {
+  font-size: 12px;
+  margin-bottom: 8px;
+}
+
+.labelHarga {
+  font-size: 10px;
+  color:#aaaaaa;
+}
+
+.gambarProdukUtama {
+  height: 300px;
+  width: 100%;
+  border-radius: 10px;
 }
 
 .namaProduk {

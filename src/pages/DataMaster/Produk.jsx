@@ -265,7 +265,8 @@ class Produk extends Component {
                                             Silakan klik tombol tambah diatas untuk membuat data baru   
                                         </div>
                                         }
-                                        <div className="kotakProduk">
+                                        <Row noGap style={{justifyContent:'end'}}>
+                                        {/* <div className="kotakProduk"> */}
                                         {this.state.produk.rows.map((option)=>{
                                             let last_update = '';
                                             last_update = moment(option.last_update).format('D') + ' ' + this.bulan_singkat[(moment(option.last_update).format('M')-1)] + ' ' + moment(option.last_update).format('YYYY') + ', ' + moment(option.last_update).format('H') + ':' + moment(option.last_update).format('mm');
@@ -275,41 +276,43 @@ class Produk extends Component {
                                             }
 
                                             return (
-                                                <Card key={option.produk_id} className="boxProduk">
-                                                    <CardContent style={{padding:'8px'}}>
-                                                        <div className="gambarProduk" style={{
-                                                            backgroundImage:'url('+localStorage.getItem('api_base')+(option.gambar_produk.length > 0 ? option.gambar_produk[0].nama_file : '/assets/berkas/3577232-1.jpg')+')', 
-                                                            backgroundSize:'cover',
-                                                            backgroundPosition:'center'
-                                                        }}>&nbsp;</div>
-                                                        <Row noGap>
-                                                            <Col width="85">
-                                                                <div className="namaProduk">
-                                                                    {option.nama}
-                                                                </div>
-                                                                <div className="namaProduk" style={{fontSize:'10px', fontWeight:'normal', marginTop:'0px'}}>
-                                                                    {option.keterangan ? option.keterangan.replace(/(<([^>]+)>)/gi, "") : ''}
-                                                                </div>
-                                                                <div className="hargaProduk">
-                                                                    Rp {(option.harga_produk.length > 0 ? this.formatAngka(option.harga_produk[0].nominal) : '0')}
-                                                                </div>
-                                                                <div className="namaProduk" style={{fontSize:'10px', color:'#b3b3b3'}}>
-                                                                    {option.kategori_produk}
-                                                                </div>
-                                                            </Col>
-                                                            <Col width="15">
-                                                                <Button popoverOpen={".popover-menu-"+option.produk_id}><i className="icons f7-icons" style={{fontSize:'18px', display:'inline-flex', textAlign:'right'}}>ellipsis_vertical</i></Button>
-                                                                <Popover className={"popover-menu-"+option.produk_id} style={{minWidth:'150px'}}>
-                                                                    <List>
-                                                                        <ListItem link="#" popoverClose title="Edit" onClick={()=>this.edit(option.produk_id)} />
-                                                                        <ListItem link="#" popoverClose title="Hapus" onClick={()=>this.hapus(option.produk_id)} />
-                                                                        <ListItem link="#" popoverClose title="Batch & Stok" onClick={()=>this.batch(option.produk_id)} />
-                                                                    </List>
-                                                                </Popover>
-                                                            </Col>
-                                                        </Row>
-                                                    </CardContent>
-                                                </Card>
+                                                <Col width="50" tabletWidth="33" desktopWidth="33">
+                                                    <Card key={option.produk_id} className="boxProduk">
+                                                        <CardContent style={{padding:'8px'}}>
+                                                            <div className="gambarProduk" style={{
+                                                                backgroundImage:'url('+localStorage.getItem('api_base')+(option.gambar_produk.length > 0 ? option.gambar_produk[0].nama_file : '/assets/berkas/3577232-1.jpg')+')', 
+                                                                backgroundSize:'cover',
+                                                                backgroundPosition:'center'
+                                                            }}>&nbsp;</div>
+                                                            <Row noGap>
+                                                                <Col width="85">
+                                                                    <div className="namaProduk">
+                                                                        {option.nama}
+                                                                    </div>
+                                                                    <div className="namaProduk" style={{fontSize:'10px', fontWeight:'normal', marginTop:'0px'}}>
+                                                                        {option.keterangan ? option.keterangan.replace(/(<([^>]+)>)/gi, "") : ''}
+                                                                    </div>
+                                                                    <div className="hargaProduk">
+                                                                        Rp {(option.harga_produk.length > 0 ? this.formatAngka(option.harga_produk[0].nominal) : '0')}
+                                                                    </div>
+                                                                    <div className="namaProduk" style={{fontSize:'10px', color:'#b3b3b3'}}>
+                                                                        {option.kategori_produk}
+                                                                    </div>
+                                                                </Col>
+                                                                <Col width="15">
+                                                                    <Button popoverOpen={".popover-menu-"+option.produk_id}><i className="icons f7-icons" style={{fontSize:'18px', display:'inline-flex', textAlign:'right'}}>ellipsis_vertical</i></Button>
+                                                                    <Popover className={"popover-menu-"+option.produk_id} style={{minWidth:'150px'}}>
+                                                                        <List>
+                                                                            <ListItem link="#" popoverClose title="Edit" onClick={()=>this.edit(option.produk_id)} />
+                                                                            <ListItem link="#" popoverClose title="Hapus" onClick={()=>this.hapus(option.produk_id)} />
+                                                                            <ListItem link="#" popoverClose title="Batch & Stok" onClick={()=>this.batch(option.produk_id)} />
+                                                                        </List>
+                                                                    </Popover>
+                                                                </Col>
+                                                            </Row>
+                                                        </CardContent>
+                                                    </Card>
+                                                </Col>
                                             )
 
                                             // return (
@@ -358,7 +361,8 @@ class Produk extends Component {
                                             //     </Card>
                                             // )
                                         })}
-                                        </div>
+                                        {/* </div> */}
+                                        </Row>
                                     </Col>
                                 </Row>
                             </CardContent>
