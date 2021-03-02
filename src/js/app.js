@@ -25,7 +25,7 @@ Framework7.use(Framework7React)
 
 //localStorage config
 // localStorage.setItem('api_base','http://118.98.166.82:8881');
-localStorage.setItem('api_base','https://be.diskuis.id');
+localStorage.setItem('api_base','http://117.53.47.43:8085');
 // localStorage.setItem('api_base','http://117.53.47.43:8090');
 // localStorage.setItem('google_api','188472097829-4h5peopg70ndp9g1p9seg1abgkg64ot4.apps.googleusercontent.com');
 
@@ -56,7 +56,7 @@ if(localStorage.getItem('kode_aplikasi') === 'MEJA'){
 }
 
 localStorage.setItem('google_api','908643350959-ml0o4a08iqa99cqqd4vjj1qoojhmnfsq.apps.googleusercontent.com');
-localStorage.setItem('api_base','http://illobackend:8888');
+// localStorage.setItem('api_base','http://illobackend:8888');
 // localStorage.setItem('socket_url',"http://localhost:5000");
 // localStorage.setItem('google_api', '582957663393-hlr6l0a2oendcq6ul13n9pasi88mb7bc.apps.googleusercontent.com');
 
