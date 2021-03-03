@@ -722,9 +722,11 @@ class Beranda extends Component {
                                             backgroundPosition:'center'
                                         }}>&nbsp;</div>
                                         <Row noGap>
-                                            <Col width="85">
+                                            <Col width="100">
                                                 <div className="namaProduk">
-                                                    <Link href={"/TampilProduk/"+option.produk_id}>{option.nama}</Link>
+                                                    <Link href={"/TampilProduk/"+option.produk_id}>
+                                                      {option.nama}
+                                                    </Link>
                                                 </div>
                                                 <div className="namaProduk" style={{fontSize:'10px', fontWeight:'normal', marginTop:'0px'}}>
                                                     {option.keterangan ? option.keterangan.replace(/(<([^>]+)>)/gi, "") : <>&nbsp;</>}

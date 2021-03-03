@@ -63,6 +63,7 @@ import FormBatch from '../pages/DataMaster/FormBatch';
 import CariProduk from '../pages/Produk/CariProduk';
 import daftarProduk from '../pages/Produk/daftarProduk';
 import TampilProduk from '../pages/Produk/TampilProduk';
+import Keranjang from '../pages/Keranjang/Keranjang';
 
 // console.log(localStorage.getItem('kode_aplikasi'));
 
@@ -274,6 +275,10 @@ var routes = [
   {
     path: '/CariProduk',
     component: CariProduk,
+  },
+  {
+    path: '/Keranjang',
+    component: Keranjang,
   },
   {
     path: '/daftarProduk/:kategori_produk_id',

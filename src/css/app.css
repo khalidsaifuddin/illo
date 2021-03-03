@@ -1540,3 +1540,10 @@ h2 {
   background: white;
 }
 
+.kotakProdukKeranjang {
+  width:80px;
+  height:80px;
+  border:1px solid #ccc;
+  border-radius: 10px;
+}
+
