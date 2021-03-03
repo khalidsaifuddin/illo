@@ -283,11 +283,11 @@ class Pengguna extends Component {
                                         </div>
                                     </Col>
                                     <Col width="100" tabletWidth="100" style={{textAlign:'right'}}>
-                                        <Button onClick={this.filter} raised style={{display:'inline-flex', marginTop:'-60px', marginRight:'4px'}}>
+                                        <Button onClick={this.filter} raised style={{display:'inline-flex' , marginTop:'0px', marginRight:'4px'}}>
                                             <i className="icons f7-icons" style={{fontSize:'20px'}}>arrow_right_arrow_left_square</i>
                                             Filter
                                         </Button>
-                                        <Button raised fill style={{display:'inline-flex', marginTop:'-60px'}} onClick={this.tambah}>
+                                        <Button raised fill style={{display:'inline-flex' , marginTop:'0px'}} onClick={this.tambah}>
                                             <i className="f7-icons" style={{fontSize:'20px'}}>plus</i>&nbsp;
                                             Tambah
                                         </Button>

@@ -175,7 +175,7 @@ class AnggotaUnit extends Component {
                                         </div>
                                     </Col>
                                     <Col width="100" tabletWidth="100" style={{textAlign:'right'}}>
-                                        <Button raised fill style={{display:'inline-flex', marginTop:'-60px'}} onClick={()=>this.tambah(this.$f7route.params['unit_id'])}>
+                                        <Button raised fill style={{display:'inline-flex' , marginTop:'0px'}} onClick={()=>this.tambah(this.$f7route.params['unit_id'])}>
                                             <i className="f7-icons" style={{fontSize:'20px'}}>plus</i>&nbsp;
                                             Tambah
                                         </Button>

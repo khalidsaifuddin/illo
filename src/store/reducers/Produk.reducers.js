@@ -4,6 +4,15 @@ const initialState = {
     kategori_produk: {
         rows:[],
         total: 0
+    },
+    stok_total: [],
+    produk: {
+        rows: [],
+        total: 0
+    },
+    keranjang: {
+        rows: [],
+        total: 0
     }
 };
 
@@ -15,6 +24,27 @@ const ProdukReducer = function (state = initialState, action) {
             return {
                 ...state,
                 kategori_produk: action.payload
+            };
+        }
+        case Actions.GET_PRODUK:
+        {
+            return {
+                ...state,
+                produk: action.payload
+            };
+        }
+        case Actions.GET_KERANJANG:
+        {
+            return {
+                ...state,
+                keranjang: action.payload
+            };
+        }
+        case Actions.GET_STOK_TOTAL:
+        {
+            return {
+                ...state,
+                stok_total: action.payload.length > 0 ? action.payload[0] : {}
             };
         }
         

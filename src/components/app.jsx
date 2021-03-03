@@ -242,6 +242,7 @@ class app extends Component {
           }
         })
 
+        this.props.getKeranjang({pengguna_id: JSON.parse(localStorage.getItem('user')).pengguna_id})
       }
 
 
@@ -715,11 +716,12 @@ function mapDispatchToProps(dispatch) {
     getNotifikasiRedisBelumDibaca: Actions.getNotifikasiRedisBelumDibaca,
     getDaftarPesan: Actions.getDaftarPesan,
     getAnggotaUnit: Actions.getAnggotaUnit,
-    getAnggotaMitra: Actions.getAnggotaMitra
+    getAnggotaMitra: Actions.getAnggotaMitra,
+    getKeranjang: Actions.getKeranjang
   }, dispatch);
 }
 
-function mapStateToProps({ App, Notifikasi, Pesan }) {
+function mapStateToProps({ App, Notifikasi, Pesan, Produk }) {
   // console.log(App.tabBar);
 
   return {
@@ -731,7 +733,7 @@ function mapStateToProps({ App, Notifikasi, Pesan }) {
       notifikasi_belum_dibaca: Notifikasi.notifikasi_belum_dibaca,
       pesan_belum_dibaca: Pesan.pesan_belum_dibaca,
       daftar_pesan: Pesan.daftar_pesan,
-      keranjang: App.keranjang
+      keranjang: Produk.keranjang
   }
 }
 

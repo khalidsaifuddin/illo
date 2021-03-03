@@ -72,6 +72,10 @@ class BatchProduk extends Component {
                 this.$f7.dialog.close()
             })
         })
+
+        this.props.getStokTotal(this.state.routeParams).then((result)=>{
+            // console.log(this.props.stok_total)
+        })
     }
 
     tambah = () => {
@@ -175,7 +179,7 @@ class BatchProduk extends Component {
         return (
             <Page name="BatchProduk" className="halamanJenisTiket" hideBarsOnScroll style={{paddingBottom:'100px', boxSizing:'content-box'}}>
                 <Navbar sliding={false} backLink="Kembali" onBackClick={this.backClick}>
-                    <NavTitle sliding>Batch Produk</NavTitle>
+                    <NavTitle sliding>Batch dan Stok Produk</NavTitle>
                 </Navbar>
 
                 <Popup className="demo-popup" opened={this.state.popupFilter} onPopupClosed={() => this.setState({popupFilter : false})}>
@@ -222,95 +226,148 @@ class BatchProduk extends Component {
                         <Card noShadow noBorder style={{marginBottom:'50px', background: 'transparent'}}>
                             <CardContent style={{padding:'4px'}}>
                                 <Row>
-                                    <Col width="100" tabletWidth="100">
-                                        <div className="data-table" style={{overflowY:'hidden'}}>
-                                            <div className="data-table-footer" style={{display:'block'}}>
-                                                <div className="data-table-pagination" style={{textAlign:'right'}}>
-                                                    <a onClick={this.klikPrev} href="#" className={"link "+(this.state.routeParams.start < 1 ? "disabled" : "" )}>
-                                                    <i className="icon icon-prev color-gray"></i>
-                                                    </a>
-                                                    <a onClick={this.klikNext} href="#" className={"link "+((parseInt(this.state.routeParams.start)+20) >= parseInt(this.state.batch.total) ? "disabled" : "" )}>
-                                                        <i className="icon icon-next color-gray"></i>
-                                                    </a>
-                                                    <span className="data-table-pagination-label">{(this.state.routeParams.start+1)}-{(this.state.routeParams.start)+parseInt(this.state.routeParams.limit) <= parseInt(this.state.batch.total) ? (this.state.routeParams.start)+parseInt(this.state.routeParams.limit) : parseInt(this.state.batch.total)} dari {this.formatAngka(this.state.batch.total)} Batch</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </Col>
-                                    <Col width="100" tabletWidth="100" style={{textAlign:'right'}}>
-                                        <Button onClick={this.filter} raised style={{display:'inline-flex', marginTop:'-60px', marginRight:'4px'}}>
-                                            <i className="icons f7-icons" style={{fontSize:'20px'}}>arrow_right_arrow_left_square</i>
-                                            Filter
-                                        </Button>
-                                        <Button raised fill style={{display:'inline-flex', marginTop:'-60px'}} onClick={this.tambah}>
-                                            <i className="f7-icons" style={{fontSize:'20px'}}>plus</i>&nbsp;
-                                            Tambah
-                                        </Button>
-                                    </Col>
-                                    <Col width="100" tabletWidth="100">
-                                        {this.state.batch.total < 1 &&
-                                        <div style={{width:'100%', textAlign:'center', marginBottom:'50px'}}>
-                                            <img src="./static/icons/189.jpg" style={{width:'60%'}} /> 
-                                            <br/>
-                                            Data belum tersedia<br/>
-                                            Silakan klik tombol tambah diatas untuk membuat data baru   
-                                        </div>
-                                        }
-                                        {this.state.batch.rows.map((option)=>{
-                                            let last_update = '';
-                                            last_update = moment(option.last_update).format('D') + ' ' + this.bulan_singkat[(moment(option.last_update).format('M')-1)] + ' ' + moment(option.last_update).format('YYYY') + ', ' + moment(option.last_update).format('H') + ':' + moment(option.last_update).format('mm');
-
-                                            if(moment(option.last_update).format('D') + ' ' + this.bulan_singkat[(moment(option.last_update).format('M')-1)] + ' ' + moment(option.last_update).format('YYYY') === moment().format('D') + ' ' + this.bulan_singkat[(moment().format('M')-1)] + ' ' + moment().format('YYYY')){
-                                                last_update = 'Hari ini, ' + moment(option.last_update).format('H') + ':' + moment(option.last_update).format('mm');
-                                            }
-
-                                            return (
-                                                <Card key={option.batch_id} style={{marginLeft:'0px', marginRight:'0px'}}>
-                                                    <CardContent style={{padding:'8px'}}>
-                                                        <Row>
-                                                            <Col width="90" tabletWidth="70" desktopWidth="70" style={{display:'inline-flex'}}>
-                                                                {/* <img src={"./static/icons/illo-logo-icon.png"} style={{height:'45px', width:'45px', borderRadius:'50%', marginRight:'0px'}} /> */}
-                                                                <div style={{marginLeft:'16px'}}>
-                                                                    <b>{option.kode_batch} - {option.nama}</b>
-                                                                    <div style={{fontSize:'10px'}}>
-                                                                        {option.keterangan &&
-                                                                        <>
-                                                                        {option.keterangan ? option.keterangan.replace(/(<([^>]+)>)/gi, "") : ''}
-                                                                        {/* &nbsp;&bull;&nbsp; */}
-                                                                        </>
-                                                                        }
-                                                                        <div style={{fontSize:'10px'}}>
-                                                                            Update Terakhir: {last_update}
-                                                                        </div>
-                                                                        {option.stok &&
-                                                                        <div className="hilangDiDesktop" style={{fontSize:'12px'}}>
-                                                                            Jumlah Stok: {option.stok}
-                                                                        </div>
-                                                                        }
-                                                                    </div>
-                                                                </div>
-                                                            </Col>
-                                                            <Col width="0" tabletWidth="20" desktopWidth="20" style={{textAlign:'right'}} className="hilangDiMobile">
-                                                                {option.stok &&
-                                                                <div style={{fontSize:'12px'}}>
-                                                                    Jumlah Stok: {option.stok}
-                                                                </div>
-                                                                }
-                                                            </Col>
-                                                            <Col width="10" tabletWidth="10" desktopWidth="10" style={{textAlign:'right'}}>
-                                                                <Button popoverOpen={".popover-menu-"+option.batch_id}><i className="icons f7-icons">ellipsis_vertical</i></Button>
-                                                                <Popover className={"popover-menu-"+option.batch_id} style={{minWidth:'300px'}}>
-                                                                    <List>
-                                                                        <ListItem link="#" popoverClose title="Edit" onClick={()=>this.edit(option.batch_id)} />
-                                                                        <ListItem link="#" popoverClose title="Hapus" onClick={()=>this.hapus(option.batch_id)} />
-                                                                    </List>
-                                                                </Popover>
-                                                            </Col>
-                                                        </Row>
+                                    <Col width="100">
+                                        <Row style={{marginBottom:'8px'}}>
+                                            <Col width="50" tabletWidth="25">
+                                                <Card style={{minHeight:'70px', margin:'8px'}}>
+                                                    <CardContent style={{fontSize:'10px', padding:'8px'}}>
+                                                        <b>Stok Total</b>
+                                                        <div style={{fontSize:'25px'}}>
+                                                            {parseInt(this.props.stok_total.stok) > 0 ? parseInt(this.props.stok_total.stok) : '0'}
+                                                        </div>
                                                     </CardContent>
                                                 </Card>
-                                            )
-                                        })}
+                                            </Col>
+                                            <Col width="50" tabletWidth="25">
+                                                <Card style={{minHeight:'70px', margin:'8px'}}>
+                                                    <CardContent style={{fontSize:'10px', padding:'8px'}}>
+                                                        <b>Batch Total</b>
+                                                        <div style={{fontSize:'25px'}}>
+                                                            {parseInt(this.state.batch.total)}
+                                                        </div>
+                                                    </CardContent>
+                                                </Card>
+                                            </Col>
+                                            <Col width="50" tabletWidth="25">
+                                                <Card style={{minHeight:'70px', margin:'8px'}}>
+                                                    <CardContent style={{fontSize:'10px', padding:'8px'}}>
+                                                        <b>Produk Terjual</b>
+                                                        <div style={{fontSize:'25px'}}>
+                                                            0
+                                                        </div>
+                                                    </CardContent>
+                                                </Card>
+                                            </Col>
+                                            <Col width="50" tabletWidth="25">
+                                                <Card style={{minHeight:'70px', margin:'8px'}}>
+                                                    <CardContent style={{fontSize:'10px', padding:'8px'}}>
+                                                        <b>Hampir Kadaluarsa</b>
+                                                        <div style={{fontSize:'25px'}}>
+                                                            0
+                                                        </div>
+                                                    </CardContent>
+                                                </Card>
+                                            </Col>
+                                        </Row>
+                                    </Col>
+                                    <Col width="100">
+
+                                        <Row>
+                                            <Col width="100" tabletWidth="100" style={{textAlign:'right', marginBottom:'8px'}}>
+                                                <Button onClick={this.filter} raised style={{display:'inline-flex' , marginTop:'0px', marginRight:'4px'}}>
+                                                    <i className="icons f7-icons" style={{fontSize:'20px'}}>arrow_right_arrow_left_square</i>
+                                                    Filter
+                                                </Button>
+                                                <Button raised fill style={{display:'inline-flex' , marginTop:'0px'}} onClick={this.tambah}>
+                                                    <i className="f7-icons" style={{fontSize:'20px'}}>plus</i>&nbsp;
+                                                    Tambah
+                                                </Button>
+                                            </Col>
+                                            <Col width="100" tabletWidth="100">
+                                                <div className="data-table" style={{overflowY:'hidden'}}>
+                                                    <div className="data-table-footer" style={{display:'block'}}>
+                                                        <div className="data-table-pagination" style={{textAlign:'right'}}>
+                                                            <a onClick={this.klikPrev} href="#" className={"link "+(this.state.routeParams.start < 1 ? "disabled" : "" )}>
+                                                            <i className="icon icon-prev color-gray"></i>
+                                                            </a>
+                                                            <a onClick={this.klikNext} href="#" className={"link "+((parseInt(this.state.routeParams.start)+20) >= parseInt(this.state.batch.total) ? "disabled" : "" )}>
+                                                                <i className="icon icon-next color-gray"></i>
+                                                            </a>
+                                                            <span className="data-table-pagination-label">{(this.state.routeParams.start+1)}-{(this.state.routeParams.start)+parseInt(this.state.routeParams.limit) <= parseInt(this.state.batch.total) ? (this.state.routeParams.start)+parseInt(this.state.routeParams.limit) : parseInt(this.state.batch.total)} dari {this.formatAngka(this.state.batch.total)} Batch</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </Col>
+                                            <Col width="100" tabletWidth="100">
+                                                {this.state.batch.total < 1 &&
+                                                <div style={{width:'100%', textAlign:'center', marginBottom:'50px'}}>
+                                                    <img src="./static/icons/189.jpg" style={{width:'60%'}} /> 
+                                                    <br/>
+                                                    Data belum tersedia<br/>
+                                                    Silakan klik tombol tambah diatas untuk membuat data baru   
+                                                </div>
+                                                }
+                                                {this.state.batch.rows.map((option)=>{
+                                                    let last_update = '';
+                                                    last_update = moment(option.last_update).format('D') + ' ' + this.bulan_singkat[(moment(option.last_update).format('M')-1)] + ' ' + moment(option.last_update).format('YYYY') + ', ' + moment(option.last_update).format('H') + ':' + moment(option.last_update).format('mm');
+
+                                                    if(moment(option.last_update).format('D') + ' ' + this.bulan_singkat[(moment(option.last_update).format('M')-1)] + ' ' + moment(option.last_update).format('YYYY') === moment().format('D') + ' ' + this.bulan_singkat[(moment().format('M')-1)] + ' ' + moment().format('YYYY')){
+                                                        last_update = 'Hari ini, ' + moment(option.last_update).format('H') + ':' + moment(option.last_update).format('mm');
+                                                    }
+
+                                                    return (
+                                                        <Card key={option.batch_id} style={{marginLeft:'0px', marginRight:'0px'}}>
+                                                            <CardContent style={{padding:'8px'}}>
+                                                                <Row>
+                                                                    <Col width="90" tabletWidth="70" desktopWidth="70" style={{display:'inline-flex'}}>
+                                                                        {/* <img src={"./static/icons/illo-logo-icon.png"} style={{height:'45px', width:'45px', borderRadius:'50%', marginRight:'0px'}} /> */}
+                                                                        <div style={{marginLeft:'16px'}}>
+                                                                            <b>{option.kode_batch} - {option.nama}</b>
+                                                                            <div style={{fontSize:'10px'}}>
+                                                                                {option.keterangan &&
+                                                                                <>
+                                                                                {option.keterangan ? option.keterangan.replace(/(<([^>]+)>)/gi, "") : ''}
+                                                                                {/* &nbsp;&bull;&nbsp; */}
+                                                                                </>
+                                                                                }
+                                                                                <div style={{fontSize:'10px'}}>
+                                                                                    Update Terakhir: {last_update}
+                                                                                </div>
+                                                                                {option.stok &&
+                                                                                <div className="hilangDiDesktop" style={{fontSize:'12px'}}>
+                                                                                    Jumlah Stok: {option.stok}
+                                                                                    
+                                                                                </div>
+                                                                                }
+                                                                            </div>
+                                                                        </div>
+                                                                    </Col>
+                                                                    <Col width="0" tabletWidth="20" desktopWidth="20" style={{textAlign:'right'}} className="hilangDiMobile">
+                                                                        {option.stok &&
+                                                                        <div style={{fontSize:'12px'}}>
+                                                                            Jumlah Stok:
+                                                                            <div style={{fontSize:'16px', fontWeight: 'bold'}}>
+                                                                                {option.stok}
+                                                                            </div>
+                                                                        </div>
+                                                                        }
+                                                                    </Col>
+                                                                    <Col width="10" tabletWidth="10" desktopWidth="10" style={{textAlign:'right'}}>
+                                                                        <Button popoverOpen={".popover-menu-"+option.batch_id}><i className="icons f7-icons">ellipsis_vertical</i></Button>
+                                                                        <Popover className={"popover-menu-"+option.batch_id} style={{minWidth:'300px'}}>
+                                                                            <List>
+                                                                                <ListItem link="#" popoverClose title="Edit" onClick={()=>this.edit(option.batch_id)} />
+                                                                                <ListItem link="#" popoverClose title="Hapus" onClick={()=>this.hapus(option.batch_id)} />
+                                                                            </List>
+                                                                        </Popover>
+                                                                    </Col>
+                                                                </Row>
+                                                            </CardContent>
+                                                        </Card>
+                                                    )
+                                                })}
+                                            </Col>
+                                        </Row>
                                     </Col>
                                 </Row>
                             </CardContent>
@@ -330,15 +387,17 @@ function mapDispatchToProps(dispatch) {
       updateWindowDimension: Actions.updateWindowDimension,
       setLoading: Actions.setLoading,
       getBatch: Actions.getBatch,
+      getStokTotal: Actions.getStokTotal,
       simpanBatch: Actions.simpanBatch,
       generateUUID: Actions.generateUUID
     }, dispatch);
 }
 
-function mapStateToProps({ App, Pertanyaan, Kuis }) {
+function mapStateToProps({ App, Pertanyaan, Kuis, Produk }) {
     return {
         window_dimension: App.window_dimension,
-        loading: App.loading
+        loading: App.loading,
+        stok_total: Produk.stok_total
     }
 }
 

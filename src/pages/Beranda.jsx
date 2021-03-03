@@ -88,7 +88,11 @@ class Beranda extends Component {
       rows: [],
       total: 0
     },
-    tab_aktif: 'guru'
+    tab_aktif: 'guru',
+    produk: {
+      rows: [],
+      total: 0
+    }
   };
 
 
@@ -252,7 +256,6 @@ class Beranda extends Component {
   
                       }
   
-                      
                       if(localStorage.getItem('device') === 'android'){
                           window.location.reload(true);
                       }else{
@@ -306,6 +309,8 @@ class Beranda extends Component {
         }
 
       })
+
+      this.props.getProduk(this.state.routeParams)
 
     }
 
@@ -504,6 +509,33 @@ class Beranda extends Component {
     })
   }
 
+  simpanKeranjang = (produk_id) => {
+
+    this.$f7.dialog.preloader()
+
+    this.props.simpanKeranjang({
+      produk_id: produk_id,
+      pengguna_id: JSON.parse(localStorage.getItem('user')).pengguna_id,
+      jumlah: 1,
+      keterangan: ''
+    }).then((result)=>{
+      
+      this.props.getKeranjang({pengguna_id: JSON.parse(localStorage.getItem('user')).pengguna_id}).then((result)=>{
+        this.$f7.dialog.close()
+        this.$f7.dialog.alert('Produk berhasil ditambahkan ke keranjang!', "Berhasil")
+      }).catch(()=>{
+        this.$f7.dialog.close()
+        this.$f7.dialog.alert('Ada kesalahan di IRIS. Mohon coba kembali dalam beberapa saat!', 'Ada Kesalahan')
+      })
+
+    }).catch(()=>{
+      
+      this.$f7.dialog.close()
+      this.$f7.dialog.alert('Ada kesalahan di IRIS. Mohon coba kembali dalam beberapa saat!', 'Ada Kesalahan')
+    
+    })
+  }
+
   render()
     {
         // console.log(localStorage.getItem('semester_id_aplikasi'));
@@ -662,6 +694,107 @@ class Beranda extends Component {
               
                   <div>&nbsp;</div>
                   <Row noGap style={{marginBottom:'50px'}}>
+                    
+                    <Col width="100">
+                        <Card>
+                          <CardContent>
+                            {/* <BlockTitle style={{marginLeft:'0px', marginTop:'0px', marginBottom:'8px'}}>
+                              Rekomendasi Produk
+                            </BlockTitle> */}
+                            <Row noGap>
+                              <Col width="70">
+                                <h1 className="h1-beranda">Rekomendasi Produk</h1>
+                              </Col>
+                              <Col width="30">
+                                <Button className="color-theme-teal" raised fill href="/daftarProduk/semua" style={{marginTop:'8px'}}>
+                                  Semua
+                                </Button>
+                              </Col>
+                            </Row>
+                            <div className="overflowCard">
+                              {this.props.produk.rows.map((option)=>{
+                                return (
+                                  <Card key={option.produk_id} style={{margin:'8px', minHeight:'300px', maxWidth:'200px'}}>
+                                    <CardContent style={{padding:'8px'}}>
+                                        <div className="gambarProduk" style={{
+                                            backgroundImage:'url('+localStorage.getItem('api_base')+(option.gambar_produk.length > 0 ? option.gambar_produk[0].nama_file : '/assets/berkas/3577232-1.jpg')+')', 
+                                            backgroundSize:'cover',
+                                            backgroundPosition:'center'
+                                        }}>&nbsp;</div>
+                                        <Row noGap>
+                                            <Col width="85">
+                                                <div className="namaProduk">
+                                                    <Link href={"/TampilProduk/"+option.produk_id}>{option.nama}</Link>
+                                                </div>
+                                                <div className="namaProduk" style={{fontSize:'10px', fontWeight:'normal', marginTop:'0px'}}>
+                                                    {option.keterangan ? option.keterangan.replace(/(<([^>]+)>)/gi, "") : <>&nbsp;</>}
+                                                </div>
+                                                <div className="hargaProduk">
+                                                    Rp {(option.harga_produk.length > 0 ? this.formatAngka(option.harga_produk[0].nominal) : '0')}
+                                                </div>
+                                                <div className="namaProduk" style={{fontSize:'10px', color:'#b3b3b3'}}>
+                                                    {option.kategori_produk}
+                                                </div>
+                                            </Col>
+                                            <Col width="100">
+                                                <Button className="bawahCiriBiru" raised fill style={{marginTop:'8px'}} onClick={()=>this.simpanKeranjang(option.produk_id)}>
+                                                    <i className="f7-icons" style={{fontSize:'20px'}}>cart_badge_plus</i>&nbsp;
+                                                    Beli
+                                                </Button>
+                                            </Col>
+                                        </Row>
+                                    </CardContent>
+                                </Card>
+                                )
+                              })}
+                              {/* <Card className={"cardBorder-20 overflowCard-inner"}>
+                                <CardContent>
+                                  &nbsp;tes
+                                </CardContent>
+                              </Card> */}
+                            </div>
+                          </CardContent>
+                        </Card>
+
+                        <Card className={"cardBorder-20 hilangDiDesktop"}>
+                        <CardContent>
+                          <Row noGap>
+                            <Col width="70">
+                              <h1 className="h1-beranda">Kategori Produk</h1>
+                            </Col>
+                            <Col width="30">
+                              <Button className="color-theme-teal" raised fill href="/TampilKategoriProduk" style={{marginTop:'8px'}}>
+                                Semua
+                              </Button>
+                            </Col>
+                          </Row>
+                          <div className="overflowCard">
+                            {this.props.kategori_produk.rows.map((option)=>{
+                              return (
+                                <Card className={"cardBorder-20 overflowCard-inner"} style={{margin:'8px', width:'200px', background:(this.gradients[this.props.kategori_produk.rows.indexOf(option)]),minHeight:'60px', textAlign:'right',color:'white', fontWeight:'bold'}}>
+                                  <CardContent className="cardBorder-20" style={{minHeight:'80px',background:'rgba(0, 0, 0, 0.4)'}}>
+                                    <Link href={"/daftarProduk/"+option.kategori_produk_id} style={{display:'block'}}>
+                                        <div style={{color:'white', fontSize:'20px', textShadow:'2px 2px #434343'}}>
+                                            {option.nama}
+                                        </div>
+                                        <div style={{color:'white',fontSize:'12px', textShadow:'2px 2px #434343'}}>
+                                            ({option.jumlah_produk ? option.jumlah_produk : '0'} Produk)
+                                        </div>
+                                    </Link>
+                                  </CardContent>
+                                </Card>
+                              )
+                            })}
+                            {/* <Card className={"cardBorder-20 overflowCard-inner"}>
+                              <CardContent>
+                                &nbsp;tes
+                              </CardContent>
+                            </Card> */}
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </Col>
+                    
                     {/* <Col width="100" tabletWidth="100">
                       <Card className="cardAtas">
                         <CardContent className={"color-theme-deeporange"}>
@@ -1084,7 +1217,7 @@ class Beranda extends Component {
                         </CardContent>
                       </Card> */}
 
-                      <Card className={"cardBorder-20"}>
+                      <Card className={"cardBorder-20 hilangDiMobile"}>
                         <CardContent>
                           <Row noGap>
                             <Col width="70">
@@ -1156,7 +1289,10 @@ function mapDispatchToProps(dispatch) {
     getNotifikasiRedis: Actions.getNotifikasiRedis,
     getNotifikasiRedisBelumDibaca: Actions.getNotifikasiRedisBelumDibaca,
     getLeaderboardPengguna: Actions.getLeaderboardPengguna,
-    getKategoriProduk: Actions.getKategoriProduk
+    getKategoriProduk: Actions.getKategoriProduk,
+    getProduk: Actions.getProduk,
+    simpanKeranjang: Actions.simpanKeranjang,
+    getKeranjang: Actions.getKeranjang
   }, dispatch);
 }
 
@@ -1185,7 +1321,8 @@ function mapStateToProps({ App, Pertanyaan, Notifikasi, Kuis, Ruang, Aktivitas, 
       pesan_belum_dibaca: Pesan.pesan_belum_dibaca,
       daftar_pesan: Pesan.daftar_pesan,
       anggota_mitra: Mitra.anggota_mitra,
-      kategori_produk: Produk.kategori_produk
+      kategori_produk: Produk.kategori_produk,
+      produk: Produk.produk
 
   }
 }

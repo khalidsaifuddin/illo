@@ -231,6 +231,17 @@ class Produk extends Component {
                         <Card noShadow noBorder style={{marginBottom:'50px', background: 'transparent'}}>
                             <CardContent style={{padding:'4px'}}>
                                 <Row>
+                                    
+                                    <Col width="100" tabletWidth="100" style={{textAlign:'right', marginBottom:'8px'}}>
+                                        <Button onClick={this.filter} raised style={{display:'inline-flex' , marginTop:'0px', marginRight:'4px'}}>
+                                            <i className="icons f7-icons" style={{fontSize:'20px'}}>arrow_right_arrow_left_square</i>
+                                            Filter
+                                        </Button>
+                                        <Button raised fill style={{display:'inline-flex' , marginTop:'0px'}} onClick={this.tambah}>
+                                            <i className="f7-icons" style={{fontSize:'20px'}}>plus</i>&nbsp;
+                                            Tambah
+                                        </Button>
+                                    </Col>
                                     <Col width="100" tabletWidth="100">
                                         <div className="data-table" style={{overflowY:'hidden'}}>
                                             <div className="data-table-footer" style={{display:'block'}}>
@@ -245,16 +256,6 @@ class Produk extends Component {
                                                 </div>
                                             </div>
                                         </div>
-                                    </Col>
-                                    <Col width="100" tabletWidth="100" style={{textAlign:'right'}}>
-                                        <Button onClick={this.filter} raised style={{display:'inline-flex', marginTop:'-60px', marginRight:'4px'}}>
-                                            <i className="icons f7-icons" style={{fontSize:'20px'}}>arrow_right_arrow_left_square</i>
-                                            Filter
-                                        </Button>
-                                        <Button raised fill style={{display:'inline-flex', marginTop:'-60px'}} onClick={this.tambah}>
-                                            <i className="f7-icons" style={{fontSize:'20px'}}>plus</i>&nbsp;
-                                            Tambah
-                                        </Button>
                                     </Col>
                                     <Col width="100" tabletWidth="100">
                                         {this.state.produk.total < 1 &&
@@ -277,7 +278,7 @@ class Produk extends Component {
 
                                             return (
                                                 <Col width="50" tabletWidth="33" desktopWidth="33">
-                                                    <Card key={option.produk_id} className="boxProduk">
+                                                    <Card key={option.produk_id} className="boxProduk" style={{height:'260px'}}>
                                                         <CardContent style={{padding:'8px'}}>
                                                             <div className="gambarProduk" style={{
                                                                 backgroundImage:'url('+localStorage.getItem('api_base')+(option.gambar_produk.length > 0 ? option.gambar_produk[0].nama_file : '/assets/berkas/3577232-1.jpg')+')', 
@@ -305,7 +306,7 @@ class Produk extends Component {
                                                                         <List>
                                                                             <ListItem link="#" popoverClose title="Edit" onClick={()=>this.edit(option.produk_id)} />
                                                                             <ListItem link="#" popoverClose title="Hapus" onClick={()=>this.hapus(option.produk_id)} />
-                                                                            <ListItem link="#" popoverClose title="Batch & Stok" onClick={()=>this.batch(option.produk_id)} />
+                                                                            <ListItem link="#" popoverClose title="Batch & Stok Pusat" onClick={()=>this.batch(option.produk_id)} />
                                                                         </List>
                                                                     </Popover>
                                                                 </Col>

@@ -451,11 +451,11 @@ class DaftarTiket extends Component {
                                         </div>
                                     </Col>
                                     <Col width="100" tabletWidth="100" style={{textAlign:'right'}}>
-                                        <Button style={{display:'inline-flex', marginTop:'-60px', marginRight:'4px'}} onClick={this.tampilan}>
+                                        <Button style={{display:'inline-flex' , marginTop:'0px', marginRight:'4px'}} onClick={this.tampilan}>
                                             <i className="f7-icons" style={{fontSize:'20px'}}>rectangle_grid_1x2</i>&nbsp;
                                             Tampilan
                                         </Button>
-                                        <Button style={{display:'inline-flex', marginTop:'-60px'}} onClick={this.filter}>
+                                        <Button style={{display:'inline-flex' , marginTop:'0px'}} onClick={this.filter}>
                                             <i className="f7-icons" style={{fontSize:'20px'}}>arrow_right_arrow_left_square</i>&nbsp;
                                             Filter
                                         </Button>

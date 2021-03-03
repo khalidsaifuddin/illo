@@ -275,11 +275,11 @@ class DaftarTiket extends Component {
                                         </div>
                                     </Col>
                                     <Col width="100" tabletWidth="100" style={{textAlign:'right'}}>
-                                        <Button raised style={{display:'inline-flex', marginTop:'-60px', marginRight:'4px'}} onClick={this.filter}>
+                                        <Button raised style={{display:'inline-flex' , marginTop:'0px', marginRight:'4px'}} onClick={this.filter}>
                                             <i className="f7-icons" style={{fontSize:'20px'}}>arrow_right_arrow_left_square</i>&nbsp;
                                             Filter
                                         </Button>
-                                        <Button raised fill style={{display:'inline-flex', marginTop:'-60px'}} onClick={this.tambah}>
+                                        <Button raised fill style={{display:'inline-flex' , marginTop:'0px'}} onClick={this.tambah}>
                                             <i className="f7-icons" style={{fontSize:'20px'}}>plus</i>&nbsp;
                                             Buat Tiket
                                         </Button>

@@ -26,6 +26,10 @@ class TampilKategoriProduk extends Component {
             rows: [],
             total: 0
         },
+        kategori_produk_backup: {
+            rows: [],
+            total: 0
+        },
         total_produk: 0
     }
 
@@ -77,7 +81,8 @@ class TampilKategoriProduk extends Component {
     componentDidMount = () => {
         this.props.getKategoriProduk(this.state.routeParams).then((result)=>{
             this.setState({
-                kategori_produk: result.payload
+                kategori_produk: result.payload,
+                kategori_produk_backup: result.payload
             },()=>{
                 let total_produk = 0;
 
@@ -89,6 +94,51 @@ class TampilKategoriProduk extends Component {
                     total_produk: total_produk
                 })
             })
+        })
+    }
+
+    cariKeyword = (e) => {
+        this.setState({
+            routeParams: {
+                ...this.state.routeParams,
+                keyword: e.currentTarget.value
+            },
+            kategori_produk: {...this.state.kategori_produk_backup}
+        },()=>{
+
+            if(this.state.routeParams.keyword){
+                // ada valuenya
+                let options = []
+
+                this.state.kategori_produk.rows.map((option)=>{
+                    // if(option.nama.search(this.state.routeParams.keyword) !== -1){
+                    //     //ketemu
+                    //     options.push(option)
+                    // }else{
+                    //     //tidak ketemu
+                    // }
+
+                    console.log(option.nama.toLowerCase())
+                    console.log(option.nama.toLowerCase().search(this.state.routeParams.keyword))
+                    if(parseInt(option.nama.toLowerCase().search(this.state.routeParams.keyword)) > -1){
+                        //ketemu
+                        // console.log('ketemu')
+                        options.push(option)
+                    }
+                })
+
+                // console.log(options)
+
+                this.setState({
+                    kategori_produk: {
+                        ...this.state.kategori_produk,
+                        rows: options,
+                        
+                    }
+                })
+            }else{
+                //nggak ada valuenya, reset
+            }
         })
     }
     
@@ -106,6 +156,17 @@ class TampilKategoriProduk extends Component {
                         
                         <Card noShadow noBorder style={{marginBottom:'50px', background: 'transparent'}}>
                             <CardContent style={{padding:'4px'}}>
+                                <Block style={{marginBottom: '16px', marginTop:'-12px', paddingLeft:'0px', paddingRight:'0px'}}>
+                                    <List>
+                                        <Searchbar
+                                            className="searchbar-demo"
+                                            placeholder="Cari Kategori"
+                                            searchContainer=".search-list"
+                                            searchIn=".item-title"
+                                            onChange={this.cariKeyword}
+                                        ></Searchbar>
+                                    </List>
+                                </Block>
                                 <Row noGap>
                                     <Col width="100" tabletWidth="50">
                                         <Link style={{width:'100%', color:'#434343'}} href={"/daftarProduk/semua"}>

@@ -7,7 +7,60 @@ export const SIMPAN_PRODUK = '[PRODUK] SIMPAN_PRODUK';
 export const GET_HARGA_PRODUK = '[PRODUK] GET_HARGA_PRODUK';
 export const GET_GAMBAR_PRODUK = '[PRODUK] GET_GAMBAR_PRODUK';
 export const GET_BATCH = '[PRODUK] GET_BATCH';
+export const GET_STOK_TOTAL = '[PRODUK] GET_STOK_TOTAL';
 export const SIMPAN_BATCH = '[PRODUK] SIMPAN_BATCH';
+export const GET_KERANJANG = '[PRODUK] GET_KERANJANG';
+export const SIMPAN_KERANJANG = '[PRODUK] SIMPAN_KERANJANG';
+
+
+
+export function getKeranjang(routeParams)
+{
+    const request = axios.post(localStorage.getItem('api_base')+'/api/Produk/getKeranjang', {
+        ...routeParams
+    });
+
+    return (dispatch) =>
+        request.then((response) =>
+            dispatch({
+                type   : GET_KERANJANG,
+                payload: response.data,
+                routeParams
+            })
+        );
+}
+
+export function simpanKeranjang(routeParams)
+{
+    const request = axios.post(localStorage.getItem('api_base')+'/api/Produk/simpanKeranjang', {
+        ...routeParams
+    });
+
+    return (dispatch) =>
+        request.then((response) =>
+            dispatch({
+                type   : SIMPAN_KERANJANG,
+                payload: response.data,
+                routeParams
+            })
+        );
+}
+
+export function getStokTotal(routeParams)
+{
+    const request = axios.post(localStorage.getItem('api_base')+'/api/Produk/getStokTotal', {
+        ...routeParams
+    });
+
+    return (dispatch) =>
+        request.then((response) =>
+            dispatch({
+                type   : GET_STOK_TOTAL,
+                payload: response.data,
+                routeParams
+            })
+        );
+}
 
 export function getGambarProduk(routeParams)
 {

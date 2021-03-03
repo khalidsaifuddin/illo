@@ -292,35 +292,20 @@ class AnggotaMitra extends Component {
                         <Card noShadow noBorder style={{marginBottom:'50px', background: 'transparent'}}>
                             <CardContent style={{padding:'4px'}}>
                                 <Row>
-                                    <Col width="100" tabletWidth="100">
-                                        <div className="data-table" style={{overflowY:'hidden'}}>
-                                            <div className="data-table-footer" style={{display:'block'}}>
-                                                <div className="data-table-pagination" style={{textAlign:'right'}}>
-                                                    <a onClick={this.klikPrev} href="#" className={"link "+(this.state.routeParams.start < 1 ? "disabled" : "" )}>
-                                                    <i className="icon icon-prev color-gray"></i>
-                                                    </a>
-                                                    <a onClick={this.klikNext} href="#" className={"link "+((parseInt(this.state.routeParams.start)+20) >= parseInt(this.state.anggota_mitra.total) ? "disabled" : "" )}>
-                                                        <i className="icon icon-next color-gray"></i>
-                                                    </a>
-                                                    <span className="data-table-pagination-label">{(this.state.routeParams.start+1)}-{(this.state.routeParams.start)+parseInt(this.state.routeParams.limit) <= parseInt(this.state.anggota_mitra.total) ? (this.state.routeParams.start)+parseInt(this.state.routeParams.limit) : parseInt(this.state.anggota_mitra.total)} dari {this.formatAngka(this.state.anggota_mitra.total)} Anggota Mitra</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </Col>
                                     <Col width="100" tabletWidth="100" style={{textAlign:'right'}}>
-                                        <Button onClick={this.filter} raised style={{display:'inline-flex', marginTop:'-60px', marginRight:'4px'}}>
+                                        <Button onClick={this.filter} raised style={{display:'inline-flex' , marginTop:'0px', marginRight:'4px'}}>
                                             <i className="icons f7-icons" style={{fontSize:'20px'}}>arrow_right_arrow_left_square</i>&nbsp;
                                             Filter
                                         </Button>
-                                        {/* <Button raised fill style={{display:'inline-flex', marginTop:'-60px'}} onClick={()=>this.tambah(this.$f7route.params['jenis_mitra_id'])}> */}
+                                        {/* <Button raised fill style={{display:'inline-flex' , marginTop:'0px'}} onClick={()=>this.tambah(this.$f7route.params['jenis_mitra_id'])}> */}
                                         {parseInt(this.$f7route.params['jenis_mitra_id']) !== 2 &&
-                                        <Button raised fill style={{display:'inline-flex', marginTop:'-60px'}} popoverOpen={".popover-tambah-menu"}>
+                                        <Button raised fill style={{display:'inline-flex' , marginTop:'0px'}} popoverOpen={".popover-tambah-menu"}>
                                             <i className="f7-icons" style={{fontSize:'20px'}}>plus</i>&nbsp;
                                             Tambah
                                         </Button>
                                         }
                                         {parseInt(this.$f7route.params['jenis_mitra_id']) === 2 &&
-                                        <Button raised style={{display:'inline-flex', marginTop:'-60px'}} popoverOpen={".popover-informasi"}>
+                                        <Button raised style={{display:'inline-flex' , marginTop:'0px'}} popoverOpen={".popover-informasi"}>
                                             <i className="f7-icons" style={{fontSize:'20px'}}>question_circle</i>
                                         </Button>
                                         }
@@ -335,6 +320,21 @@ class AnggotaMitra extends Component {
                                                 Semua pengguna yang terdaftar di aplikasi ini adalah privileged customer bila yang bersangkutan belum terdaftar sebagai reseller, agen, atau distributor
                                             </div>
                                         </Popover>
+                                    </Col>
+                                    <Col width="100" tabletWidth="100">
+                                        <div className="data-table" style={{overflowY:'hidden'}}>
+                                            <div className="data-table-footer" style={{display:'block'}}>
+                                                <div className="data-table-pagination" style={{textAlign:'right'}}>
+                                                    <a onClick={this.klikPrev} href="#" className={"link "+(this.state.routeParams.start < 1 ? "disabled" : "" )}>
+                                                    <i className="icon icon-prev color-gray"></i>
+                                                    </a>
+                                                    <a onClick={this.klikNext} href="#" className={"link "+((parseInt(this.state.routeParams.start)+20) >= parseInt(this.state.anggota_mitra.total) ? "disabled" : "" )}>
+                                                        <i className="icon icon-next color-gray"></i>
+                                                    </a>
+                                                    <span className="data-table-pagination-label">{(this.state.routeParams.start+1)}-{(this.state.routeParams.start)+parseInt(this.state.routeParams.limit) <= parseInt(this.state.anggota_mitra.total) ? (this.state.routeParams.start)+parseInt(this.state.routeParams.limit) : parseInt(this.state.anggota_mitra.total)} dari {this.formatAngka(this.state.anggota_mitra.total)} Anggota Mitra</span>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </Col>
                                     <Col width="100" tabletWidth="100">
                                         {this.state.anggota_mitra.total < 1 &&
