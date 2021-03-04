@@ -472,6 +472,10 @@ class ProfilPengguna extends Component {
     })
   }
 
+  bukaAlamat = () => {
+    this.$f7router.navigate("/AlamatPengguna/"+JSON.parse(localStorage.getItem('user')).pengguna_id)
+  }
+
   render() {
     return (
       <Page name="ProfilPengguna" hideBarsOnScroll>
@@ -536,6 +540,7 @@ class ProfilPengguna extends Component {
                     <CardContent>
                       <Button style={{borderRadius:'20px'}} className="color-theme-teal" tabLink="#tab-1" tabLinkActive>Identitas</Button>
                       <Button style={{borderRadius:'20px'}} className="color-theme-teal" tabLink="#tab-3">Keamanan</Button>
+                      <Button style={{borderRadius:'20px'}} className="color-theme-teal" onClick={this.bukaAlamat}>Alamat</Button>
                     </CardContent>
                   </Card>
 

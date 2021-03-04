@@ -1202,6 +1202,18 @@ class Beranda extends Component {
                         </CardContent>
                       </Card>
                       }
+                      {this.props.anggota_mitra.total < 1 &&
+                      <Card className={"cardBorder-20"}>
+                        <CardContent>
+                          <BlockTitle style={{marginTop:'0px', marginBottom:'4px', fontSize:'15px', fontWeight:'bold', color:'#434343', marginLeft:'0px'}}>
+                            Privileged Customer
+                          </BlockTitle>
+                          <span  style={{fontSize:'10px'}}>
+                            Reseller Terdekat:
+                          </span>
+                        </CardContent>
+                      </Card>
+                      }
 
                       {/* <Card className={"cardBorder-20"}>
                         <CardContent>

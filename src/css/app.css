@@ -1325,15 +1325,17 @@ h2 {
   background-image: url("/static/icons/bg1.png");
   background: url("/static/icons/bg1.png"), #8fd3f4;  
   background-image: url("/static/icons/bg1.png"), -webkit-linear-gradient(to right, #000000, #0f9b0f); 
-  background-image: url("/static/icons/bg1.png"), linear-gradient(to right, #000000, #0f9b0f); 
+  background-image: url("/static/icons/bg1.png"), linear-gradient(to right, #000000, #0f9b0f);
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
-  /* background:transparent; */
+  /* background:transparent;
+  /* background: white; */
 }
 
 .navbar .navbar-inner .title{
   color:white;
+  /* color: #434343; */
 }
 
 .navbar .navbar-inner a{

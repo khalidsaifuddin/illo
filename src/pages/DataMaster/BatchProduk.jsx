@@ -26,6 +26,7 @@ class BatchProduk extends Component {
             rows: [],
             total: 0
         },
+        produk_record: {},
         popupFilter: false
     }
 
@@ -69,7 +70,13 @@ class BatchProduk extends Component {
             this.setState({
                 batch: result.payload
             },()=>{
-                this.$f7.dialog.close()
+                this.props.getProduk(this.state.routeParams).then((result)=>{
+                    this.setState({
+                        produk_record: result.payload.total > 0 ? result.payload.rows[0] : {}
+                    },()=>{
+                        this.$f7.dialog.close()
+                    })
+                })
             })
         })
 
@@ -227,6 +234,13 @@ class BatchProduk extends Component {
                             <CardContent style={{padding:'4px'}}>
                                 <Row>
                                     <Col width="100">
+                                        <Card>
+                                            <CardContent style={{padding:'8px'}}>
+                                                Nama Produk: <b style={{fontSize:'15px'}}>{this.state.produk_record.nama}</b>
+                                            </CardContent>
+                                        </Card>
+                                    </Col>
+                                    <Col width="100">
                                         <Row style={{marginBottom:'8px'}}>
                                             <Col width="50" tabletWidth="25">
                                                 <Card style={{minHeight:'70px', margin:'8px'}}>
@@ -315,11 +329,25 @@ class BatchProduk extends Component {
                                                         last_update = 'Hari ini, ' + moment(option.last_update).format('H') + ':' + moment(option.last_update).format('mm');
                                                     }
 
+                                                    let tanggal_produksi = '';
+                                                    tanggal_produksi = moment(option.tanggal_produksi).format('D') + ' ' + this.bulan_singkat[(moment(option.tanggal_produksi).format('M')-1)] + ' ' + moment(option.tanggal_produksi).format('YYYY');
+
+                                                    if(moment(option.tanggal_produksi).format('D') + ' ' + this.bulan_singkat[(moment(option.tanggal_produksi).format('M')-1)] + ' ' + moment(option.tanggal_produksi).format('YYYY') === moment().format('D') + ' ' + this.bulan_singkat[(moment().format('M')-1)] + ' ' + moment().format('YYYY')){
+                                                        tanggal_produksi = 'Hari ini';
+                                                    }
+                                                    
+                                                    let tanggal_kadaluarsa = '';
+                                                    tanggal_kadaluarsa = moment(option.tanggal_kadaluarsa).format('D') + ' ' + this.bulan_singkat[(moment(option.tanggal_kadaluarsa).format('M')-1)] + ' ' + moment(option.tanggal_kadaluarsa).format('YYYY');
+
+                                                    if(moment(option.tanggal_kadaluarsa).format('D') + ' ' + this.bulan_singkat[(moment(option.tanggal_kadaluarsa).format('M')-1)] + ' ' + moment(option.tanggal_kadaluarsa).format('YYYY') === moment().format('D') + ' ' + this.bulan_singkat[(moment().format('M')-1)] + ' ' + moment().format('YYYY')){
+                                                        tanggal_kadaluarsa = 'Hari ini';
+                                                    }
+
                                                     return (
                                                         <Card key={option.batch_id} style={{marginLeft:'0px', marginRight:'0px'}}>
                                                             <CardContent style={{padding:'8px'}}>
                                                                 <Row>
-                                                                    <Col width="90" tabletWidth="70" desktopWidth="70" style={{display:'inline-flex'}}>
+                                                                    <Col width="60" tabletWidth="50" desktopWidth="50" style={{display:'inline-flex'}}>
                                                                         {/* <img src={"./static/icons/illo-logo-icon.png"} style={{height:'45px', width:'45px', borderRadius:'50%', marginRight:'0px'}} /> */}
                                                                         <div style={{marginLeft:'16px'}}>
                                                                             <b>{option.kode_batch} - {option.nama}</b>
@@ -341,6 +369,17 @@ class BatchProduk extends Component {
                                                                                 }
                                                                             </div>
                                                                         </div>
+                                                                        {/* <div style={{fontSize:'10px'}}>
+                                                                            produksi:
+                                                                        </div>
+                                                                        <div style={{fontSize:'10px'}}>
+                                                                            Kadaluarsa:
+                                                                        </div> */}
+                                                                    </Col>
+                                                                    <Col width="30" tabletWidth="20" style={{fontSize:'10px'}}>
+                                                                        Prod: <b>{tanggal_produksi}</b>
+                                                                        <br/>
+                                                                        Exp: <b>{tanggal_kadaluarsa}</b>
                                                                     </Col>
                                                                     <Col width="0" tabletWidth="20" desktopWidth="20" style={{textAlign:'right'}} className="hilangDiMobile">
                                                                         {option.stok &&
@@ -389,6 +428,7 @@ function mapDispatchToProps(dispatch) {
       getBatch: Actions.getBatch,
       getStokTotal: Actions.getStokTotal,
       simpanBatch: Actions.simpanBatch,
+      getProduk: Actions.getProduk,
       generateUUID: Actions.generateUUID
     }, dispatch);
 }

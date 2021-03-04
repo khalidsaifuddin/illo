@@ -64,6 +64,8 @@ import CariProduk from '../pages/Produk/CariProduk';
 import daftarProduk from '../pages/Produk/daftarProduk';
 import TampilProduk from '../pages/Produk/TampilProduk';
 import Keranjang from '../pages/Keranjang/Keranjang';
+import AlamatPengguna from '../pages/Pengguna/AlamatPengguna';
+import FormAlamatPengguna from '../pages/Pengguna/FormAlamatPengguna';
 
 // console.log(localStorage.getItem('kode_aplikasi'));
 
@@ -275,6 +277,18 @@ var routes = [
   {
     path: '/CariProduk',
     component: CariProduk,
+  },
+  {
+    path: '/AlamatPengguna/:pengguna_id',
+    component: AlamatPengguna,
+  },
+  {
+    path: '/FormAlamatPengguna/',
+    component: FormAlamatPengguna,
+  },
+  {
+    path: '/FormAlamatPengguna/:alamat_pengguna_id',
+    component: FormAlamatPengguna,
   },
   {
     path: '/Keranjang',
