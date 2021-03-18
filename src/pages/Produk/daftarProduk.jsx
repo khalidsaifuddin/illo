@@ -26,7 +26,8 @@ class daftarProduk extends Component {
             rows: [],
             total: 0
         },
-        kategori_produk: {}
+        kategori_produk: {},
+        mitra_terdekat: (localStorage.getItem('mitra_terdekat') && localStorage.getItem('mitra_terdekat') !== '' ? JSON.parse(localStorage.getItem('mitra_terdekat')) : {thi})
     }
 
     bulan = [
@@ -90,9 +91,39 @@ class daftarProduk extends Component {
                 <Row noGap>
                     <Col width="0" tabletWidth="0" desktopWidth="10"></Col>
                     <Col width="100" tabletWidth="100" desktopWidth="80">
-                        
+
+                        {/* <Card noShadow noBorder style={{background: 'transparent'}}> */}
+                        <Card>
+                            <CardContent style={{padding:'8px'}}>
+                                Menampilkan stok barang dari:
+                                <br/>
+                                <div style={{display:'inline-flex', marginTop:'8px'}}>
+                                    <img src={this.state.mitra_terdekat[0].gambar ? this.state.mitra_terdekat[0].gambar : '/static/icons/illo-logo-icon.png'} style={{height:'45px', width:'45px', borderRadius:'50%', marginRight:'0px'}} />
+                                    <div style={{marginLeft:'8px'}}>
+                                        {this.state.mitra_terdekat.length > 0 &&
+                                        <div>
+                                            <b style={{fontSize:'14px'}}>{this.state.mitra_terdekat[0].pengguna}</b>
+                                            <br/>
+                                            <span style={{fontSize:'12px'}}>
+                                                {this.state.mitra_terdekat[0].jenis_mitra} - {parseInt(this.state.mitra_terdekat[0].jenis_mitra_id) === 5 ? <>{this.state.mitra_terdekat[0].provinsi}</> : (parseInt(this.state.mitra_terdekat[0].jenis_mitra_id) === 4 ? <>{this.state.mitra_terdekat[0].kabupaten}</> : (parseInt(this.state.mitra_terdekat[0].jenis_mitra_id) === 3 ? <>{this.state.mitra_terdekat[0].kecamatan}</> : <></>))}
+                                            </span>
+                                        </div>
+                                        }
+                                    </div>
+                                </div>
+                                {/* {this.state.mitra_terdekat.length > 0 &&
+                                <div>
+                                <b style={{fontSize:'14px'}}>{this.state.mitra_terdekat[0].pengguna}</b>
+                                
+                                <span style={{fontSize:'12px'}}>
+                                  &nbsp;({this.state.mitra_terdekat[0].jenis_mitra} - {parseInt(this.state.mitra_terdekat[0].jenis_mitra_id) === 5 ? <>{this.state.mitra_terdekat[0].provinsi}</> : (parseInt(this.state.mitra_terdekat[0].jenis_mitra_id) === 4 ? <>{this.state.mitra_terdekat[0].kabupaten}</> : (parseInt(this.state.mitra_terdekat[0].jenis_mitra_id) === 3 ? <>{this.state.mitra_terdekat[0].kecamatan}</> : <></>))})
+                                </span>
+                              </div>
+                                } */}
+                            </CardContent>
+                        </Card>
                         <Card noShadow noBorder style={{marginBottom:'50px', background: 'transparent'}}>
-                            <CardContent>
+                            <CardContent style={{paddingLeft:'0px', paddingRight:'0px'}}>
                                 {/* <div className="kotakProduk"> */}
                                 <Row noGap style={{justifyContent:'end'}}>
                                     {this.state.produk.rows.map((option)=>{
@@ -126,6 +157,9 @@ class daftarProduk extends Component {
                                                                 </div>
                                                                 <div className="namaProduk" style={{fontSize:'10px', color:'#b3b3b3'}}>
                                                                     {option.kategori_produk}
+                                                                </div>
+                                                                <div className="namaProduk" style={{fontSize:'10px', color:'#b3b3b3', float:'right', marginTop:'-14px', marginRight:'-24px'}}>
+                                                                    {option.varian_produk ? (option.varian_produk.length > 0 ? <>{option.varian_produk.length + ' Varian'}</> : '') : ''}
                                                                 </div>
                                                             </Col>
                                                             <Col width="15">

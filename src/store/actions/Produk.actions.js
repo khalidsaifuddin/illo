@@ -11,8 +11,76 @@ export const GET_STOK_TOTAL = '[PRODUK] GET_STOK_TOTAL';
 export const SIMPAN_BATCH = '[PRODUK] SIMPAN_BATCH';
 export const GET_KERANJANG = '[PRODUK] GET_KERANJANG';
 export const SIMPAN_KERANJANG = '[PRODUK] SIMPAN_KERANJANG';
+export const GET_VARIAN = '[PRODUK] GET_VARIAN';
+export const SIMPAN_VARIAN = '[PRODUK] SIMPAN_VARIAN';
+export const GENERATE_KODE_PRODUK = '[PRODUK] GENERATE_KODE_PRODUK';
+export const GET_KODE_PRODUK = '[PRODUK] GET_KODE_PRODUK';
 
+//fungsinya
 
+export function getKodeProduk(routeParams)
+{
+    const request = axios.post(localStorage.getItem('api_base')+'/api/Produk/getKodeProduk', {
+        ...routeParams
+    });
+
+    return (dispatch) =>
+        request.then((response) =>
+            dispatch({
+                type   : GET_KODE_PRODUK,
+                payload: response.data,
+                routeParams
+            })
+        );
+}
+
+export function generateKodeProduk(routeParams)
+{
+    const request = axios.post(localStorage.getItem('api_base')+'/api/Produk/generateKodeProduk', {
+        ...routeParams
+    });
+
+    return (dispatch) =>
+        request.then((response) =>
+            dispatch({
+                type   : GENERATE_KODE_PRODUK,
+                payload: response.data,
+                routeParams
+            })
+        );
+}
+
+export function simpanVarian(routeParams)
+{
+    const request = axios.post(localStorage.getItem('api_base')+'/api/Produk/simpanVarian', {
+        ...routeParams
+    });
+
+    return (dispatch) =>
+        request.then((response) =>
+            dispatch({
+                type   : SIMPAN_VARIAN,
+                payload: response.data,
+                routeParams
+            })
+        );
+}
+
+export function getVarian(routeParams)
+{
+    const request = axios.post(localStorage.getItem('api_base')+'/api/Produk/getVarian', {
+        ...routeParams
+    });
+
+    return (dispatch) =>
+        request.then((response) =>
+            dispatch({
+                type   : GET_VARIAN,
+                payload: response.data,
+                routeParams
+            })
+        );
+}
 
 export function getKeranjang(routeParams)
 {

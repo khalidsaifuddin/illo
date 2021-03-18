@@ -445,8 +445,8 @@ class login extends Component {
                                                         <ListInput
                                                             type="text"
                                                             name="email"
-                                                            placeholder="Email Anda ...."
-                                                            label= 'Email'
+                                                            placeholder="Email/No HP Anda ...."
+                                                            label= 'Email/No HP'
                                                             noHairlines
                                                             className="inputLogin"
                                                             disabled={(this.state.loading ? true : false)}

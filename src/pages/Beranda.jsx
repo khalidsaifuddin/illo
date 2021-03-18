@@ -92,7 +92,9 @@ class Beranda extends Component {
     produk: {
       rows: [],
       total: 0
-    }
+    },
+    alamat_pengguna: {},
+    mitra_terdekat: []
   };
 
 
@@ -311,6 +313,40 @@ class Beranda extends Component {
       })
 
       this.props.getProduk(this.state.routeParams)
+
+      this.props.getAlamatPengguna({pengguna_id: JSON.parse(localStorage.getItem('user')).pengguna_id, alamat_utama: 1}).then((result)=>{
+        this.setState({
+          alamat_pengguna: result.payload.total > 0 ? result.payload.rows[0] : {}
+        },()=>{
+
+          console.log(this.props.anggota_mitra.total)
+
+          if(!localStorage.getItem('mitra_terdekat') || localStorage.getItem('mitra_terdekat') === ''){
+            
+            this.props.getMitraTerdekat({
+              pengguna_id: JSON.parse(localStorage.getItem('user')).pengguna_id,
+              kode_wilayah_kecamatan: this.state.alamat_pengguna.kode_wilayah_kecamatan,
+              kode_wilayah_kabupaten: this.state.alamat_pengguna.kode_wilayah_kabupaten,
+              kode_wilayah_provinsi: this.state.alamat_pengguna.kode_wilayah_provinsi,
+              lintang: this.state.alamat_pengguna.lintang,
+              bujur: this.state.alamat_pengguna.bujur,
+              jenis_mitra_id: (parseInt(this.props.anggota_mitra.total) < 1 ? 2 : (this.props.anggota_mitra.rows[0].jenis_mitra_id))
+            }).then((result)=>{
+              this.setState({
+                mitra_terdekat: result.payload
+              },()=>{
+                localStorage.setItem('mitra_terdekat', JSON.stringify(result.payload))
+              })
+            })
+
+          }else{
+            this.setState({
+              mitra_terdekat: JSON.parse(localStorage.getItem('mitra_terdekat'))
+            })
+          }
+
+        })
+      })
 
     }
 
@@ -959,7 +995,21 @@ class Beranda extends Component {
                       <Card className="cardBorder-20 hilangDiDesktop">
                         <CardContent className="cari_kuis ikutiKuisBeranda">
                           <Row>
-                            <Col width="20" tabletwidth="15" desktopWidth="15">
+                            <Col width="100" tabletwidth="100" desktopWidth="100">
+                              <div>
+                                <img style={{width:'50px', height:'50px', borderRadius:'50%', marginLeft:'0px', border:'1px solid #cccccc'}} src={JSON.parse(localStorage.getItem('user')).gambar} />
+                                <div>
+                                  <Link href={"/tampilPengguna/"+JSON.parse(localStorage.getItem('user')).pengguna_id} style={{color:'#434343'}}>
+                                    <b style={{fontSize:'14px', fontWeight:'bold'}}>{JSON.parse(localStorage.getItem('user')).nama}</b><br/>
+                                  </Link>
+                                  <br/>
+                                  <Link href={"/tampilPengguna/"+JSON.parse(localStorage.getItem('user')).pengguna_id} style={{color:'#434343'}}>
+                                    <span style={{fontSize:'10px'}}>{JSON.parse(localStorage.getItem('user')).username}</span><br/>
+                                  </Link>
+                                </div>
+                              </div>
+                            </Col>
+                            {/* <Col width="20" tabletwidth="15" desktopWidth="15">
                               <Link href={"/tampilPengguna/"+JSON.parse(localStorage.getItem('user')).pengguna_id} style={{color:'#434343'}}>
                                 <img style={{width:'50px', height:'50px', borderRadius:'50%', marginLeft:'0px', border:'1px solid #cccccc'}} src={JSON.parse(localStorage.getItem('user')).gambar} />
                               </Link>
@@ -973,7 +1023,7 @@ class Beranda extends Component {
                                 <span style={{fontSize:'10px'}}>{JSON.parse(localStorage.getItem('user')).username}</span><br/>
                               </Link>
                               
-                            </Col>
+                            </Col> */}
                             <Col width="100">
                               <Row style={{marginTop:'8px'}}>
                                 <Col width="33" style={{fontSize:'10px'}}>
@@ -1209,7 +1259,51 @@ class Beranda extends Component {
                             Privileged Customer
                           </BlockTitle>
                           <span  style={{fontSize:'10px'}}>
-                            Reseller Terdekat:
+                            Alamat Utama:
+                            <br/>
+                            <b>{this.state.alamat_pengguna.nama_penerima}</b>
+                            <br/>
+                            {this.state.alamat_pengguna.alamat_jalan}, {this.state.alamat_pengguna.desa_kelurahan}, {this.state.alamat_pengguna.kode_pos}
+                            <br/>
+                            {this.state.alamat_pengguna.kecamatan}, {this.state.alamat_pengguna.kabupaten}, {this.state.alamat_pengguna.provinsi}
+                            <br/>
+                            <Link href={"/AlamatPengguna/"+JSON.parse(localStorage.getItem('user')).pengguna_id}>Edit Alamat</Link>
+                          </span>
+                          <br/>
+                          <br/>
+                          <span  style={{fontSize:'10px'}}>
+                            Mitra Terdekat:
+                            <br/>
+                            {this.state.mitra_terdekat.map((option)=>{
+                              return (
+                                <div style={{display:'inline-flex', marginTop:'8px'}}>
+                                    <img src={option.gambar ? option.gambar : '/static/icons/illo-logo-icon.png'} style={{height:'45px', width:'45px', borderRadius:'50%', marginRight:'0px'}} />
+                                    <div style={{marginLeft:'8px'}}>
+                                        {this.state.mitra_terdekat.length > 0 &&
+                                        <div>
+                                            <b style={{fontSize:'14px'}}>{option.pengguna}</b>
+                                            <br/>
+                                            <span style={{fontSize:'12px'}}>
+                                                {option.jenis_mitra} - {parseInt(option.jenis_mitra_id) === 5 ? <>{option.provinsi}</> : (parseInt(option.jenis_mitra_id) === 4 ? <>{option.kabupaten}</> : (parseInt(option.jenis_mitra_id) === 3 ? <>{option.kecamatan}</> : <></>))}
+                                            </span>
+                                        </div>
+                                        }
+                                    </div>
+                                </div>
+                                // <Card style={{marginLeft:'0px', marginRight:'0px', borderRadius:'10px'}}>
+                                //   <CardContent style={{padding:'8px'}}>
+                                // <div>
+                                //   <b style={{fontSize:'14px'}}>{option.pengguna}</b>
+                                //   <br/>
+                                //   <span style={{fontSize:'12px'}}>
+                                //     {option.jenis_mitra} - {parseInt(option.jenis_mitra_id) === 5 ? <>{option.provinsi}</> : (parseInt(option.jenis_mitra_id) === 4 ? <>{option.kabupaten}</> : (parseInt(option.jenis_mitra_id) === 3 ? <>{option.kecamatan}</> : <></>))}
+                                //   </span>
+                                // </div>
+                                //   </CardContent>
+                                // </Card>
+                              )
+                            })}
+                            <br/>
                           </span>
                         </CardContent>
                       </Card>
@@ -1306,7 +1400,9 @@ function mapDispatchToProps(dispatch) {
     getKategoriProduk: Actions.getKategoriProduk,
     getProduk: Actions.getProduk,
     simpanKeranjang: Actions.simpanKeranjang,
-    getKeranjang: Actions.getKeranjang
+    getKeranjang: Actions.getKeranjang,
+    getAlamatPengguna: Actions.getAlamatPengguna,
+    getMitraTerdekat: Actions.getMitraTerdekat
   }, dispatch);
 }
 

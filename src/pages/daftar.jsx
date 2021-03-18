@@ -298,19 +298,19 @@ class daftar extends Component {
                                             <LoginScreenTitle style={{fontSize:'20px', marginBottom:'0px'}}>{localStorage.getItem('custom_logo_sekolah_nama')}</LoginScreenTitle>
                                             <div style={{marginTop:'15px', fontSize:'10px', fontWeight:'bold', marginLeft:'8px', display:'inline-flex', paddingLeft:'0%', marginTop:'-10px', marginBottom:'32px'}}>
                                                 <span style={{marginTop:'12px', marginRight:'8px'}}>powered by</span>
-                                                <img src={localStorage.getItem('api_base')+'/assets/berkas/diskuis_white.png'}  style={{height:'15px', margin:'auto', marginTop:'10px'}} />
+                                                <img src={"./static/icons/illo-logo-white.png"} style={{height:'80px', marginTop:'16px', marginBottom:'8px'}}/>
                                             </div>
                                         </>
                                         }
                                         {localStorage.getItem('custom_logo_sekolah') === null &&
                                         <>
-                                            <img src={localStorage.getItem('api_base')+'/assets/berkas/diskuis_white.png'} style={{width:'60%'}}/>
+                                            <img src={"./static/icons/illo-logo-white.png"} style={{height:'80px', marginTop:'16px', marginBottom:'8px'}}/>
                                             <LoginScreenTitle style={{fontSize:'20px'}}>Daftar Pengguna Baru</LoginScreenTitle>
                                         </>
                                         }
                                         {localStorage.getItem('custom_logo_sekolah') === '' &&
                                         <>
-                                            <img src={localStorage.getItem('api_base')+'/assets/berkas/diskuis_white.png'} style={{width:'60%'}}/>
+                                            <img src={"./static/icons/illo-logo-white.png"} style={{height:'80px', marginTop:'16px', marginBottom:'8px'}}/>
                                             <LoginScreenTitle style={{fontSize:'20px'}}>Daftar Pengguna Baru</LoginScreenTitle>
                                         </>
                                         }
@@ -337,6 +337,17 @@ class daftar extends Component {
                                             disabled={(this.state.loading ? true : false)}
                                             defaultValue={this.state.routeParams.username}
                                             onInput={(e) => this.setState({routeParams:{...this.state.routeParams,username: e.target.value}})}
+                                        ></ListInput>
+                                        <ListInput
+                                            type="text"
+                                            name="no_hp"
+                                            placeholder="No HP Anda ...."
+                                            label= 'No HP'
+                                            noHairlines
+                                            className="inputLogin"
+                                            disabled={(this.state.loading ? true : false)}
+                                            defaultValue={this.state.routeParams.username}
+                                            onInput={(e) => this.setState({routeParams:{...this.state.routeParams,no_hp: e.target.value}})}
                                         ></ListInput>
                                         <ListInput
                                             label= 'Password'

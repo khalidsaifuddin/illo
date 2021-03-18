@@ -103,6 +103,10 @@ class BatchProduk extends Component {
                     this.props.getBatch(this.state.routeParams).then((result)=>{
                         this.setState({
                             batch: result.payload
+                        },()=>{
+                            this.props.getStokTotal(this.state.routeParams).then((result)=>{
+                                // console.log(this.props.stok_total)
+                            })
                         })
                     })
 
@@ -118,6 +122,10 @@ class BatchProduk extends Component {
             })
         })
         
+    }
+
+    daftarKodeProduk = (batch_id) => {
+        this.$f7router.navigate('/daftarKodeProduk/'+batch_id)
     }
 
     cariKeyword = (e) => {
@@ -392,11 +400,12 @@ class BatchProduk extends Component {
                                                                         }
                                                                     </Col>
                                                                     <Col width="10" tabletWidth="10" desktopWidth="10" style={{textAlign:'right'}}>
-                                                                        <Button popoverOpen={".popover-menu-"+option.batch_id}><i className="icons f7-icons">ellipsis_vertical</i></Button>
+                                                                        <Button style={{display:'inline-flex'}} popoverOpen={".popover-menu-"+option.batch_id}><i className="icons f7-icons">ellipsis_vertical</i></Button>
                                                                         <Popover className={"popover-menu-"+option.batch_id} style={{minWidth:'300px'}}>
                                                                             <List>
                                                                                 <ListItem link="#" popoverClose title="Edit" onClick={()=>this.edit(option.batch_id)} />
                                                                                 <ListItem link="#" popoverClose title="Hapus" onClick={()=>this.hapus(option.batch_id)} />
+                                                                                <ListItem link="#" popoverClose title="Daftar Kode produk" onClick={()=>this.daftarKodeProduk(option.batch_id)} />
                                                                             </List>
                                                                         </Popover>
                                                                     </Col>

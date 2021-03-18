@@ -33,7 +33,8 @@ class TampilProduk extends Component {
         gambar_utama: {},
         harga_retail: 0,
         harga_tampil: 0,
-        label_harga: ''
+        label_harga: '',
+        mitra_terdekat: (localStorage.getItem('mitra_terdekat') && localStorage.getItem('mitra_terdekat') !== '' ? JSON.parse(localStorage.getItem('mitra_terdekat')) : {thi})
     }
 
     bulan = [
@@ -188,6 +189,39 @@ class TampilProduk extends Component {
                                                     {this.state.label_harga}
                                                 </div>
                                                 <Row style={{borderTop:'1px solid #ccc', marginTop:'16px'}}>
+                                                    <Col width="100" tabletWidth="100" style={{marginTop:'6px'}}>
+                                                        <Card style={{borderRadius:'10px', marginLeft:'0px', marginRight:'0px'}}>
+                                                            <CardContent style={{padding:'8px', display:'inline-flex'}}>
+                                                                <img src={this.state.mitra_terdekat[0].gambar ? this.state.mitra_terdekat[0].gambar : '/static/icons/illo-logo-icon.png'} style={{height:'45px', width:'45px', borderRadius:'50%', marginRight:'0px'}} />
+                                                                <div style={{marginLeft:'8px'}}>
+                                                                    {this.state.mitra_terdekat.length > 0 &&
+                                                                    <div>
+                                                                        <b style={{fontSize:'14px'}}>{this.state.mitra_terdekat[0].pengguna}</b>
+                                                                        <br/>
+                                                                        <span style={{fontSize:'12px'}}>
+                                                                            {this.state.mitra_terdekat[0].jenis_mitra} - {parseInt(this.state.mitra_terdekat[0].jenis_mitra_id) === 5 ? <>{this.state.mitra_terdekat[0].provinsi}</> : (parseInt(this.state.mitra_terdekat[0].jenis_mitra_id) === 4 ? <>{this.state.mitra_terdekat[0].kabupaten}</> : (parseInt(this.state.mitra_terdekat[0].jenis_mitra_id) === 3 ? <>{this.state.mitra_terdekat[0].kecamatan}</> : <></>))}
+                                                                        </span>
+                                                                    </div>
+                                                                    }
+                                                                </div>
+                                                            </CardContent>
+                                                        </Card>
+                                                    </Col>
+                                                    <Col width="100" tabletWidth="100" style={{marginTop:'6px', overflow:'auto', minHeight:'80px'}}>
+                                                        {this.state.produk_record.varian_produk &&
+                                                        <div style={{display:'inline-flex'}}>
+                                                        {this.state.produk_record.varian_produk.map((optionVarian)=>{
+                                                            return (
+                                                                <Card style={{display:'inline-flex', margin:'4px', minWidth:'100px'}}>
+                                                                    <CardContent style={{display:'inline-flex', padding:'8px', fontSize:'12px'}}>
+                                                                        {optionVarian.nama}
+                                                                    </CardContent>
+                                                                </Card>
+                                                            )
+                                                        })}
+                                                        </div>
+                                                        }
+                                                    </Col>
                                                     <Col width="100" tabletWidth="50" style={{marginTop:'6px'}}>
                                                         <List>
                                                             <ListInput

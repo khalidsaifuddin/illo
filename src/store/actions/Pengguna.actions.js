@@ -1,7 +1,24 @@
 import axios from 'axios/index';
 
-export const GET_ALAMAT_PENGGUNA = '[NOTIFIKASI] GET_ALAMAT_PENGGUNA';
-export const SIMPAN_ALAMAT_PENGGUNA = '[NOTIFIKASI] SIMPAN_ALAMAT_PENGGUNA';
+export const GET_ALAMAT_PENGGUNA = '[PENGGUNA] GET_ALAMAT_PENGGUNA';
+export const SIMPAN_ALAMAT_PENGGUNA = '[PENGGUNA] SIMPAN_ALAMAT_PENGGUNA';
+export const GET_MITRA_TERDEKAT = '[PENGGUNA] GET_MITRA_TERDEKAT';
+
+export function getMitraTerdekat(routeParams)
+{
+    const request = axios.post(localStorage.getItem('api_base')+'/api/Pengguna/getMitraTerdekat', {
+        ...routeParams
+    });
+
+    return (dispatch) =>
+        request.then((response) =>
+            dispatch({
+                type   : GET_MITRA_TERDEKAT,
+                payload: response.data,
+                routeParams
+            })
+        );
+}
 
 export function getAlamatPengguna(routeParams)
 {

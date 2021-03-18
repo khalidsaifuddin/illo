@@ -26,7 +26,8 @@ class FormBatch extends Component {
             batch_id: this.$f7route.params['batch_id'],
             pengguna_id: JSON.parse(localStorage.getItem('user')).pengguna_id,
             keterangan: ''
-        }
+        },
+        produk_record: {}
     }
 
     bulan = [
@@ -69,7 +70,30 @@ class FormBatch extends Component {
                             ...result.payload.rows[0]
                         }
                     },()=>{
-                        
+                        if(this.state.routeParams.produk_id){
+                            this.props.getProduk({produk_id: this.$f7route.params['produk_id']}).then((result)=>{
+                                this.setState({
+                                    produk_record: result.payload.total > 0 ? result.payload.rows[0] : {}
+                                },()=>{
+                                    if(this.state.produk_record.varian_produk && parseInt(this.state.produk_record.varian_produk.length) > 0){
+                                        //update varian produk_id nya kalau masih kosong
+                                        console.log(this.state.routeParams.varian_produk)
+
+                                        if(!this.state.routeParams.varian_produk_id){
+                                            this.setState({
+                                                routeParams: {
+                                                    ...this.state.routeParams,
+                                                    varian_produk_id: this.state.produk_record.varian_produk[0].varian_produk_id
+                                                }
+                                            },()=>{
+                                                console.log(this.state.routeParams)
+                                            })
+                                        }
+
+                                    }
+                                })
+                            })
+                        }
                     })
                 }
 
@@ -82,7 +106,30 @@ class FormBatch extends Component {
                         batch_id: result.payload
                     }
                 },()=>{
+                    if(this.state.routeParams.produk_id){
+                        this.props.getProduk({produk_id: this.$f7route.params['produk_id']}).then((result)=>{
+                            this.setState({
+                                produk_record: result.payload.total > 0 ? result.payload.rows[0] : {}
+                            },()=>{
+                                if(this.state.produk_record.varian_produk && parseInt(this.state.produk_record.varian_produk.length) > 0){
+                                    //update varian produk_id nya kalau masih kosong
+                                    console.log(this.state.routeParams.varian_produk)
 
+                                    if(!this.state.routeParams.varian_produk_id){
+                                        this.setState({
+                                            routeParams: {
+                                                ...this.state.routeParams,
+                                                varian_produk_id: this.state.produk_record.varian_produk[0].varian_produk_id
+                                            }
+                                        },()=>{
+                                            console.log(this.state.routeParams)
+                                        })
+                                    }
+
+                                }
+                            })
+                        })
+                    }
                     
                 })
             })
@@ -127,18 +174,49 @@ class FormBatch extends Component {
         if(
             !this.state.routeParams.nama ||
             !this.state.routeParams.stok ||
+            !this.state.routeParams.kode_batch ||
+            !this.state.routeParams.tanggal_produksi ||
+            !this.state.routeParams.tanggal_kadaluarsa ||
             !this.state.routeParams.kode_batch
         ){
             this.$f7.dialog.alert('Isian tidak boleh kosong!', "Peringatan")
             return true
         }
 
+        //apakah simpan pertama kali atau update
+        if(this.$f7route.params['batch_id'] && this.$f7route.params['batch_id'] !== '-'){
+            //update
+            //do nothing
+            this.simpanLanjut('update')
+        }else{
+            //simpan baru
+
+            this.$f7.dialog.confirm('Proses ini akan men-generate kode produk sebanyak stok yang terisi di form. Apakah Anda yakin ingin melanjutkan?', 'Konfirmasi', ()=>{
+                this.simpanLanjut('insert')
+            })
+
+
+        }
+
+    }
+    
+    simpanLanjut = (tipe) => {
+
+        // console.log(tipe);return true;
+        
         this.$f7.dialog.preloader('Menyimpan...')
         this.props.simpanBatch({...this.state.routeParams, gambar_produk: this.state.gambar_produk_arr, harga_produk: this.state.harga_produk}).then((result)=>{
             this.$f7.dialog.close()
             if(result.payload.sukses){
                 this.$f7.dialog.alert("Berhasil menyimpan data!", "Berhasil", ()=> {
-                    this.$f7router.navigate("/BatchProduk/"+this.$f7route.params['produk_id'])
+
+                    if(tipe === 'update'){
+                        this.$f7router.navigate("/BatchProduk/"+this.$f7route.params['produk_id'])
+                    }else{
+                        //generate kode produk
+                        this.generateKodeProduk()
+                    }
+
                 })
             }else{
                 this.$f7.dialog.alert("Terdapat kesalahan pada sistem atau jaringan Anda. Mohon coba kembali dalam beberapa saat!", "Gagal")
@@ -146,6 +224,35 @@ class FormBatch extends Component {
         }).catch(()=>{
             this.$f7.dialog.close()
             this.$f7.dialog.alert("Saat ini kami belum dapat menyimpan data Anda. Mohon coba kembali dalam beberapa saat!", "Gagal")
+        })
+
+    }
+
+    generateKodeProduk = () => {
+        this.$f7.dialog.preloader('Generate kode produk ('+this.state.routeParams.stok+' kode)...')
+        this.props.generateKodeProduk(this.state.routeParams).then((result)=>{
+
+            if(result.payload.gagal < 1){
+                //berhasil semua
+                this.$f7.dialog.close()
+                this.$f7.dialog.alert("Kode Produk berhasil di-generate!", "Berhasil", ()=>{
+                    this.$f7router.navigate("/BatchProduk/"+this.$f7route.params['produk_id'])
+                })
+            }else{
+                //ada yang gagal
+                this.$f7.dialog.alert("Beberapa kode gagal diproses. Silakan klik OK untuk mengulangi prosesnya!", "Informasi", ()=>{
+                    // this.$f7router.navigate("/BatchProduk/"+this.$f7route.params['produk_id'])
+                    this.setState({
+                        routeParams: {
+                            ...this.state.routeParams,
+                            stok: result.payload.gagal
+                        }
+                    },()=>{
+                        this.generateKodeProduk()
+                    })
+                })
+            }
+
         })
     }
 
@@ -173,12 +280,33 @@ class FormBatch extends Component {
                     <Col width="100" tabletWidth="80" desktopWidth="80">
                         
                         <Card>
+                            <CardContent style={{padding:'8px'}}>
+                                Nama Produk: <b style={{fontSize:'15px'}}>{this.state.produk_record.nama}</b>
+                            </CardContent>
+                        </Card>
+
+                        <Card>
                             <CardContent>
                                 <List noHairlinesBetweenIos>
+                                    {this.state.produk_record.varian_produk && parseInt(this.state.produk_record.varian_produk.length) > 0 &&
                                     <ListInput
-                                        label="Kode Batch"
+                                        label="Varian Produk"
+                                        type="select"
+                                        placeholder="Varian Produk"
+                                        value={this.state.routeParams.varian_produk_id}
+                                        onChange={this.setValue('varian_produk_id')}
+                                    >
+                                        {this.state.produk_record.varian_produk.map((option)=>{
+                                            return (
+                                                <option value={option.varian_produk_id}>{option.nama}</option>
+                                            )
+                                        })}
+                                    </ListInput>  
+                                    }
+                                    <ListInput
+                                        label="Kode Produksi"
                                         type="text"
-                                        placeholder="Kode Batch"
+                                        placeholder="Kode Produksi"
                                         clearButton
                                         value={this.state.routeParams.kode_batch}
                                         onChange={this.setValue('kode_batch')}
@@ -207,14 +335,6 @@ class FormBatch extends Component {
                                         </div>
                                     </ListItem>
                                     <ListInput
-                                        label="Jumlah Stok"
-                                        type="number"
-                                        placeholder="Jumlah Stok"
-                                        clearButton
-                                        value={this.state.routeParams.stok}
-                                        onChange={this.setValue('stok')}
-                                    />   
-                                    <ListInput
                                         label="Tanggal Produksi"
                                         type="date"
                                         placeholder="Tanggal Produksi"
@@ -232,6 +352,16 @@ class FormBatch extends Component {
                                         style={{maxWidth:'100%'}}
                                         className="tanggalan"
                                     />
+                                    <ListInput
+                                        label="Jumlah Stok"
+                                        type="number"
+                                        placeholder="Jumlah Stok"
+                                        clearButton
+                                        value={this.state.routeParams.stok}
+                                        onChange={this.setValue('stok')}
+                                        disabled={this.$f7route.params['batch_id'] ? true : false}
+                                        info={"Jumlah stok hanya bisa diinput ketika pertama kali menyimpan batch produk, dan tidak bisa diedit setelahnya. Mohon pastikan bahwa jumlah stok sudah sesuai sebelum menyimpan"}
+                                    />   
                                 </List>
                                 <div style={{borderTop:'1px solid #ccc', marginTop:'16px', marginBottom:'8px'}}>&nbsp;</div>
                                 <Button onClick={this.simpan} style={{display:'inline-flex'}} raised fill className="color-theme-teal">
@@ -259,7 +389,9 @@ function mapDispatchToProps(dispatch) {
       generateUUID: Actions.generateUUID,
       getHargaProduk: Actions.getHargaProduk,
       getGambarProduk: Actions.getGambarProduk,
-      getKategoriProduk: Actions.getKategoriProduk
+      getKategoriProduk: Actions.getKategoriProduk,
+      getProduk: Actions.getProduk,
+      generateKodeProduk: Actions.generateKodeProduk
     }, dispatch);
 }
 

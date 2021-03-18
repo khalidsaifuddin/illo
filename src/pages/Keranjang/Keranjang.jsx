@@ -26,7 +26,8 @@ class Keranjang extends Component {
         keranjang: {
             rows: [],
             total: 0
-        }
+        },
+        mitra_terdekat: (localStorage.getItem('mitra_terdekat') && localStorage.getItem('mitra_terdekat') !== '' ? JSON.parse(localStorage.getItem('mitra_terdekat')) : {thi})
     }
 
     bulan = [
@@ -165,12 +166,30 @@ class Keranjang extends Component {
                 <Row noGap>
                     <Col width="0" tabletWidth="0" desktopWidth="10"></Col>
                     <Col width="100" tabletWidth="100" desktopWidth="80">
-                        
+                        <Card noShadow noBorder style={{background: 'transparent'}}>
+                            <CardContent style={{paddingLeft:'8px', paddingRight:'0px', paddingBottom:'0px', paddingTop:'0px'}}>
+                                <div style={{display:'inline-flex', marginTop:'8px'}}>
+                                    <img src={this.state.mitra_terdekat[0].gambar ? this.state.mitra_terdekat[0].gambar : '/static/icons/illo-logo-icon.png'} style={{height:'45px', width:'45px', borderRadius:'50%', marginRight:'0px'}} />
+                                    <div style={{marginLeft:'8px'}}>
+                                        {this.state.mitra_terdekat.length > 0 &&
+                                        <div>
+                                            <b style={{fontSize:'14px'}}>{this.state.mitra_terdekat[0].pengguna}</b>
+                                            <br/>
+                                            <span style={{fontSize:'12px'}}>
+                                                {this.state.mitra_terdekat[0].jenis_mitra} - {parseInt(this.state.mitra_terdekat[0].jenis_mitra_id) === 5 ? <>{this.state.mitra_terdekat[0].provinsi}</> : (parseInt(this.state.mitra_terdekat[0].jenis_mitra_id) === 4 ? <>{this.state.mitra_terdekat[0].kabupaten}</> : (parseInt(this.state.mitra_terdekat[0].jenis_mitra_id) === 3 ? <>{this.state.mitra_terdekat[0].kecamatan}</> : <></>))}
+                                            </span>
+                                        </div>
+                                        }
+                                    </div>
+                                </div>
+                            </CardContent>
+                        </Card>
+
                         <Card noShadow noBorder style={{marginBottom:'50px', background: 'transparent'}}>
-                            <CardContent>
+                            <CardContent style={{padding:'0px'}}>
                                 {this.state.keranjang.rows.map((option)=>{
                                     return (
-                                        <Card>
+                                        <Card style={{marginLeft:'0px', marginRight:'0px'}}>
                                             <CardContent>
                                                 <Row>
                                                     <Col width="80" tabletWidth="90">

@@ -66,6 +66,9 @@ import TampilProduk from '../pages/Produk/TampilProduk';
 import Keranjang from '../pages/Keranjang/Keranjang';
 import AlamatPengguna from '../pages/Pengguna/AlamatPengguna';
 import FormAlamatPengguna from '../pages/Pengguna/FormAlamatPengguna';
+import VarianProduk from '../pages/Produk/VarianProduk';
+import FormVarianProduk from '../pages/DataMaster/FormVarianProduk';
+import daftarKodeProduk from '../pages/DataMaster/daftarKodeProduk';
 
 // console.log(localStorage.getItem('kode_aplikasi'));
 
@@ -219,6 +222,10 @@ var routes = [
     component: FormBatch,
   },
   {
+    path: '/daftarKodeProduk/:batch_id',
+    component: daftarKodeProduk,
+  },
+  {
     path: '/FormBatch/:produk_id/:batch_id',
     component: FormBatch,
   },
@@ -269,6 +276,18 @@ var routes = [
   {
     path: '/FormProduk/:produk_id',
     component: FormProduk,
+  },
+  {
+    path: '/VarianProduk/:produk_id',
+    component: VarianProduk,
+  },
+  {
+    path: '/FormVarianProduk/:produk_id',
+    component: FormVarianProduk,
+  },
+  {
+    path: '/FormVarianProduk/:produk_id/:varian_produk_id',
+    component: FormVarianProduk,
   },
   {
     path: '/TampilKategoriProduk',

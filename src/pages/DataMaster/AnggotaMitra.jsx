@@ -239,6 +239,11 @@ class AnggotaMitra extends Component {
         // alert(jenis_mitra_id + ' - ' + pengguna_id)
 
     }
+
+    edit = (jenis_mitra_id, pengguna_id) => {
+        // alert(mitra_id)
+        this.$f7router.navigate('/FormAnggotaMitra/'+(parseInt(jenis_mitra_id)-1)+'/'+pengguna_id)
+    }
     
     render()
     {
@@ -360,10 +365,10 @@ class AnggotaMitra extends Component {
                                                         <Row>
 
                                                             <Col width="90" tabletWidth="60" desktopWidth="60" style={{display:'inline-flex'}}>
-                                                                <img src={option.gambar} style={{height:'45px', width:'45px', borderRadius:'50%', marginRight:'0px'}} />
+                                                                <img src={option.gambar ? option.gambar : '/static/icons/illo-logo-icon.png'} style={{height:'45px', width:'45px', borderRadius:'50%', marginRight:'0px'}} />
                                                                 <div style={{marginLeft:'16px'}}>
                                                                     
-                                                                    <Link href={"/tampilPengguna/"+option.pengguna_id}><b>{option.nama}</b></Link>
+                                                                    <Link href={"/tampilPengguna/"+option.pengguna_id}><b>{option.nama_pengguna}</b></Link>
                                                                     <div style={{fontSize:'10px'}}>
                                                                         {option.username &&
                                                                         <>
@@ -379,7 +384,7 @@ class AnggotaMitra extends Component {
                                                                         <div style={{fontSize:'10px'}}>
                                                                             {option.induk_mitra &&
                                                                                 <>
-                                                                                Induk {parseInt(option.induk_mitra.jenis_mitra_id) === 5 ? 'Distributor' : 'Agen'} <b>{option.induk_mitra.nama}</b>&nbsp;|&nbsp;
+                                                                                Induk {parseInt(option.induk_mitra.jenis_mitra_id) === 5 ? 'Distributor' : 'Agen'} <b>{option.induk_mitra.nama_pengguna}</b>&nbsp;|&nbsp;
                                                                                 </>
                                                                             }
                                                                             <b>{option.jenis_mitra}</b> <b>{parseInt(option.jenis_mitra_id) === 5 ? option.provinsi : (parseInt(option.jenis_mitra_id) === 4 ? option.kabupaten : option.kecamatan)}</b>
@@ -414,6 +419,7 @@ class AnggotaMitra extends Component {
                                                                         {parseInt(option.jenis_mitra_id) === 4 &&
                                                                         <ListItem link="#" popoverClose title={"Daftar "+(parseInt(option.jenis_mitra_id) === 5 ? "Agen" : (parseInt(option.jenis_mitra_id) === 4 ? "Reseller" : null))} onClick={()=>this.daftarDownline(option.jenis_mitra_id, option.pengguna_id)} />
                                                                         }
+                                                                        {/* <ListItem link="#" popoverClose title={"Edit"} onClick={()=>this.edit(option.jenis_mitra_id, option.pengguna_id)} /> */}
                                                                     </List>
                                                                 </Popover>
                                                             </Col>

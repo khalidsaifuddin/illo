@@ -172,6 +172,11 @@ class Produk extends Component {
         })
 
     }
+
+    varian = (produk_id) => {
+        // alert(produk_id)
+        this.$f7router.navigate('/VarianProduk/'+produk_id)
+    }
     
     render()
     {
@@ -291,7 +296,7 @@ class Produk extends Component {
                                                                         {option.nama}
                                                                     </div>
                                                                     <div className="namaProduk" style={{fontSize:'10px', fontWeight:'normal', marginTop:'0px'}}>
-                                                                        {option.keterangan ? option.keterangan.replace(/(<([^>]+)>)/gi, "") : ''}
+                                                                        {option.keterangan ? option.keterangan.replace(/(<([^>]+)>)/gi, "") : 'Tidak ada keterangan'}
                                                                     </div>
                                                                     <div className="hargaProduk">
                                                                         Rp {(option.harga_produk.length > 0 ? this.formatAngka(option.harga_produk[0].nominal) : '0')}
@@ -299,14 +304,18 @@ class Produk extends Component {
                                                                     <div className="namaProduk" style={{fontSize:'10px', color:'#b3b3b3'}}>
                                                                         {option.kategori_produk}
                                                                     </div>
+                                                                    <div className="namaProduk" style={{fontSize:'10px', color:'#b3b3b3', float:'right', marginTop:'-14px', marginRight:'-24px'}}>
+                                                                        {option.varian_produk ? <>{option.varian_produk.length + ' Varian'}</> : 'Tidak ada varian'}
+                                                                    </div>
                                                                 </Col>
                                                                 <Col width="15">
-                                                                    <Button popoverOpen={".popover-menu-"+option.produk_id}><i className="icons f7-icons" style={{fontSize:'18px', display:'inline-flex', textAlign:'right'}}>ellipsis_vertical</i></Button>
+                                                                    <Button style={{display:'inline-flex'}} popoverOpen={".popover-menu-"+option.produk_id}><i className="icons f7-icons" style={{fontSize:'18px', display:'inline-flex', textAlign:'right'}}>ellipsis_vertical</i></Button>
                                                                     <Popover className={"popover-menu-"+option.produk_id} style={{minWidth:'150px'}}>
                                                                         <List>
                                                                             <ListItem link="#" popoverClose title="Edit" onClick={()=>this.edit(option.produk_id)} />
                                                                             <ListItem link="#" popoverClose title="Hapus" onClick={()=>this.hapus(option.produk_id)} />
-                                                                            <ListItem link="#" popoverClose title="Batch & Stok Pusat" onClick={()=>this.batch(option.produk_id)} />
+                                                                            <ListItem link="#" popoverClose title="Varian Produk" onClick={()=>this.varian(option.produk_id)} />
+                                                                            <ListItem link="#" popoverClose title="Batch & Stok Produk" onClick={()=>this.batch(option.produk_id)} />
                                                                         </List>
                                                                     </Popover>
                                                                 </Col>

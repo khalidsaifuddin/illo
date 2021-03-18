@@ -235,6 +235,22 @@ class FormAlamatPengguna extends Component {
                                             )
                                         })}
                                     </ListInput>
+                                    <ListInput
+                                        label="Titik Koordinat Lintang"
+                                        type="text"
+                                        placeholder="Lintang"
+                                        clearButton
+                                        value={this.state.routeParams.lintang}
+                                        onChange={this.setValue('lintang')}
+                                    />
+                                    <ListInput
+                                        label="Titik Koordinat Bujur"
+                                        type="text"
+                                        placeholder="Bujur"
+                                        clearButton
+                                        value={this.state.routeParams.bujur}
+                                        onChange={this.setValue('bujur')}
+                                    />
                                     <ListItem title="Jadikan alamat utama pengiriman" footer="Alamat yang langsung dipilih ketika membeli barang">
                                         <Toggle slot="after" checked={this.state.routeParams.alamat_utama ? (parseInt(this.state.routeParams.alamat_utama) === 1 ? true : false) : false} value={1} onToggleChange={this.changeToggle('pengaturan_alamat', 'alamat_utama')} />
                                     </ListItem>
