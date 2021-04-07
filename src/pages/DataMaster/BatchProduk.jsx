@@ -253,9 +253,19 @@ class BatchProduk extends Component {
                                             <Col width="50" tabletWidth="25">
                                                 <Card style={{minHeight:'70px', margin:'8px'}}>
                                                     <CardContent style={{fontSize:'10px', padding:'8px'}}>
-                                                        <b>Stok Total</b>
+                                                        <b>Stok Masuk Total</b>
                                                         <div style={{fontSize:'25px'}}>
-                                                            {parseInt(this.props.stok_total.stok) > 0 ? parseInt(this.props.stok_total.stok) : '0'}
+                                                            {parseInt(this.props.stok_total.stok_masuk) > 0 ? parseInt(this.props.stok_total.stok_masuk) : '0'}
+                                                        </div>
+                                                    </CardContent>
+                                                </Card>
+                                            </Col>
+                                            <Col width="50" tabletWidth="25">
+                                                <Card style={{minHeight:'70px', margin:'8px'}}>
+                                                    <CardContent style={{fontSize:'10px', padding:'8px'}}>
+                                                        <b>Stok Ready Total</b>
+                                                        <div style={{fontSize:'25px'}}>
+                                                            {parseInt(this.props.stok_total.stok_ready) > 0 ? parseInt(this.props.stok_total.stok_ready) : '0'}
                                                         </div>
                                                     </CardContent>
                                                 </Card>
@@ -275,12 +285,12 @@ class BatchProduk extends Component {
                                                     <CardContent style={{fontSize:'10px', padding:'8px'}}>
                                                         <b>Produk Terjual</b>
                                                         <div style={{fontSize:'25px'}}>
-                                                            0
+                                                            {parseInt(this.props.stok_total.stok_keluar) > 0 ? parseInt(this.props.stok_total.stok_keluar) : '0'}
                                                         </div>
                                                     </CardContent>
                                                 </Card>
                                             </Col>
-                                            <Col width="50" tabletWidth="25">
+                                            {/* <Col width="50" tabletWidth="25">
                                                 <Card style={{minHeight:'70px', margin:'8px'}}>
                                                     <CardContent style={{fontSize:'10px', padding:'8px'}}>
                                                         <b>Hampir Kadaluarsa</b>
@@ -289,7 +299,7 @@ class BatchProduk extends Component {
                                                         </div>
                                                     </CardContent>
                                                 </Card>
-                                            </Col>
+                                            </Col> */}
                                         </Row>
                                     </Col>
                                     <Col width="100">
@@ -358,7 +368,7 @@ class BatchProduk extends Component {
                                                                     <Col width="60" tabletWidth="50" desktopWidth="50" style={{display:'inline-flex'}}>
                                                                         {/* <img src={"./static/icons/illo-logo-icon.png"} style={{height:'45px', width:'45px', borderRadius:'50%', marginRight:'0px'}} /> */}
                                                                         <div style={{marginLeft:'16px'}}>
-                                                                            <b>{option.kode_batch} - {option.nama}</b>
+                                                                            <b>{option.kode_batch} - {option.nama}</b> {option.varian_produk ? <>({option.varian_produk})</> : ''}
                                                                             <div style={{fontSize:'10px'}}>
                                                                                 {option.keterangan &&
                                                                                 <>

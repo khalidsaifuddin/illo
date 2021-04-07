@@ -103,7 +103,7 @@ body {
   }
 }
 
-@media only screen and (max-width: 960px) {
+@media only screen and (max-width: 769px) {
   .hilangDiDesktop{
     display: block;
   }
@@ -658,7 +658,7 @@ body {
 }
 
 .merahAtas {
-  min-height: 300px;
+  min-height: 150px;
   background-attachment: fixed;
   /* background-image: linear-gradient(to top, #f43b47 0%, #a30606 100%); */
   /* margin-top: -70px; */
@@ -709,7 +709,7 @@ body {
 
 .cardAtas {
   /* margin-top:-52px; */
-  margin-top:-365px;
+  margin-top:-220px;
   border-radius: 20px;
 }
 
@@ -1547,5 +1547,9 @@ h2 {
   height:80px;
   border:1px solid #ccc;
   border-radius: 10px;
+}
+
+.halamanStoreToko .page-content{
+  padding-bottom: 0px;
 }
 

@@ -69,6 +69,8 @@ import FormAlamatPengguna from '../pages/Pengguna/FormAlamatPengguna';
 import VarianProduk from '../pages/Produk/VarianProduk';
 import FormVarianProduk from '../pages/DataMaster/FormVarianProduk';
 import daftarKodeProduk from '../pages/DataMaster/daftarKodeProduk';
+import StokBarang from '../pages/Produk/StokBarang';
+import StoreToko from '../pages/StoreToko';
 
 // console.log(localStorage.getItem('kode_aplikasi'));
 
@@ -100,6 +102,10 @@ var routes = [
   {
     path: '/UnitUsaha/:sekolah_id',
     component: UnitUsaha 
+  },
+  {
+    path: '/StoreToko/:pengguna_id',
+    component: StoreToko
   },
   {
     path: '/TopUp/:pengguna_id/:sekolah_id',
@@ -296,6 +302,10 @@ var routes = [
   {
     path: '/CariProduk',
     component: CariProduk,
+  },
+  {
+    path: '/StokBarang',
+    component: StokBarang,
   },
   {
     path: '/AlamatPengguna/:pengguna_id',

@@ -732,11 +732,65 @@ class Beranda extends Component {
                   <Row noGap style={{marginBottom:'50px'}}>
                     
                     <Col width="100">
-                        <Card>
+                      <Card>
+                        <CardContent style={{padding:'8px'}}>
+                          <div className="overflowCard">
+                          {/* <h1 className="h1-beranda">Statistik</h1> */}
+                            <Card className={"cardBorder-20 overflowCard-inner"} style={{margin:'8px', width:'200px', background:(this.gradients[0]),minHeight:'60px', textAlign:'right',color:'white', fontWeight:'bold'}}>
+                                <CardContent className="cardBorder-20" style={{minHeight:'80px',background:'rgba(0, 0, 0, 0.4)'}}>
+                                      <div style={{color:'white', fontSize:'12px', textShadow:'2px 2px #434343'}}>
+                                          Stok Barang Total
+                                      </div>
+                                      <div style={{color:'white',fontSize:'25px', textShadow:'2px 2px #434343'}}>
+                                          100
+                                      </div>
+                                </CardContent>
+                            </Card>
+                            <Card className={"cardBorder-20 overflowCard-inner"} style={{margin:'8px', width:'200px', background:(this.gradients[1]),minHeight:'60px', textAlign:'right',color:'white', fontWeight:'bold'}}>
+                                <CardContent className="cardBorder-20" style={{minHeight:'80px',background:'rgba(0, 0, 0, 0.4)'}}>
+                                      <div style={{color:'white', fontSize:'12px', textShadow:'2px 2px #434343'}}>
+                                          Barang Terjual
+                                      </div>
+                                      <div style={{color:'white',fontSize:'25px', textShadow:'2px 2px #434343'}}>
+                                          100
+                                      </div>
+                                </CardContent>
+                            </Card>
+                            <Card className={"cardBorder-20 overflowCard-inner"} style={{margin:'8px', width:'200px', background:(this.gradients[3]),minHeight:'60px', textAlign:'right',color:'white', fontWeight:'bold'}}>
+                                <CardContent className="cardBorder-20" style={{minHeight:'80px',background:'rgba(0, 0, 0, 0.4)'}}>
+                                      <div style={{color:'white', fontSize:'12px', textShadow:'2px 2px #434343'}}>
+                                          Pembeli Total
+                                      </div>
+                                      <div style={{color:'white',fontSize:'25px', textShadow:'2px 2px #434343'}}>
+                                          30
+                                      </div>
+                                </CardContent>
+                            </Card>
+                            <Card className={"cardBorder-20 overflowCard-inner"} style={{margin:'8px', width:'200px', background:(this.gradients[4]),minHeight:'60px', textAlign:'right',color:'white', fontWeight:'bold'}}>
+                                <CardContent className="cardBorder-20" style={{minHeight:'80px',background:'rgba(0, 0, 0, 0.4)'}}>
+                                      <div style={{color:'white', fontSize:'12px', textShadow:'2px 2px #434343'}}>
+                                          Nominal Transaksi
+                                      </div>
+                                      <div style={{color:'white',fontSize:'25px', textShadow:'2px 2px #434343'}}>
+                                          1.000.000
+                                      </div>
+                                </CardContent>
+                            </Card>
+                            <Card className={"cardBorder-20 overflowCard-inner"} style={{margin:'8px', width:'200px', background:(this.gradients[5]),minHeight:'60px', textAlign:'right',color:'white', fontWeight:'bold'}}>
+                                <CardContent className="cardBorder-20" style={{minHeight:'80px',background:'rgba(0, 0, 0, 0.4)'}}>
+                                      <div style={{color:'white', fontSize:'12px', textShadow:'2px 2px #434343'}}>
+                                          Deposit
+                                      </div>
+                                      <div style={{color:'white',fontSize:'25px', textShadow:'2px 2px #434343'}}>
+                                          2.000.000
+                                      </div>
+                                </CardContent>
+                            </Card>
+                          </div>
+                        </CardContent>
+                      </Card>
+                        {/* <Card>
                           <CardContent>
-                            {/* <BlockTitle style={{marginLeft:'0px', marginTop:'0px', marginBottom:'8px'}}>
-                              Rekomendasi Produk
-                            </BlockTitle> */}
                             <Row noGap>
                               <Col width="70">
                                 <h1 className="h1-beranda">Rekomendasi Produk</h1>
@@ -785,16 +839,11 @@ class Beranda extends Component {
                                 </Card>
                                 )
                               })}
-                              {/* <Card className={"cardBorder-20 overflowCard-inner"}>
-                                <CardContent>
-                                  &nbsp;tes
-                                </CardContent>
-                              </Card> */}
                             </div>
                           </CardContent>
-                        </Card>
+                        </Card> */}
 
-                        <Card className={"cardBorder-20 hilangDiDesktop"}>
+                      {/* <Card className={"cardBorder-20 hilangDiDesktop"}>
                         <CardContent>
                           <Row noGap>
                             <Col width="70">
@@ -823,14 +872,9 @@ class Beranda extends Component {
                                 </Card>
                               )
                             })}
-                            {/* <Card className={"cardBorder-20 overflowCard-inner"}>
-                              <CardContent>
-                                &nbsp;tes
-                              </CardContent>
-                            </Card> */}
                           </div>
                         </CardContent>
-                      </Card>
+                      </Card> */}
                     </Col>
                     
                     {/* <Col width="100" tabletWidth="100">
@@ -1024,7 +1068,7 @@ class Beranda extends Component {
                               </Link>
                               
                             </Col> */}
-                            <Col width="100">
+                            {/* <Col width="100">
                               <Row style={{marginTop:'8px'}}>
                                 <Col width="33" style={{fontSize:'10px'}}>
                                   <Link href="#" popoverOpen=".popover-menu-poin"><i className="icon f7-icons" style={{fontSize:'13px', color:'#434343'}}>question_circle_fill</i></Link>&nbsp;Poin:<br/>
@@ -1033,7 +1077,7 @@ class Beranda extends Component {
                                 </Col>
                                 <Col width="33" style={{fontSize:'10px'}}>
                                   <Link href="#" popoverOpen=".popover-menu-poin"><i className="icon f7-icons" style={{fontSize:'13px', color:'#434343'}}>question_circle_fill</i></Link>&nbsp;Produk Dibeli:<br/>
-                                  {/* Produk Dibeli:<br/> */}
+                                  
                                   <i className="icon f7-icons" style={{fontSize:'13px', color:'#FDDD02'}}>cube_box</i>&nbsp;<b className="angkaPoin">0</b>
                                   <div style={{fontSize:'10px'}}>Produk</div>
                                 </Col>
@@ -1042,6 +1086,32 @@ class Beranda extends Component {
                                   Rp <b style={{fontSize:'20px', fontWeight:'bold'}}>0</b>
                                 </Col>
                               </Row>
+                            </Col> */}
+                            <Col width="100">
+                              {this.props.anggota_mitra.total > 0 &&
+                                <Card className={"cardBorder-20"}>
+                                  <CardContent>
+                                    <BlockTitle style={{marginTop:'0px', marginBottom:'4px', fontSize:'15px', fontWeight:'bold', color:'#434343', marginLeft:'0px'}}>
+                                      {this.props.anggota_mitra.total > 0 ? this.props.anggota_mitra.rows[0].jenis_mitra : <></>}
+                                    </BlockTitle>
+                                    {parseInt(this.props.anggota_mitra.rows[0].jenis_mitra_id) === 5 &&
+                                    <span style={{fontSize:'10px'}}>
+                                      Wilayah {this.props.anggota_mitra.total > 0 ? this.props.anggota_mitra.rows[0].provinsi : <></>}
+                                    </span>
+                                    }
+                                    {parseInt(this.props.anggota_mitra.rows[0].jenis_mitra_id) === 4 &&
+                                    <span style={{fontSize:'10px'}}>
+                                      Wilayah {this.props.anggota_mitra.total > 0 ? this.props.anggota_mitra.rows[0].kabupaten : <></>}
+                                    </span>
+                                    }
+                                    {parseInt(this.props.anggota_mitra.rows[0].jenis_mitra_id) === 3 &&
+                                    <span style={{fontSize:'10px'}}>
+                                      Wilayah {this.props.anggota_mitra.total > 0 ? this.props.anggota_mitra.rows[0].kecamatan : <></>}
+                                    </span>
+                                    }
+                                  </CardContent>
+                                </Card>
+                              }
                             </Col>
                           </Row>
 
@@ -1170,17 +1240,38 @@ class Beranda extends Component {
                               
                             </Col>
                             <Col width="100">
-                              <br/>
-                              <Row>
+                              {this.props.anggota_mitra.total > 0 &&
+                                <Card className={"cardBorder-20"}>
+                                  <CardContent>
+                                    <BlockTitle style={{marginTop:'0px', marginBottom:'4px', fontSize:'15px', fontWeight:'bold', color:'#434343', marginLeft:'0px'}}>
+                                      {this.props.anggota_mitra.total > 0 ? this.props.anggota_mitra.rows[0].jenis_mitra : <></>}
+                                    </BlockTitle>
+                                    {parseInt(this.props.anggota_mitra.rows[0].jenis_mitra_id) === 5 &&
+                                    <span style={{fontSize:'10px'}}>
+                                      Wilayah {this.props.anggota_mitra.total > 0 ? this.props.anggota_mitra.rows[0].provinsi : <></>}
+                                    </span>
+                                    }
+                                    {parseInt(this.props.anggota_mitra.rows[0].jenis_mitra_id) === 4 &&
+                                    <span style={{fontSize:'10px'}}>
+                                      Wilayah {this.props.anggota_mitra.total > 0 ? this.props.anggota_mitra.rows[0].kabupaten : <></>}
+                                    </span>
+                                    }
+                                    {parseInt(this.props.anggota_mitra.rows[0].jenis_mitra_id) === 3 &&
+                                    <span style={{fontSize:'10px'}}>
+                                      Wilayah {this.props.anggota_mitra.total > 0 ? this.props.anggota_mitra.rows[0].kecamatan : <></>}
+                                    </span>
+                                    }
+                                  </CardContent>
+                                </Card>
+                              }
+                              {/* <Row>
                                 <Col width="30" style={{fontSize:'10px'}}>
                                   <Link href="#" popoverOpen=".popover-menu-poin"><i className="icon f7-icons" style={{fontSize:'12px', color:'#434343'}}>question_circle_fill</i></Link>&nbsp;Poin:<br/>
-                                  {/* <i className="icon f7-icons" style={{fontSize:'13px', color:'#FDDD02'}}>money_dollar_circle_fill</i>&nbsp; */}
                                   <b className="angkaPoin">0</b>
                                   <div style={{fontSize:'10px'}}>Riwayat</div>
                                 </Col>
                                 <Col width="35" style={{fontSize:'10px'}}>
                                   <Link href="#" popoverOpen=".popover-menu-poin"><i className="icon f7-icons" style={{fontSize:'12px', color:'#434343'}}>question_circle_fill</i></Link>&nbsp;Produk Dibeli:<br/>
-                                  {/* <i className="icon f7-icons" style={{fontSize:'13px', color:'#FDDD02'}}>cube_box</i>&nbsp; */}
                                   <b className="angkaPoin">0</b>
                                   <div style={{fontSize:'10px'}}>Produk</div>
                                 </Col>
@@ -1188,7 +1279,7 @@ class Beranda extends Component {
                                 <Link href="#" popoverOpen=".popover-menu-rata"><i className="icon f7-icons" style={{fontSize:'12px', color:'#434343'}}>question_circle_fill</i></Link>&nbsp;Deposit Wallet<br/>
                                   Rp <b style={{fontSize:'20px', fontWeight:'bold'}}>0</b>
                                 </Col>
-                              </Row>
+                              </Row> */}
                             </Col>
                           </Row>
 
@@ -1228,7 +1319,7 @@ class Beranda extends Component {
                       </Card>
                       }
 
-                      {this.props.anggota_mitra.total > 0 &&
+                      {/* {this.props.anggota_mitra.total > 0 &&
                       <Card className={"cardBorder-20"}>
                         <CardContent>
                           <BlockTitle style={{marginTop:'0px', marginBottom:'4px', fontSize:'15px', fontWeight:'bold', color:'#434343', marginLeft:'0px'}}>
@@ -1251,7 +1342,7 @@ class Beranda extends Component {
                           }
                         </CardContent>
                       </Card>
-                      }
+                      } */}
                       {this.props.anggota_mitra.total < 1 &&
                       <Card className={"cardBorder-20"}>
                         <CardContent>
@@ -1325,7 +1416,7 @@ class Beranda extends Component {
                         </CardContent>
                       </Card> */}
 
-                      <Card className={"cardBorder-20 hilangDiMobile"}>
+                      {/* <Card className={"cardBorder-20"}>
                         <CardContent>
                           <Row noGap>
                             <Col width="70">
@@ -1354,14 +1445,10 @@ class Beranda extends Component {
                                 </Card>
                               )
                             })}
-                            {/* <Card className={"cardBorder-20 overflowCard-inner"}>
-                              <CardContent>
-                                &nbsp;tes
-                              </CardContent>
-                            </Card> */}
+                            
                           </div>
                         </CardContent>
-                      </Card>
+                      </Card> */}
                     </Col>
                   </Row>
 

@@ -408,7 +408,7 @@ class login extends Component {
                                                 <>
                                                 <img src={"./static/icons/illo-logo-white.png"} style={{height:'80px', marginTop:'16px', marginBottom:'-16px'}}/>
                                                 <LoginScreenTitle style={{fontSize:'20px'}}>Masuk {localStorage.getItem('judul_aplikasi')}</LoginScreenTitle>
-                                                <div style={{fontSize:'16px', marginBottom:'50px', marginTop:'-30px'}}>{localStorage.getItem('sub_judul_aplikasi')}</div>
+                                                <div style={{fontSize:'16px', marginBottom:'16px', marginTop:'-30px'}}>{localStorage.getItem('sub_judul_aplikasi')}</div>
                                                 </>
                                                 }
                                                 {localStorage.getItem('custom_logo_sekolah') !== '' && localStorage.getItem('custom_logo_sekolah') !== null &&

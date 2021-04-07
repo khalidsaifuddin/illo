@@ -206,8 +206,8 @@ class VarianProduk extends Component {
                                                                 <div>
                                                                     {option.nama}
                                                                 </div>
-                                                                <Button style={{display:'inline-flex', float:'right', marginTop:'-25px', marginRight:'-16px'}} popoverOpen={".popover-menu-"+option.batch_id}><i className="icons f7-icons" style={{fontSize:'20px'}}>ellipsis_vertical</i></Button>
-                                                                <Popover className={"popover-menu-"+option.batch_id} style={{minWidth:'300px'}}>
+                                                                <Button style={{display:'inline-flex', float:'right', marginTop:'-25px', marginRight:'-16px'}} popoverOpen={".popover-menu-"+option.varian_produk_id}><i className="icons f7-icons" style={{fontSize:'20px'}}>ellipsis_vertical</i></Button>
+                                                                <Popover className={"popover-menu-"+option.varian_produk_id} style={{minWidth:'300px'}}>
                                                                     <List>
                                                                         <ListItem link="#" popoverClose title="Edit" onClick={()=>this.edit(option.varian_produk_id)} />
                                                                         <ListItem link="#" popoverClose title="Hapus" onClick={()=>this.hapus(option.varian_produk_id)} />

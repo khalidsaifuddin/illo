@@ -63,9 +63,9 @@ class app extends Component {
       },
 
       // Register service worker
-      serviceWorker: this.$device.cordova ? {} : {
-        path: '/service-worker.js',
-      },
+      // serviceWorker: this.$device.cordova ? {} : {
+      //   path: '/service-worker.js',
+      // },
       // Input settings
       input: {
         scrollIntoViewOnFocus: this.$device.cordova && !this.$device.electron,
@@ -371,16 +371,28 @@ class app extends Component {
                   <i slot="media" className="f7-icons">rocket</i>
                 </ListItem>
                 }
-                {(localStorage.getItem('user') !== null && localStorage.getItem('user') !== '') && (localStorage.getItem('sekolah_id_beranda') === '' || localStorage.getItem('sekolah_id_beranda') === null) &&
+                <ListItem noChevron link={"/StoreToko/"+JSON.parse(localStorage.getItem('user')).pengguna_id} view=".view-main" panelClose panel-close title="Illo Store">
+                  <i slot="media" className="f7-icons">cart_fill</i>
+                </ListItem>
+                {
+                (
+                  localStorage.getItem('user') !== null && 
+                  localStorage.getItem('user') !== ''
+                ) && (JSON.parse(localStorage.getItem('user')).jenis_mitra_id === 3 || JSON.parse(localStorage.getItem('user')).jenis_mitra_id === 4 || JSON.parse(localStorage.getItem('user')).jenis_mitra_id === 5) && 
+                <ListItem noChevron link="/StokBarang" view=".view-main" panelClose panel-close title="Stok Barang">
+                  <i slot="media" className="f7-icons">archivebox_fill</i>
+                </ListItem>
+                }
+                {/* {(localStorage.getItem('user') !== null && localStorage.getItem('user') !== '') && (localStorage.getItem('sekolah_id_beranda') === '' || localStorage.getItem('sekolah_id_beranda') === null) &&
                 <ListItem noChevron link="/CariProduk" view=".view-main" panelClose panel-close title="Cari Produk">
                   <i slot="media" className="f7-icons">search</i>
                 </ListItem>
-                }
-                {(localStorage.getItem('user') !== null && localStorage.getItem('user') !== '') && (localStorage.getItem('sekolah_id_beranda') === '' || localStorage.getItem('sekolah_id_beranda') === null) &&
+                } */}
+                {/* {(localStorage.getItem('user') !== null && localStorage.getItem('user') !== '') && (localStorage.getItem('sekolah_id_beranda') === '' || localStorage.getItem('sekolah_id_beranda') === null) &&
                 <ListItem noChevron link="/TampilKategoriProduk" view=".view-main" panelClose panel-close title="Kategori Produk">
                   <i slot="media" className="f7-icons">circle_grid_hex_fill</i>
                 </ListItem>
-                }
+                } */}
                 {
                 (localStorage.getItem('user') !== null && 
                 localStorage.getItem('user') !== '') && 
@@ -476,7 +488,7 @@ class app extends Component {
                   <ListItem noChevron link="/ProfilPengguna" view=".view-main" panelClose panel-close title="Profil Pengguna">
                     <i slot="media" className="f7-icons">person_crop_square_fill</i>
                   </ListItem>
-                  <ListItem noChevron link="/Keranjang" view=".view-main" panelClose panel-close title="Keranjang">
+                  {/* <ListItem noChevron link="/Keranjang" view=".view-main" panelClose panel-close title="Keranjang">
                     {this.props.keranjang.total > 0 &&
                     <div slot="after" className="badgeNotif">{this.props.keranjang.total}</div>
                     }
@@ -484,7 +496,7 @@ class app extends Component {
                     <div slot="after" className="badgeNotifKosong">0</div>
                     }
                     <i slot="media" className="f7-icons">cart</i>
-                  </ListItem>
+                  </ListItem> */}
                   <ListItem noChevron link="/Notifikasi" view=".view-main" panelClose panel-close title="Notifikasi">
                     {this.props.notifikasi_belum_dibaca.total > 0 &&
                     <div slot="after" className="badgeNotif">{this.props.notifikasi_belum_dibaca.total}</div>
@@ -598,7 +610,15 @@ class app extends Component {
           }
 
           {/* Your main view/tab, should have "view-main" class. It also has "tabActive" prop */}
-          <View id="view-beranda" main tab tabActive url="/" pushState={localStorage.getItem('device') === 'android' ? false : true} />
+          <View 
+            id="view-beranda" 
+            main 
+            tab 
+            tabActive url="/" 
+            // pushState={localStorage.getItem('device') === 'android' ? false : true} 
+            pushState={true} 
+            // pushStateSeparator=""
+          />
 
           {/* Catalog View */}
           {/* <View id="view-kategori" name="kategori" tab url="/kategori/" /> */}

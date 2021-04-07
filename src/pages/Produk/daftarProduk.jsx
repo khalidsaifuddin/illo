@@ -137,7 +137,7 @@ class daftarProduk extends Component {
                                         return (
                                             <Col width="50" tabletWidth="33" desktopWidth="33">
                                                 {/* <Card key={option.produk_id} className="boxProduk"> */}
-                                                <Card key={option.produk_id} style={{margin:'8px', minHeight:'300px'}}>
+                                                <Card key={option.produk_id} style={{margin:'8px'}}>
                                                     <CardContent style={{padding:'8px'}}>
                                                         <div className="gambarProduk" style={{
                                                             backgroundImage:'url('+localStorage.getItem('api_base')+(option.gambar_produk.length > 0 ? option.gambar_produk[0].nama_file : '/assets/berkas/3577232-1.jpg')+')', 
@@ -162,7 +162,7 @@ class daftarProduk extends Component {
                                                                     {option.varian_produk ? (option.varian_produk.length > 0 ? <>{option.varian_produk.length + ' Varian'}</> : '') : ''}
                                                                 </div>
                                                             </Col>
-                                                            <Col width="15">
+                                                            {/* <Col width="15"> */}
                                                                 {/* <Button popoverOpen={".popover-menu-"+option.produk_id}><i className="icons f7-icons" style={{fontSize:'18px', display:'inline-flex', textAlign:'right'}}>ellipsis_vertical</i></Button>
                                                                 <Popover className={"popover-menu-"+option.produk_id} style={{minWidth:'150px'}}>
                                                                     <List>
@@ -171,13 +171,13 @@ class daftarProduk extends Component {
                                                                         <ListItem link="#" popoverClose title="Batch & Stok" onClick={()=>this.batch(option.produk_id)} />
                                                                     </List>
                                                                 </Popover> */}
-                                                            </Col>
-                                                            <Col width="100">
+                                                            {/* </Col> */}
+                                                            {/* <Col width="100">
                                                                 <Button className="bawahCiriBiru" raised fill style={{marginTop:'8px'}}>
                                                                     <i className="f7-icons" style={{fontSize:'20px'}}>cart_badge_plus</i>&nbsp;
                                                                     Beli
                                                                 </Button>
-                                                            </Col>
+                                                            </Col> */}
                                                         </Row>
                                                     </CardContent>
                                                 </Card>
