@@ -14,7 +14,7 @@ import moment from 'moment';
 
 import localForage from 'localforage';
 
-class daftarKodeProduk extends Component {
+class daftarKodeValidasiProduk extends Component {
     state = {
         error: null,
         loadingKuis: false,
@@ -22,9 +22,9 @@ class daftarKodeProduk extends Component {
         routeParams: {
             start:0,
             limit:20,
-            batch_id: this.$f7route.params['batch_id']
+            batch_kode_validasi_id: this.$f7route.params['batch_kode_validasi_id']
         },
-        kode_produk: {
+        kode_validasi: {
             rows: [],
             total: 0
         },
@@ -70,9 +70,9 @@ class daftarKodeProduk extends Component {
 
     componentDidMount = () => {
         this.$f7.dialog.preloader()
-        this.props.getKodeProduk(this.state.routeParams).then((result)=>{
+        this.props.getKodeValidasiProduk(this.state.routeParams).then((result)=>{
             this.setState({
-                kode_produk: result.payload
+                kode_validasi: result.payload
             },()=>{
                 this.$f7.dialog.close()
             })
@@ -92,9 +92,9 @@ class daftarKodeProduk extends Component {
                 start: (parseInt(this.state.routeParams.start) + parseInt(this.state.routeParams.limit))
             }
         },()=>{
-            this.props.getKodeProduk(this.state.routeParams).then((result)=>{
+            this.props.getKodeValidasiProduk(this.state.routeParams).then((result)=>{
                 this.setState({
-                    kode_produk: result.payload
+                    kode_validasi: result.payload
                 },()=>{
                     this.$f7.dialog.close()
                 })
@@ -114,9 +114,9 @@ class daftarKodeProduk extends Component {
                 start: (parseInt(this.state.routeParams.start) - parseInt(this.state.routeParams.limit))
             }
         },()=>{
-            this.props.getKodeProduk(this.state.routeParams).then((result)=>{
+            this.props.getKodeValidasiProduk(this.state.routeParams).then((result)=>{
                 this.setState({
-                    kode_produk: result.payload
+                    kode_validasi: result.payload
                 },()=>{
                     this.$f7.dialog.close()
                 })
@@ -135,9 +135,9 @@ class daftarKodeProduk extends Component {
     render()
     {
         return (
-            <Page name="daftarKodeProduk" className="halamanJenisTiket" hideBarsOnScroll style={{paddingBottom:'100px', boxSizing:'content-box'}}>
+            <Page name="daftarKodeValidasiProduk" className="halamanJenisTiket" hideBarsOnScroll style={{paddingBottom:'100px', boxSizing:'content-box'}}>
                 <Navbar sliding={false} backLink="Kembali" onBackClick={this.backClick}>
-                    <NavTitle sliding>Daftar Kode Produk</NavTitle>
+                    <NavTitle sliding>Daftar Kode Validasi Produk</NavTitle>
                 </Navbar>
 
                 <Popup className="kode-popup" opened={this.state.input_kode} onPopupClosed={() => this.setState({input_kode : false})}>
@@ -169,15 +169,15 @@ class daftarKodeProduk extends Component {
                                             <a onClick={this.klikPrev} href="#" className={"link "+(this.state.routeParams.start < 1 ? "disabled" : "" )}>
                                             <i className="icon icon-prev color-gray"></i>
                                             </a>
-                                            <a onClick={this.klikNext} href="#" className={"link "+((parseInt(this.state.routeParams.start)+20) >= parseInt(this.state.kode_produk.total) ? "disabled" : "" )}>
+                                            <a onClick={this.klikNext} href="#" className={"link "+((parseInt(this.state.routeParams.start)+20) >= parseInt(this.state.kode_validasi.total) ? "disabled" : "" )}>
                                                 <i className="icon icon-next color-gray"></i>
                                             </a>
-                                            <span className="data-table-pagination-label">{(this.state.routeParams.start+1)}-{(this.state.routeParams.start)+parseInt(this.state.routeParams.limit) <= parseInt(this.state.kode_produk.total) ? (this.state.routeParams.start)+parseInt(this.state.routeParams.limit) : parseInt(this.state.kode_produk.total)} dari {this.formatAngka(this.state.kode_produk.total)} Kode Produk</span>
+                                            <span className="data-table-pagination-label">{(this.state.routeParams.start+1)}-{(this.state.routeParams.start)+parseInt(this.state.routeParams.limit) <= parseInt(this.state.kode_validasi.total) ? (this.state.routeParams.start)+parseInt(this.state.routeParams.limit) : parseInt(this.state.kode_validasi.total)} dari {this.formatAngka(this.state.kode_validasi.total)} Kode Validasi Produk</span>
                                         </div>
                                     </div>
                                 </div>
                                 <Row>
-                                    {this.state.kode_produk.rows.map((option)=>{
+                                    {this.state.kode_validasi.rows.map((option)=>{
                                         return (
                                             <Col width="100">
                                                 <Card style={{margin:'4px'}}>
@@ -194,18 +194,13 @@ class daftarKodeProduk extends Component {
                                                                 <Col width="100" tabletWidth="80">
                                                                     <Row noGap>
                                                                         <Col width="50">
-                                                                            Kode Produk:<br/>
+                                                                            Kode Validasi:<br/>
                                                                             {/* <b>{option.kode_produk_id}</b><br/> */}
-                                                                            <b>{btoa(option.kode_produk_id).toUpperCase().substring(0,10)}</b><br/>
-                                                                        </Col>
-                                                                        <Col width="50">
-                                                                            Kode Produksi:<br/>
-                                                                            {/* <b>{option.batch_id}</b> */}
-                                                                            <b>{btoa(option.batch_id).toUpperCase().substring(0,10)}</b>
+                                                                            <b>{btoa(option.kode_validasi_id).toUpperCase().substring(0,10)}</b><br/>
                                                                         </Col>
                                                                         <Col width="50">
                                                                             Batch:<br/>
-                                                                            <b>{option.batch} ({option.kode_batch})</b>
+                                                                            <b>{option.batch_kode_validasi}</b>
                                                                         </Col>
                                                                         <Col width="50">
                                                                             Produk:<br/>
@@ -220,11 +215,6 @@ class daftarKodeProduk extends Component {
                                                                 </Col>
                                                             </Row>
                                                         </div>
-                                                        {/* <div style={{minWidth:'30%', textAlign:'right'}}>
-                                                            <Button raised style={{display:'inline-flex'}}>
-                                                                Perbesar QR Code
-                                                            </Button>
-                                                        </div> */}
                                                     </CardContent>
                                                 </Card>
                                             </Col>
@@ -252,7 +242,7 @@ function mapDispatchToProps(dispatch) {
       simpanBatch: Actions.simpanBatch,
       getProduk: Actions.getProduk,
       generateUUID: Actions.generateUUID,
-      getKodeProduk: Actions.getKodeProduk
+      getKodeValidasiProduk: Actions.getKodeValidasiProduk
     }, dispatch);
 }
 
@@ -264,5 +254,5 @@ function mapStateToProps({ App, Pertanyaan, Kuis, Produk }) {
     }
 }
 
-export default (connect(mapStateToProps, mapDispatchToProps)(daftarKodeProduk));
+export default (connect(mapStateToProps, mapDispatchToProps)(daftarKodeValidasiProduk));
   

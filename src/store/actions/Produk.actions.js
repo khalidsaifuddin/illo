@@ -15,6 +15,13 @@ export const GET_VARIAN = '[PRODUK] GET_VARIAN';
 export const SIMPAN_VARIAN = '[PRODUK] SIMPAN_VARIAN';
 export const GENERATE_KODE_PRODUK = '[PRODUK] GENERATE_KODE_PRODUK';
 export const GET_KODE_PRODUK = '[PRODUK] GET_KODE_PRODUK';
+export const GET_TRANSAKSI = '[PRODUK] GET_TRANSAKSI';
+export const SIMPAN_VERIFIKASI = '[PRODUK] SIMPAN_VERIFIKASI';
+export const CARI_KODE_PRODUK = '[PRODUK] CARI_KODE_PRODUK';
+export const GET_KODE_VALIDASI_PRODUK = '[PRODUK] GET_KODE_VALIDASI_PRODUK';
+export const GET_BATCH_KODE_VALIDASI_PRODUK = '[PRODUK] GET_BATCH_KODE_VALIDASI_PRODUK';
+export const SIMPAN_BATCH_KODE_VALIDASI_PRODUK = '[PRODUK] SIMPAN_BATCH_KODE_VALIDASI_PRODUK';
+export const SIMPAN_KODE_VALIDASI_PRODUK = '[PRODUK] SIMPAN_KODE_VALIDASI_PRODUK';
 
 //fungsinya
 
@@ -252,6 +259,118 @@ export function simpanBatch(routeParams)
         request.then((response) =>
             dispatch({
                 type   : SIMPAN_PRODUK,
+                payload: response.data,
+                routeParams
+            })
+        );
+}
+
+export function getTransaksi(routeParams)
+{
+    const request = axios.post(localStorage.getItem('api_base')+'/api/Produk/getTransaksi', {
+        ...routeParams
+    });
+
+    return (dispatch) =>
+        request.then((response) =>
+            dispatch({
+                type   : GET_TRANSAKSI,
+                payload: response.data,
+                routeParams
+            })
+        );
+}
+
+export function simpanVerifikasi(routeParams)
+{
+    const request = axios.post(localStorage.getItem('api_base')+'/api/Produk/simpanVerifikasi', {
+        ...routeParams
+    });
+
+    return (dispatch) =>
+        request.then((response) =>
+            dispatch({
+                type   : SIMPAN_VERIFIKASI,
+                payload: response.data,
+                routeParams
+            })
+        );
+}
+
+export function cariKodeProduk(routeParams)
+{
+    const request = axios.post(localStorage.getItem('api_base')+'/api/Produk/cariKodeProduk', {
+        ...routeParams
+    });
+
+    return (dispatch) =>
+        request.then((response) =>
+            dispatch({
+                type   : CARI_KODE_PRODUK,
+                payload: response.data,
+                routeParams
+            })
+        );
+}
+
+export function getKodeValidasiProduk(routeParams)
+{
+    const request = axios.post(localStorage.getItem('api_base')+'/api/Produk/getKodeValidasiProduk', {
+        ...routeParams
+    });
+
+    return (dispatch) =>
+        request.then((response) =>
+            dispatch({
+                type   : GET_KODE_VALIDASI_PRODUK,
+                payload: response.data,
+                routeParams
+            })
+        );
+}
+
+export function getBatchKodeValidasiProduk(routeParams)
+{
+    const request = axios.post(localStorage.getItem('api_base')+'/api/Produk/getBatchKodeValidasi', {
+        ...routeParams
+    });
+
+    return (dispatch) =>
+        request.then((response) =>
+            dispatch({
+                type   : GET_BATCH_KODE_VALIDASI_PRODUK,
+                payload: response.data,
+                routeParams
+            })
+        );
+}
+
+export function simpanBatchKodeValidasiProduk(routeParams)
+{
+    const request = axios.post(localStorage.getItem('api_base')+'/api/Produk/simpanBatchKodeValidasiProduk', {
+        ...routeParams
+    });
+
+    return (dispatch) =>
+        request.then((response) =>
+            dispatch({
+                type   : SIMPAN_BATCH_KODE_VALIDASI_PRODUK,
+                payload: response.data,
+                routeParams
+            })
+        );
+}
+
+export function simpanKodeValidasiProduk(routeParams)
+{
+    const request = axios.post(localStorage.getItem('api_base')+'/api/Produk/simpanKodeValidasiProduk', {
+        ...routeParams
+    });
+
+    return (dispatch) =>
+        request.then((response) =>
+            dispatch({
+                type   : SIMPAN_KODE_VALIDASI_PRODUK,
                 payload: response.data,
                 routeParams
             })

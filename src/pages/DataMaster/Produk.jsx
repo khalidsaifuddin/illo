@@ -177,6 +177,10 @@ class Produk extends Component {
         // alert(produk_id)
         this.$f7router.navigate('/VarianProduk/'+produk_id)
     }
+
+    kodeValidasi = (produk_id) => {
+        this.$f7router.navigate('/KodeValidasiProduk/'+produk_id)
+    }
     
     render()
     {
@@ -308,14 +312,15 @@ class Produk extends Component {
                                                                         {option.varian_produk ? <>{option.varian_produk.length + ' Varian'}</> : 'Tidak ada varian'}
                                                                     </div>
                                                                 </Col>
-                                                                <Col width="15">
-                                                                    <Button style={{display:'inline-flex'}} popoverOpen={".popover-menu-"+option.produk_id}><i className="icons f7-icons" style={{fontSize:'18px', display:'inline-flex', textAlign:'right'}}>ellipsis_vertical</i></Button>
+                                                                <Col width="15" style={{paddingTop:'8px'}}>
+                                                                    <Button style={{display:'inline-flex'}} popoverOpen={".popover-menu-"+option.produk_id}><i className="icons f7-icons" style={{fontSize:'25px', display:'inline-flex', textAlign:'right', color:'#434343'}}>ellipsis_vertical</i></Button>
                                                                     <Popover className={"popover-menu-"+option.produk_id} style={{minWidth:'150px'}}>
                                                                         <List>
                                                                             <ListItem link="#" popoverClose title="Edit" onClick={()=>this.edit(option.produk_id)} />
                                                                             <ListItem link="#" popoverClose title="Hapus" onClick={()=>this.hapus(option.produk_id)} />
                                                                             <ListItem link="#" popoverClose title="Varian Produk" onClick={()=>this.varian(option.produk_id)} />
                                                                             <ListItem link="#" popoverClose title="Batch & Stok Produk" onClick={()=>this.batch(option.produk_id)} />
+                                                                            <ListItem link="#" popoverClose title="Kode Validasi Produk" onClick={()=>this.kodeValidasi(option.produk_id)} />
                                                                         </List>
                                                                     </Popover>
                                                                 </Col>

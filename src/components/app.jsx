@@ -569,6 +569,21 @@ class app extends Component {
             />
             </>
             }
+            {localStorage.getItem('sudah_login') === '1' &&
+            <>
+            <Link 
+              href={"/StoreToko/"+JSON.parse(localStorage.getItem('user')).pengguna_id} 
+              // onClick={()=>{this.onClickLinkTab('beranda')}} 
+              tabLinkActive={this.props.tabBar.beranda} 
+              iconIos="f7:cart" 
+              iconAurora="f7:cart" 
+              iconMd="f7:cart" 
+              text="Store" 
+              className="fontMobileTab"
+              style={{fontSize:'10px'}} 
+            />
+            </>
+            }
             {localStorage.getItem('kode_aplikasi') !== 'SPM' &&
             <>
             {localStorage.getItem('sudah_login') === '0' &&

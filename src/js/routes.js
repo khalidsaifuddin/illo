@@ -71,6 +71,11 @@ import FormVarianProduk from '../pages/DataMaster/FormVarianProduk';
 import daftarKodeProduk from '../pages/DataMaster/daftarKodeProduk';
 import StokBarang from '../pages/Produk/StokBarang';
 import StoreToko from '../pages/StoreToko';
+import KonfirmasiPembayaran from '../pages/Penjualan/KonfirmasiPembayaran';
+import ProsesTransaksi from '../pages/Penjualan/ProsesTransaksi';
+import KodeValidasi from '../pages/DataMaster/KodeValidasi';
+import FormKodeValidasi from '../pages/DataMaster/FormKodeValidasi';
+import daftarKodeValidasiProduk from '../pages/DataMaster/daftarKodeValidasiProduk';
 
 // console.log(localStorage.getItem('kode_aplikasi'));
 
@@ -102,6 +107,14 @@ var routes = [
   {
     path: '/UnitUsaha/:sekolah_id',
     component: UnitUsaha 
+  },
+  {
+    path: '/KonfirmasiPembayaran/:transaksi_id',
+    component: KonfirmasiPembayaran
+  },
+  {
+    path: '/ProsesTransaksi/:transaksi_id',
+    component: ProsesTransaksi
   },
   {
     path: '/StoreToko/:pengguna_id',
@@ -220,6 +233,14 @@ var routes = [
     component: pengaturanPengguna,
   },
   {
+    path: '/KodeValidasiProduk/:produk_id',
+    component: KodeValidasi,
+  },
+  {
+    path: '/FormKodeValidasiProduk/:produk_id',
+    component: FormKodeValidasi,
+  },
+  {
     path: '/BatchProduk/:produk_id',
     component: BatchProduk,
   },
@@ -230,6 +251,10 @@ var routes = [
   {
     path: '/daftarKodeProduk/:batch_id',
     component: daftarKodeProduk,
+  },
+  {
+    path: '/daftarKodeValidasiProduk/:batch_kode_validasi_id',
+    component: daftarKodeValidasiProduk,
   },
   {
     path: '/FormBatch/:produk_id/:batch_id',

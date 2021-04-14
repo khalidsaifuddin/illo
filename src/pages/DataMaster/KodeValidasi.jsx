@@ -12,16 +12,17 @@ import moment from 'moment';
 
 import localForage from 'localforage';
 
-class VarianProduk extends Component {
+class KodeValidasi extends Component {
     state = {
         error: null,
         loadingKuis: false,
         loadingPengguna: false,
         routeParams: {
             start:0,
-            limit:20
+            limit:20,
+            produk_id: (this.$f7route.params['produk_id'] && this.$f7route.params['produk_id'] !== '-') ? this.$f7route.params['produk_id'] : null,
         },
-        varian_produk: {
+        batch_kode_validasi: {
             rows: [],
             total: 0
         },
@@ -63,123 +64,57 @@ class VarianProduk extends Component {
     }
 
     componentDidMount = () => {
-        this.$f7.dialog.preloader('Memuat data...')
-        this.props.getVarianProduk(this.state.routeParams).then((result)=>{
+        this.$f7.dialog.preloader()
+        this.props.getBatchKodeValidasiProduk(this.state.routeParams).then((result)=>{
+            this.$f7.dialog.close()
             this.setState({
-                varian_produk: result.payload
-            },()=>{
-                this.$f7.dialog.close()
+                batch_kode_validasi: result.payload
             })
         })
     }
 
     tambah = () => {
-        this.$f7router.navigate("/FormKategoriProduk/")
+        this.$f7router.navigate('/FormKodeValidasiProduk/'+this.state.routeParams.produk_id)
     }
 
-    edit = (kategori_produk_id) => {
-        this.$f7router.navigate('/FormKategoriProduk/'+kategori_produk_id)
-    }
-
-    hapus = (kategori_produk_id) => {
-        this.$f7.dialog.confirm('Apakah Anda yakin ingin menghapus data ini?', 'Konfirmasi Hapus',()=>{
-            this.$f7.dialog.preloader('Menyimpan...')
-            this.props.simpanVarianProduk({kategori_produk_id: kategori_produk_id, soft_delete:1}).then((result)=>{
-                this.$f7.dialog.close()
-                if(result.payload.sukses){
-
-                    this.props.getVarianProduk(this.state.routeParams).then((result)=>{
-                        this.setState({
-                            varian_produk: result.payload
-                        })
-                    })
-
-                    this.$f7.dialog.alert("Berhasil menghapus data!", "Berhasil", ()=> {
-                        //apa aja
-                    })
-                }else{
-                    this.$f7.dialog.alert("Terdapat kesalahan pada sistem atau jaringan Anda. Mohon coba kembali dalam beberapa saat!", "Gagal")
-                }
-            }).catch(()=>{
-                this.$f7.dialog.close()
-                this.$f7.dialog.alert("Saat ini kami belum dapat menghapus data Anda. Mohon coba kembali dalam beberapa saat!", "Gagal")
-            })
-        })
-        
-    }
-
-    cariKeyword = (e) => {
-        // console.log(e.currentTarget.value)
-        this.setState({
-            routeParams: {
-                ...this.state.routeParams,
-                keyword: e.currentTarget.value
-            }
-        })
-    }
-
-    setValue = (type) => (e) => {
-
-        this.setState({
-            routeParams: {
-                ...this.state.routeParams,
-                [type]: e.target.value
-            }
-        },()=>{
-            console.log(this.state)
-        })
-    }
-
-    filter = () => {
-        this.setState({popupFilter:!this.state.popupFilter})
-    }
-
-    tampilFilter = () => {
-        this.$f7.dialog.preloader()
-        this.props.getVarianProduk(this.state.routeParams).then((result)=>{
-            this.setState({
-                varian_produk: result.payload,
-                popupFilter: !this.state.popupFilter
-            },()=>{
-                this.$f7.dialog.close()
-            })
-        })
-    }
-
-    resetFilter = () => {
-        this.$f7.dialog.preloader()
-
-        this.setState({
-            routeParams: {
-                ...this.state.routeParams,
-                keyword: null
-            }
-        },()=>{
-
-            this.props.getVarianProduk(this.state.routeParams).then((result)=>{
-                this.setState({
-                    varian_produk: result.payload,
-                    popupFilter: !this.state.popupFilter
-                },()=>{
+    hapus = (batch_kode_validasi_id) => {
+        this.$f7.dialog.confirm('Apakah Anda yakin ingin menghapus batch ini?', 'Konfirmasi', ()=>{
+            this.$f7.dialog.preloader()
+            this.props.simpanBatchKodeValidasiProduk({
+                batch_kode_validasi_id: batch_kode_validasi_id, 
+                soft_delete: 1
+            }).then((result)=>{
+                this.props.getBatchKodeValidasiProduk(this.state.routeParams).then((result)=>{
                     this.$f7.dialog.close()
+                    this.setState({
+                        batch_kode_validasi: result.payload
+                    })
                 })
             })
-
         })
-
     }
-    
+
+    daftarKode = (batch_kode_validasi_id) => {
+        this.$f7router.navigate('/daftarKodeValidasiProduk/'+batch_kode_validasi_id)
+    }
+
+    cetak= (batch_kode_validasi_id) => {
+        this.$f7.dialog.alert('Menu ini masih dalam pengembangan', 'Informasi')
+        // this.$f7router.navigate('/daftarKodeValidasiProduk/'+batch_kode_validasi_id)
+    }
+
     render()
     {
         return (
-            <Page name="VarianProduk" className="halamanJenisTiket" hideBarsOnScroll style={{paddingBottom:'100px', boxSizing:'content-box'}}>
+            <Page name="KodeValidasi" className="halamanJenisTiket" hideBarsOnScroll style={{paddingBottom:'100px', boxSizing:'content-box'}}>
                 <Navbar sliding={false} backLink="Kembali" onBackClick={this.backClick}>
-                    <NavTitle sliding>Varian Produk</NavTitle>
+                    <NavTitle sliding>Kode Validasi</NavTitle>
+                    
                 </Navbar>
 
                 <Popup className="demo-popup" opened={this.state.popupFilter} onPopupClosed={() => this.setState({popupFilter : false})}>
                     <Page>
-                        <Navbar title="Filter Kategori Produk">
+                        <Navbar title="Filter Batch Kode Validasi">
                             <NavRight>
                                 <Link popupClose>Tutup</Link>
                             </NavRight>
@@ -188,7 +123,7 @@ class VarianProduk extends Component {
                             <List>
                                 <Searchbar
                                     className="searchbar-demo"
-                                    placeholder="Nama Kategori Produk"
+                                    placeholder="Keterangan Kode Validasi Produk"
                                     searchContainer=".search-list"
                                     searchIn=".item-title"
                                     onChange={this.cariKeyword}
@@ -239,16 +174,16 @@ class VarianProduk extends Component {
                                                     <a onClick={this.klikPrev} href="#" className={"link "+(this.state.routeParams.start < 1 ? "disabled" : "" )}>
                                                     <i className="icon icon-prev color-gray"></i>
                                                     </a>
-                                                    <a onClick={this.klikNext} href="#" className={"link "+((parseInt(this.state.routeParams.start)+20) >= parseInt(this.state.varian_produk.total) ? "disabled" : "" )}>
+                                                    <a onClick={this.klikNext} href="#" className={"link "+((parseInt(this.state.routeParams.start)+20) >= parseInt(this.state.batch_kode_validasi.total) ? "disabled" : "" )}>
                                                         <i className="icon icon-next color-gray"></i>
                                                     </a>
-                                                    <span className="data-table-pagination-label">{(this.state.routeParams.start+1)}-{(this.state.routeParams.start)+parseInt(this.state.routeParams.limit) <= parseInt(this.state.varian_produk.total) ? (this.state.routeParams.start)+parseInt(this.state.routeParams.limit) : parseInt(this.state.varian_produk.total)} dari {this.formatAngka(this.state.varian_produk.total)} kategori produk</span>
+                                                    <span className="data-table-pagination-label">{(this.state.routeParams.start+1)}-{(this.state.routeParams.start)+parseInt(this.state.routeParams.limit) <= parseInt(this.state.batch_kode_validasi.total) ? (this.state.routeParams.start)+parseInt(this.state.routeParams.limit) : parseInt(this.state.batch_kode_validasi.total)} dari {this.formatAngka(this.state.batch_kode_validasi.total)} batch kode validasi</span>
                                                 </div>
                                             </div>
                                         </div>
                                     </Col>
                                     <Col width="100" tabletWidth="100">
-                                        {this.state.varian_produk.total < 1 &&
+                                        {this.state.batch_kode_validasi.total < 1 &&
                                         <div style={{width:'100%', textAlign:'center', marginBottom:'50px'}}>
                                             <img src="./static/icons/189.jpg" style={{width:'60%'}} /> 
                                             <br/>
@@ -256,7 +191,7 @@ class VarianProduk extends Component {
                                             Silakan klik tombol tambah diatas untuk membuat data baru   
                                         </div>
                                         }
-                                        {this.state.varian_produk.rows.map((option)=>{
+                                        {this.state.batch_kode_validasi.rows.map((option)=>{
                                             let last_update = '';
                                             last_update = moment(option.last_update).format('D') + ' ' + this.bulan_singkat[(moment(option.last_update).format('M')-1)] + ' ' + moment(option.last_update).format('YYYY') + ', ' + moment(option.last_update).format('H') + ':' + moment(option.last_update).format('mm');
 
@@ -265,9 +200,53 @@ class VarianProduk extends Component {
                                             }
 
                                             return (
-                                                <Card noShadow key={option.kategori_produk_id} style={{marginLeft:'0px', marginRight:'0px'}}>
+                                                <Card key={option.batch_kode_validasi_id} style={{marginLeft:'0px', marginRight:'0px'}}>
                                                     <CardContent style={{padding:'8px'}}>
-                                                        {option.nama}
+                                                        <Row>
+                                                            {/* <Col width="15" tabletWidth="15" desktopWidth="10" style={{textAlign:'center'}}>
+                                                                <img src={"./static/icons/illo-logo-icon.png"} style={{height:'45px', width:'45px', borderRadius:'50%', marginRight:'0px'}} />
+                                                            </Col> */}
+                                                            <Col width="90" tabletWidth="70" desktopWidth="70" style={{display:'inline-flex'}}>
+                                                                <img src={"./static/icons/illo-logo-icon.png"} style={{height:'45px', width:'45px', borderRadius:'50%', marginRight:'0px'}} />
+                                                                <div style={{marginLeft:'16px'}}>
+                                                                    <b>{option.nama}</b>
+                                                                    <div style={{fontSize:'10px'}}>
+                                                                        {option.keterangan &&
+                                                                        <>
+                                                                        {option.keterangan}
+                                                                        {/* &nbsp;&bull;&nbsp; */}
+                                                                        </>
+                                                                        }
+                                                                        <div style={{fontSize:'10px'}}>
+                                                                            Update Terakhir: {last_update}
+                                                                        </div>
+                                                                        {option.jumlah &&
+                                                                        <div className="hilangDiDesktop" style={{fontSize:'10px'}}>
+                                                                        {option.jumlah} kode validasi
+                                                                        </div>
+                                                                        }
+                                                                    </div>
+                                                                </div>
+                                                            </Col>
+                                                            <Col width="0" tabletWidth="20" desktopWidth="20" style={{textAlign:'right'}} className="hilangDiMobile">
+                                                                {option.jumlah &&
+                                                                <div style={{fontSize:'10px'}}>
+                                                                {option.jumlah} kode validasi
+                                                                </div>
+                                                                }
+                                                            </Col>
+                                                            <Col width="10" tabletWidth="10" desktopWidth="10" style={{textAlign:'right'}}>
+                                                                <Button popoverOpen={".popover-menu-"+option.batch_kode_validasi_id}><i className="icons f7-icons">ellipsis_vertical</i></Button>
+                                                                <Popover className={"popover-menu-"+option.batch_kode_validasi_id} style={{minWidth:'300px'}}>
+                                                                    <List>
+                                                                        {/* <ListItem link="#" popoverClose title="Edit" onClick={()=>this.edit(option.batch_kode_validasi_id)} /> */}
+                                                                        <ListItem link="#" popoverClose title="Daftar Kode Validasi" onClick={()=>this.daftarKode(option.batch_kode_validasi_id)} />
+                                                                        <ListItem link="#" popoverClose title="Cetak Kode Validasi" onClick={()=>this.cetak(option.batch_kode_validasi_id)} />
+                                                                        <ListItem link="#" popoverClose title="Hapus" onClick={()=>this.hapus(option.batch_kode_validasi_id)} />
+                                                                    </List>
+                                                                </Popover>
+                                                            </Col>
+                                                        </Row>
                                                     </CardContent>
                                                 </Card>
                                             )
@@ -290,9 +269,11 @@ function mapDispatchToProps(dispatch) {
     return bindActionCreators({
       updateWindowDimension: Actions.updateWindowDimension,
       setLoading: Actions.setLoading,
-      getVarianProduk: Actions.getVarianProduk,
-      simpanVarianProduk: Actions.simpanVarianProduk,
-      generateUUID: Actions.generateUUID
+      getKategoriProduk: Actions.getKategoriProduk,
+      simpanKategoriProduk: Actions.simpanKategoriProduk,
+      generateUUID: Actions.generateUUID,
+      getBatchKodeValidasiProduk: Actions.getBatchKodeValidasiProduk,
+      simpanBatchKodeValidasiProduk: Actions.simpanBatchKodeValidasiProduk
     }, dispatch);
 }
 
@@ -303,5 +284,5 @@ function mapStateToProps({ App, Pertanyaan, Kuis }) {
     }
 }
 
-export default (connect(mapStateToProps, mapDispatchToProps)(VarianProduk));
+export default (connect(mapStateToProps, mapDispatchToProps)(KodeValidasi));
   
