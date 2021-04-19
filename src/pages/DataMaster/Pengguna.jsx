@@ -81,23 +81,26 @@ class Pengguna extends Component {
         this.$f7router.navigate('/FormPengguna/'+pengguna_id)
     }
 
-    hapus = (pengguna_id) => {
+    hapus = (option) => {
         this.$f7.dialog.confirm('Apakah Anda yakin ingin menghapus data ini?', 'Konfirmasi Hapus',()=>{
             this.$f7.dialog.preloader('Menyimpan...')
-            this.props.simpanPengguna({pengguna_id: pengguna_id, soft_delete:1}).then((result)=>{
-                this.$f7.dialog.close()
-                if(result.payload.sukses){
-
+            this.props.simpanPengguna({pengguna_id:option.pengguna_id, data:{soft_delete:1}}).then((result)=>{
+                if(result.payload.status === 'berhasil'){
+                    
                     this.props.getPengguna(this.state.routeParams).then((result)=>{
                         this.setState({
                             pengguna: result.payload
+                        },()=>{
+                            this.$f7.dialog.close()
+                            
+                            this.$f7.dialog.alert("Berhasil menghapus data!", "Berhasil", ()=> {
+                                //apa aja
+                            })
                         })
                     })
 
-                    this.$f7.dialog.alert("Berhasil menghapus data!", "Berhasil", ()=> {
-                        //apa aja
-                    })
                 }else{
+                    this.$f7.dialog.close()
                     this.$f7.dialog.alert("Terdapat kesalahan pada sistem atau jaringan Anda. Mohon coba kembali dalam beberapa saat!", "Gagal")
                 }
             }).catch(()=>{
@@ -214,6 +217,64 @@ class Pengguna extends Component {
             });
         })
     }
+
+    jadikanAdmin = (option) => {
+        this.$f7.dialog.confirm('Apakah Anda yakin ingin menjadikan pengguna ini sebagai Administrator?', 'Konfirmasi',()=>{
+            this.$f7.dialog.preloader('Menyimpan...')
+            this.props.simpanPengguna({pengguna_id:option.pengguna_id, data:{a_admin:1}}).then((result)=>{
+                if(result.payload.status === 'berhasil'){
+                    
+                    this.props.getPengguna(this.state.routeParams).then((result)=>{
+                        this.setState({
+                            pengguna: result.payload
+                        },()=>{
+                            this.$f7.dialog.close()
+                            
+                            this.$f7.dialog.alert("Berhasil menyimpan data!", "Berhasil", ()=> {
+                                //apa aja
+                            })
+                        })
+                    })
+
+                }else{
+                    this.$f7.dialog.close()
+                    this.$f7.dialog.alert("Terdapat kesalahan pada sistem atau jaringan Anda. Mohon coba kembali dalam beberapa saat!", "Gagal")
+                }
+            }).catch(()=>{
+                this.$f7.dialog.close()
+                this.$f7.dialog.alert("Saat ini kami belum dapat menghapus data Anda. Mohon coba kembali dalam beberapa saat!", "Gagal")
+            })
+        })
+    }
+    
+    stopAdmin = (option) => {
+        this.$f7.dialog.confirm('Apakah Anda yakin ingin menghentikan pengguna ini sebagai Administrator?', 'Konfirmasi',()=>{
+            this.$f7.dialog.preloader('Menyimpan...')
+            this.props.simpanPengguna({pengguna_id:option.pengguna_id, data:{a_admin:0}}).then((result)=>{
+                if(result.payload.status === 'berhasil'){
+                    
+                    this.props.getPengguna(this.state.routeParams).then((result)=>{
+                        this.setState({
+                            pengguna: result.payload
+                        },()=>{
+                            this.$f7.dialog.close()
+                            
+                            this.$f7.dialog.alert("Berhasil menyimpan data!", "Berhasil", ()=> {
+                                //apa aja
+                            })
+                        })
+                    })
+
+                }else{
+                    this.$f7.dialog.close()
+                    this.$f7.dialog.alert("Terdapat kesalahan pada sistem atau jaringan Anda. Mohon coba kembali dalam beberapa saat!", "Gagal")
+                }
+            }).catch(()=>{
+                this.$f7.dialog.close()
+                this.$f7.dialog.alert("Saat ini kami belum dapat menghapus data Anda. Mohon coba kembali dalam beberapa saat!", "Gagal")
+            })
+        })
+    }
     
     render()
     {
@@ -315,7 +376,7 @@ class Pengguna extends Component {
                                                     <CardContent style={{padding:'8px'}}>
                                                         <Row>
 
-                                                            <Col width="90" tabletWidth="70" desktopWidth="70" style={{display:'inline-flex'}}>
+                                                            <Col width="90" tabletWidth="50" desktopWidth="50" style={{display:'inline-flex'}}>
                                                                 <img src={option.gambar} style={{height:'45px', width:'45px', borderRadius:'50%', marginRight:'0px'}} />
                                                                 <div style={{marginLeft:'16px'}}>
                                                                     
@@ -336,6 +397,9 @@ class Pengguna extends Component {
                                                                 </div>
                                                             </Col>
                                                             <Col width="0" tabletWidth="20" desktopWidth="20" style={{textAlign:'right'}} className="hilangDiMobile">
+                                                                <div style={{fontSize:'10px'}}>{parseInt(option.a_admin) === 1 ? <b>Administrator</b> : 'Pengguna Umum'}</div>
+                                                            </Col>
+                                                            <Col width="0" tabletWidth="20" desktopWidth="20" style={{textAlign:'right'}} className="hilangDiMobile">
                                                                 <div style={{fontSize:'10px'}}>{option.jenis_mitra}</div>
                                                             </Col>
                                                             <Col width="10" tabletWidth="10" desktopWidth="10" style={{textAlign:'right'}}>
@@ -343,7 +407,9 @@ class Pengguna extends Component {
                                                                 <Popover className={"popover-menu-"+option.pengguna_id} style={{minWidth:'300px'}}>
                                                                     <List>
                                                                         <ListItem link="#" popoverClose title="Edit" onClick={()=>this.edit(option.pengguna_id)} />
-                                                                        <ListItem link="#" popoverClose title="Nonaktifkan" onClick={()=>this.hapus(option.pengguna_id)} />
+                                                                        {parseInt(option.a_admin) !== 1 && <ListItem link="#" popoverClose title="Set sebagai Administrator" onClick={()=>this.jadikanAdmin(option)} />}
+                                                                        {parseInt(option.a_admin) === 1 && <ListItem link="#" popoverClose title="Stop sebagai Administrator" onClick={()=>this.stopAdmin(option)} />}
+                                                                        <ListItem link="#" popoverClose title="Nonaktifkan" onClick={()=>this.hapus(option)} />
                                                                     </List>
                                                                 </Popover>
                                                             </Col>

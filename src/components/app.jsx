@@ -407,13 +407,13 @@ class app extends Component {
                     <ListItem noChevron link="/DataMaster/" view=".view-main" panelClose panel-close title="Semua" className="itemSub">
                       <i slot="media" className="f7-icons">cube_box</i>
                     </ListItem>
+                    <ListItem noChevron link="/Pengguna/" view=".view-main" panelClose panel-close title="Pengguna" className="itemSub">
+                      <i slot="media" className="f7-icons">doc_text</i>
+                    </ListItem>
                     <ListItem noChevron link="/KategoriProduk/" view=".view-main" panelClose panel-close title="Kategori Produk" className="itemSub">
                       <i slot="media" className="f7-icons">doc_text</i>
                     </ListItem>
                     <ListItem noChevron link="/Produk/" view=".view-main" panelClose panel-close title="Produk" className="itemSub">
-                      <i slot="media" className="f7-icons">doc_text</i>
-                    </ListItem>
-                    <ListItem noChevron link="/Pengguna/" view=".view-main" panelClose panel-close title="Pengguna" className="itemSub">
                       <i slot="media" className="f7-icons">doc_text</i>
                     </ListItem>
                     <ListItem noChevron link="/Mitra/" view=".view-main" panelClose panel-close title="Mitra" className="itemSub">

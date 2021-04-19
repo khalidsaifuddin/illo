@@ -26,7 +26,8 @@ class KodeValidasi extends Component {
             rows: [],
             total: 0
         },
-        popupFilter: false
+        popupFilter: false,
+        popupLog: false
     }
 
     bulan = [
@@ -98,9 +99,20 @@ class KodeValidasi extends Component {
         this.$f7router.navigate('/daftarKodeValidasiProduk/'+batch_kode_validasi_id)
     }
 
-    cetak= (batch_kode_validasi_id) => {
+    cetak = (batch_kode_validasi_id) => {
         this.$f7.dialog.alert('Menu ini masih dalam pengembangan', 'Informasi')
         // this.$f7router.navigate('/daftarKodeValidasiProduk/'+batch_kode_validasi_id)
+    }
+    
+    unduh = (batch_kode_validasi_id) => {
+        window.open('http://illobackend:8888/api/Produk/UnduhKodeValidasi?batch_kode_validasi_id='+batch_kode_validasi_id+'&limit=1000000&output=excel')
+    }
+
+    bukaLogCetak = (batch_kode_validasi_id) => {
+        // alert(batch_kode_validasi_id)
+        this.setState({
+            popupLog: true
+        })
     }
 
     render()
@@ -145,6 +157,19 @@ class KodeValidasi extends Component {
                                     </Button>
                                 </Col>
                             </Row>
+                        </Block>
+                    </Page>
+                </Popup>
+
+                <Popup className="log-popup" opened={this.state.popupLog} onPopupClosed={() => this.setState({popupLog : false})}>
+                    <Page>
+                        <Navbar title="Log Unduh dan Cetak">
+                            <NavRight>
+                                <Link popupClose>Tutup</Link>
+                            </NavRight>
+                        </Navbar>
+                        <Block style={{marginTop:'0px', paddingLeft:'0px', paddingRight:'0px'}}>
+                            log
                         </Block>
                     </Page>
                 </Popup>
@@ -206,7 +231,7 @@ class KodeValidasi extends Component {
                                                             {/* <Col width="15" tabletWidth="15" desktopWidth="10" style={{textAlign:'center'}}>
                                                                 <img src={"./static/icons/illo-logo-icon.png"} style={{height:'45px', width:'45px', borderRadius:'50%', marginRight:'0px'}} />
                                                             </Col> */}
-                                                            <Col width="90" tabletWidth="70" desktopWidth="70" style={{display:'inline-flex'}}>
+                                                            <Col width="90" tabletWidth="50" desktopWidth="50" style={{display:'inline-flex'}}>
                                                                 <img src={"./static/icons/illo-logo-icon.png"} style={{height:'45px', width:'45px', borderRadius:'50%', marginRight:'0px'}} />
                                                                 <div style={{marginLeft:'16px'}}>
                                                                     <b>{option.nama}</b>
@@ -225,27 +250,50 @@ class KodeValidasi extends Component {
                                                                         {option.jumlah} kode validasi
                                                                         </div>
                                                                         }
+                                                                        
                                                                     </div>
                                                                 </div>
                                                             </Col>
-                                                            <Col width="0" tabletWidth="20" desktopWidth="20" style={{textAlign:'right'}} className="hilangDiMobile">
+                                                            <Col width="0" tabletWidth="40" desktopWidth="40" style={{textAlign:'right'}} className="hilangDiMobile">
                                                                 {option.jumlah &&
                                                                 <div style={{fontSize:'10px'}}>
                                                                 {option.jumlah} kode validasi
                                                                 </div>
                                                                 }
+                                                                <div style={{fontSize:'10px'}}>
+                                                                    <Link onClick={()=>this.bukaLogCetak(option.batch_kode_validasi_id)} href="">Log Unduh dan Cetak</Link>
+                                                                </div>
+                                                                {/* <div style={{fontSize:'10px'}}>
+                                                                    <div>
+                                                                        Unduh Daftar Terakhir:<br/>1 April 2021, 13:54 (diunduh 0 kali)
+                                                                    </div>
+                                                                    <div>
+                                                                        Unduh Template Terakhir:<br/>1 April 2021, 13:54 (diunduh 0 kali)
+                                                                    </div>
+                                                                </div> */}
+                                                                {/* <br/>
+                                                                <Button raised fill>Unduh Template Zebra Designer</Button> */}
                                                             </Col>
                                                             <Col width="10" tabletWidth="10" desktopWidth="10" style={{textAlign:'right'}}>
                                                                 <Button popoverOpen={".popover-menu-"+option.batch_kode_validasi_id}><i className="icons f7-icons">ellipsis_vertical</i></Button>
-                                                                <Popover className={"popover-menu-"+option.batch_kode_validasi_id} style={{minWidth:'300px'}}>
+                                                                <Popover className={"popover-menu-"+option.batch_kode_validasi_id} style={{minWidth:'350px'}}>
                                                                     <List>
                                                                         {/* <ListItem link="#" popoverClose title="Edit" onClick={()=>this.edit(option.batch_kode_validasi_id)} /> */}
                                                                         <ListItem link="#" popoverClose title="Daftar Kode Validasi" onClick={()=>this.daftarKode(option.batch_kode_validasi_id)} />
-                                                                        <ListItem link="#" popoverClose title="Cetak Kode Validasi" onClick={()=>this.cetak(option.batch_kode_validasi_id)} />
+                                                                        <ListItem link="#" popoverClose title="Unduh Daftar Kode Validasi" onClick={()=>this.unduh(option.batch_kode_validasi_id)} />
+                                                                        <ListItem link="#" popoverClose title="Unduh Template Zebra Designer" onClick={()=>this.cetak(option.batch_kode_validasi_id)} />
                                                                         <ListItem link="#" popoverClose title="Hapus" onClick={()=>this.hapus(option.batch_kode_validasi_id)} />
                                                                     </List>
                                                                 </Popover>
                                                             </Col>
+                                                            {/* <Col width="100">
+                                                                <div>
+                                                                    Unduh Daftar Terakhir:
+                                                                </div>
+                                                                <div>
+                                                                    Unduh Template Terakhir:
+                                                                </div>
+                                                            </Col> */}
                                                         </Row>
                                                     </CardContent>
                                                 </Card>

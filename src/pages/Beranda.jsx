@@ -731,11 +731,10 @@ class Beranda extends Component {
                   <div>&nbsp;</div>
                   <Row noGap style={{marginBottom:'50px'}}>
                     
-                    <Col width="100">
+                    {/* <Col width="100">
                       <Card>
                         <CardContent style={{padding:'8px'}}>
                           <div className="overflowCard">
-                          {/* <h1 className="h1-beranda">Statistik</h1> */}
                             <Card className={"cardBorder-20 overflowCard-inner"} style={{margin:'8px', width:'200px', background:(this.gradients[0]),minHeight:'60px', textAlign:'right',color:'white', fontWeight:'bold'}}>
                                 <CardContent className="cardBorder-20" style={{minHeight:'80px',background:'rgba(0, 0, 0, 0.4)'}}>
                                       <div style={{color:'white', fontSize:'12px', textShadow:'2px 2px #434343'}}>
@@ -779,7 +778,7 @@ class Beranda extends Component {
                             <Card className={"cardBorder-20 overflowCard-inner"} style={{margin:'8px', width:'200px', background:(this.gradients[5]),minHeight:'60px', textAlign:'right',color:'white', fontWeight:'bold'}}>
                                 <CardContent className="cardBorder-20" style={{minHeight:'80px',background:'rgba(0, 0, 0, 0.4)'}}>
                                       <div style={{color:'white', fontSize:'12px', textShadow:'2px 2px #434343'}}>
-                                          Deposit
+                                          Deposit 
                                       </div>
                                       <div style={{color:'white',fontSize:'25px', textShadow:'2px 2px #434343'}}>
                                           2.000.000
@@ -789,93 +788,7 @@ class Beranda extends Component {
                           </div>
                         </CardContent>
                       </Card>
-                        {/* <Card>
-                          <CardContent>
-                            <Row noGap>
-                              <Col width="70">
-                                <h1 className="h1-beranda">Rekomendasi Produk</h1>
-                              </Col>
-                              <Col width="30">
-                                <Button className="color-theme-teal" raised fill href="/daftarProduk/semua" style={{marginTop:'8px'}}>
-                                  Semua
-                                </Button>
-                              </Col>
-                            </Row>
-                            <div className="overflowCard">
-                              {this.props.produk.rows.map((option)=>{
-                                return (
-                                  <Card key={option.produk_id} style={{margin:'8px', minHeight:'300px', maxWidth:'200px'}}>
-                                    <CardContent style={{padding:'8px'}}>
-                                        <div className="gambarProduk" style={{
-                                            backgroundImage:'url('+localStorage.getItem('api_base')+(option.gambar_produk.length > 0 ? option.gambar_produk[0].nama_file : '/assets/berkas/3577232-1.jpg')+')', 
-                                            backgroundSize:'cover',
-                                            backgroundPosition:'center'
-                                        }}>&nbsp;</div>
-                                        <Row noGap>
-                                            <Col width="100">
-                                                <div className="namaProduk">
-                                                    <Link href={"/TampilProduk/"+option.produk_id}>
-                                                      {option.nama}
-                                                    </Link>
-                                                </div>
-                                                <div className="namaProduk" style={{fontSize:'10px', fontWeight:'normal', marginTop:'0px'}}>
-                                                    {option.keterangan ? option.keterangan.replace(/(<([^>]+)>)/gi, "") : <>&nbsp;</>}
-                                                </div>
-                                                <div className="hargaProduk">
-                                                    Rp {(option.harga_produk.length > 0 ? this.formatAngka(option.harga_produk[0].nominal) : '0')}
-                                                </div>
-                                                <div className="namaProduk" style={{fontSize:'10px', color:'#b3b3b3'}}>
-                                                    {option.kategori_produk}
-                                                </div>
-                                            </Col>
-                                            <Col width="100">
-                                                <Button className="bawahCiriBiru" raised fill style={{marginTop:'8px'}} onClick={()=>this.simpanKeranjang(option.produk_id)}>
-                                                    <i className="f7-icons" style={{fontSize:'20px'}}>cart_badge_plus</i>&nbsp;
-                                                    Beli
-                                                </Button>
-                                            </Col>
-                                        </Row>
-                                    </CardContent>
-                                </Card>
-                                )
-                              })}
-                            </div>
-                          </CardContent>
-                        </Card> */}
-
-                      {/* <Card className={"cardBorder-20 hilangDiDesktop"}>
-                        <CardContent>
-                          <Row noGap>
-                            <Col width="70">
-                              <h1 className="h1-beranda">Kategori Produk</h1>
-                            </Col>
-                            <Col width="30">
-                              <Button className="color-theme-teal" raised fill href="/TampilKategoriProduk" style={{marginTop:'8px'}}>
-                                Semua
-                              </Button>
-                            </Col>
-                          </Row>
-                          <div className="overflowCard">
-                            {this.props.kategori_produk.rows.map((option)=>{
-                              return (
-                                <Card className={"cardBorder-20 overflowCard-inner"} style={{margin:'8px', width:'200px', background:(this.gradients[this.props.kategori_produk.rows.indexOf(option)]),minHeight:'60px', textAlign:'right',color:'white', fontWeight:'bold'}}>
-                                  <CardContent className="cardBorder-20" style={{minHeight:'80px',background:'rgba(0, 0, 0, 0.4)'}}>
-                                    <Link href={"/daftarProduk/"+option.kategori_produk_id} style={{display:'block'}}>
-                                        <div style={{color:'white', fontSize:'20px', textShadow:'2px 2px #434343'}}>
-                                            {option.nama}
-                                        </div>
-                                        <div style={{color:'white',fontSize:'12px', textShadow:'2px 2px #434343'}}>
-                                            ({option.jumlah_produk ? option.jumlah_produk : '0'} Produk)
-                                        </div>
-                                    </Link>
-                                  </CardContent>
-                                </Card>
-                              )
-                            })}
-                          </div>
-                        </CardContent>
-                      </Card> */}
-                    </Col>
+                    </Col> */}
                     
                     {/* <Col width="100" tabletWidth="100">
                       <Card className="cardAtas">
@@ -1050,6 +963,8 @@ class Beranda extends Component {
                                   <Link href={"/tampilPengguna/"+JSON.parse(localStorage.getItem('user')).pengguna_id} style={{color:'#434343'}}>
                                     <span style={{fontSize:'10px'}}>{JSON.parse(localStorage.getItem('user')).username}</span><br/>
                                   </Link>
+                                  <br/>
+                                  <span style={{fontSize:'10px'}}>{parseInt(JSON.parse(localStorage.getItem('user')).a_admin) === 1 ? 'Administrator' : 'Pengguna Umum'}</span><br/>
                                 </div>
                               </div>
                             </Col>
@@ -1237,7 +1152,8 @@ class Beranda extends Component {
                               <Link href={"/tampilPengguna/"+JSON.parse(localStorage.getItem('user')).pengguna_id} style={{color:'#434343'}}>
                                 <span style={{fontSize:'11px'}}>{JSON.parse(localStorage.getItem('user')).username}</span><br/>
                               </Link>
-                              
+                              <br/>
+                              <span style={{fontSize:'10px'}}>{parseInt(JSON.parse(localStorage.getItem('user')).a_admin) === 1 ? 'Administrator' : 'Pengguna Umum'}</span><br/>
                             </Col>
                             <Col width="100">
                               {this.props.anggota_mitra.total > 0 &&
