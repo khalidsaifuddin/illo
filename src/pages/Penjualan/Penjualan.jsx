@@ -63,10 +63,14 @@ class Penjualan extends Component {
 
     componentDidMount = () => {
 
+        this.$f7.dialog.preloader()
+
         if(parseInt(JSON.parse(localStorage.getItem('user')).a_admin) === 1){
             this.props.getTransaksi({...this.state.routeParams, mitra_id: '7efe511c-4c9a-4fd3-baa3-893e7093b372'}).then((result)=>{
                 this.setState({
                     transaksi: result.payload
+                },()=>{
+                    this.$f7.dialog.close()
                 })
             })
         }else{
@@ -82,6 +86,10 @@ class Penjualan extends Component {
 
     proses = (option) => {
         this.$f7router.navigate('/ProsesTransaksi/'+option.transaksi_id)
+    }
+    
+    kirim = (option) => {
+        this.$f7router.navigate('/ProsesPengiriman/'+option.transaksi_id)
     }
     
     render()
@@ -136,7 +144,8 @@ class Penjualan extends Component {
                                                                 <List>
                                                                     {parseInt(option.status_pembayaran_id) === 1 && <ListItem link popoverClose onClick={()=>this.detail(option)} title="Konfirmasi Pembayaran" />}
                                                                     <ListItem link popoverClose onClick={()=>this.detail(option)} title="Detail Transaksi" />
-                                                                    <ListItem link popoverClose onClick={()=>this.proses(option)} title="Proses Transaksi" />
+                                                                    <ListItem link popoverClose onClick={()=>this.proses(option)} title="Proses Kode Tracking" />
+                                                                    <ListItem link popoverClose onClick={()=>this.kirim(option)} title="Proses Pengiriman" />
                                                                 </List>
                                                             </Popover>
                                                         </td>

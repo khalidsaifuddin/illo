@@ -26,6 +26,10 @@ class KodeValidasi extends Component {
             rows: [],
             total: 0
         },
+        log_cetak: {
+            rows: [],
+            total: 0
+        },
         popupFilter: false,
         popupLog: false
     }
@@ -105,13 +109,126 @@ class KodeValidasi extends Component {
     }
     
     unduh = (batch_kode_validasi_id) => {
-        window.open('http://illobackend:8888/api/Produk/UnduhKodeValidasi?batch_kode_validasi_id='+batch_kode_validasi_id+'&limit=1000000&output=excel')
+
+        //simpan log
+        this.props.simpanLogCetak({
+            pengguna_id: JSON.parse(localStorage.getItem('user')).pengguna_id, 
+            batch_kode_validasi_id: batch_kode_validasi_id
+        }).then((result)=>{
+            // window.open('http://illobackend:8888/api/Produk/UnduhKodeValidasi?batch_kode_validasi_id='+batch_kode_validasi_id+'&limit=1000000&output=excel')
+            window.open('http://117.53.47.43:8085/api/Produk/UnduhKodeValidasi?batch_kode_validasi_id='+batch_kode_validasi_id+'&limit=1000000&output=excel')
+        })
+
     }
 
     bukaLogCetak = (batch_kode_validasi_id) => {
         // alert(batch_kode_validasi_id)
+        this.$f7.dialog.preloader()
+
         this.setState({
-            popupLog: true
+            batch_kode_validasi_id_aktif: batch_kode_validasi_id
+        },()=>{
+            this.props.getLogCetak({batch_kode_validasi_id: batch_kode_validasi_id}).then((result)=>{
+                this.setState({
+                    log_cetak: result.payload,
+    
+                    popupLog: true
+                },()=>{
+                    this.$f7.dialog.close()
+                })
+            })
+        })
+
+
+    }
+
+    klikNext = () => {
+        // alert('tes');
+        this.$f7.dialog.preloader()
+        
+        this.setState({
+            ...this.state,
+            loading: true,
+            routeParams: {
+                ...this.state.routeParams,
+                start: (parseInt(this.state.routeParams.start) + parseInt(this.state.routeParams.limit))
+            }
+        },()=>{
+            this.props.getBatchKodeValidasiProduk(this.state.routeParams).then((result)=>{
+                this.setState({
+                    batch_kode_validasi: result.payload,
+                    loading: false
+                },()=>{
+                    this.$f7.dialog.close()
+                })
+            })
+        })
+    }
+
+    klikPrev = () => {
+        // alert('tes');
+        this.$f7.dialog.preloader()
+        
+        this.setState({
+            ...this.state,
+            loading: true,
+            routeParams: {
+                ...this.state.routeParams,
+                start: (parseInt(this.state.routeParams.start) - parseInt(this.state.routeParams.limit))
+            }
+        },()=>{
+            this.props.getBatchKodeValidasiProduk(this.state.routeParams).then((result)=>{
+                this.setState({
+                    batch_kode_validasi: result.payload,
+                    loading: false
+                },()=>{
+                    this.$f7.dialog.close()
+                })
+            })
+        })
+    }
+
+    klikNextLog = () => {
+        // alert('tes');
+        this.$f7.dialog.preloader()
+        
+        this.setState({
+            ...this.state,
+            loading: true,
+            routeParams: {
+                ...this.state.routeParams,
+                start: (parseInt(this.state.routeParams.start) + parseInt(this.state.routeParams.limit))
+            }
+        },()=>{
+            this.props.getLogCetak({batch_kode_validasi_id: this.state.batch_kode_validasi_id_aktif}).then((result)=>{
+                this.setState({
+                    log_cetak: result.payload
+                },()=>{
+                    this.$f7.dialog.close()
+                })
+            })
+        })
+    }
+
+    klikPrevLog = () => {
+        // alert('tes');
+        this.$f7.dialog.preloader()
+        
+        this.setState({
+            ...this.state,
+            loading: true,
+            routeParams: {
+                ...this.state.routeParams,
+                start: (parseInt(this.state.routeParams.start) - parseInt(this.state.routeParams.limit))
+            }
+        },()=>{
+            this.props.getLogCetak({batch_kode_validasi_id: this.state.batch_kode_validasi_id_aktif}).then((result)=>{
+                this.setState({
+                    log_cetak: result.payload
+                },()=>{
+                    this.$f7.dialog.close()
+                })
+            })
         })
     }
 
@@ -169,7 +286,73 @@ class KodeValidasi extends Component {
                             </NavRight>
                         </Navbar>
                         <Block style={{marginTop:'0px', paddingLeft:'0px', paddingRight:'0px'}}>
-                            log
+                            <Row>
+                                <Col width="100" tabletWidth="100">
+                                    <div className="data-table" style={{overflowY:'hidden'}}>
+                                        <div className="data-table-footer" style={{display:'block'}}>
+                                            <div className="data-table-pagination" style={{textAlign:'right'}}>
+                                                <a onClick={this.klikPrevLog} href="#" className={"link "+(this.state.routeParams.start < 1 ? "disabled" : "" )}>
+                                                <i className="icon icon-prev color-gray"></i>
+                                                </a>
+                                                <a onClick={this.klikNextLog} href="#" className={"link "+((parseInt(this.state.routeParams.start)+20) >= parseInt(this.state.log_cetak.total) ? "disabled" : "" )}>
+                                                    <i className="icon icon-next color-gray"></i>
+                                                </a>
+                                                <span className="data-table-pagination-label">{(this.state.routeParams.start+1)}-{(this.state.routeParams.start)+parseInt(this.state.routeParams.limit) <= parseInt(this.state.log_cetak.total) ? (this.state.routeParams.start)+parseInt(this.state.routeParams.limit) : parseInt(this.state.log_cetak.total)} dari {this.formatAngka(this.state.log_cetak.total)} baris log</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </Col>
+                                <Col width="100" tabletWidth="100">
+                                    <div className="data-table" style={{overflowY:'hidden'}}>
+                                        <table>
+                                            <thead style={{background:'#eeeeee'}}>
+                                                <tr>
+                                                    <th className="label-cell" style={{minWidth:'40px'}}>&nbsp;</th>
+                                                    <th className="label-cell" style={{minWidth:'200px', color:'#434343', fontSize:'15px'}}>Tanggal Unduh</th>
+                                                    <th className="label-cell" style={{minWidth:'200px', color:'#434343', fontSize:'15px'}}>Pengguna</th>
+                                                </tr>
+                                                
+                                            </thead>
+                                            <tbody>
+                                                {/* isi tabelnya */}
+                                                {this.state.log_cetak.rows.map((option)=>{
+                                                    return(
+                                                        <tr key={option.log_unduh_kode_validasi_id}>
+                                                            <td className="label-cell">
+                                                                {/* <Button popoverOpen={".popover-menu-"+option.pendaftar_id}>
+                                                                    <i className="f7-icons" style={{fontSize:'20px'}}>ellipsis_vertical</i>
+                                                                </Button>
+                                                                <Popover className={"popover-menu-"+option.pendaftar_id}>
+                                                                    <List>
+                                                                        <ListItem link popoverClose onClick={()=>this.buktiPembayaran(option)} title="Bukti Pembayaran" />
+                                                                        <ListItem link popoverClose onClick={()=>this.verifikasi(option)} title="Verifikasi" />
+                                                                        <ListItem link popoverClose onClick={()=>this.formulir(option)} title="Formulir" />
+                                                                        <ListItem link popoverClose onClick={()=>this.cetakFormulir(option)} title="Cetak Formulir" />
+                                                                        <ListItem link popoverClose onClick={()=>this.openWa(option)} title="Teks Pesan Whatsapp" />
+                                                                    </List>
+                                                                </Popover> */}
+                                                            </td>
+                                                            <td className="label-cell">
+                                                                {moment(option.create_date).format('D') + ' ' + this.bulan[(moment(option.create_date).format('M')-1)] + ' ' + moment(option.create_date).format('YYYY')},&nbsp;
+                                                                {moment(option.create_date).format('HH') + ':' + moment(option.create_date).format('mm')}
+                                                            </td>
+                                                            <td className="label-cell">
+                                                                {option.pengguna}
+                                                                <div style={{fontSize:'10px', marginTop:'-2px'}}>{option.username}</div>
+                                                            </td>
+                                                        </tr>
+                                                    )
+                                                })}
+                                            </tbody>
+                                        </table>
+                                        <div className="data-table-footer" style={{display:'block', height:'75px'}}>
+                                            <div className="data-table-pagination">
+                                                &nbsp;
+                                            </div>
+                                        </div>
+                                    </div>
+                                </Col>
+                            </Row>
                         </Block>
                     </Page>
                 </Popup>
@@ -247,7 +430,16 @@ class KodeValidasi extends Component {
                                                                         </div>
                                                                         {option.jumlah &&
                                                                         <div className="hilangDiDesktop" style={{fontSize:'10px'}}>
-                                                                        {option.jumlah} kode validasi
+                                                                            {option.jumlah} kode validasi
+                                                                            <div style={{fontSize:'10px'}}>
+                                                                                Unduh Terakhir:&nbsp;
+                                                                                <b>
+                                                                                    {option.unduh_terakhir && moment(option.unduh_terakhir).format('D') + ' ' + this.bulan_singkat[(moment(option.unduh_terakhir).format('M')-1)] + ' ' + moment(option.unduh_terakhir).format('YYYY') + ', ' + moment(option.unduh_terakhir).format('HH') + ':' + moment(option.unduh_terakhir).format('mm')}
+                                                                                    {!option.unduh_terakhir && 'Belum pernah dicetak'}
+                                                                                </b>
+                                                                                <br/>
+                                                                                <Link onClick={()=>this.bukaLogCetak(option.batch_kode_validasi_id)} href="">Log Unduh dan Cetak</Link>
+                                                                            </div>
                                                                         </div>
                                                                         }
                                                                         
@@ -257,10 +449,16 @@ class KodeValidasi extends Component {
                                                             <Col width="0" tabletWidth="40" desktopWidth="40" style={{textAlign:'right'}} className="hilangDiMobile">
                                                                 {option.jumlah &&
                                                                 <div style={{fontSize:'10px'}}>
-                                                                {option.jumlah} kode validasi
+                                                                <b>{option.jumlah}</b> kode validasi
                                                                 </div>
                                                                 }
                                                                 <div style={{fontSize:'10px'}}>
+                                                                    Unduh Terakhir:&nbsp;
+                                                                    <b>
+                                                                        {option.unduh_terakhir && moment(option.unduh_terakhir).format('D') + ' ' + this.bulan_singkat[(moment(option.unduh_terakhir).format('M')-1)] + ' ' + moment(option.unduh_terakhir).format('YYYY') + ', ' + moment(option.unduh_terakhir).format('HH') + ':' + moment(option.unduh_terakhir).format('mm')}
+                                                                        {!option.unduh_terakhir && 'Belum pernah dicetak'}
+                                                                    </b>
+                                                                    <br/>
                                                                     <Link onClick={()=>this.bukaLogCetak(option.batch_kode_validasi_id)} href="">Log Unduh dan Cetak</Link>
                                                                 </div>
                                                                 {/* <div style={{fontSize:'10px'}}>
@@ -321,7 +519,9 @@ function mapDispatchToProps(dispatch) {
       simpanKategoriProduk: Actions.simpanKategoriProduk,
       generateUUID: Actions.generateUUID,
       getBatchKodeValidasiProduk: Actions.getBatchKodeValidasiProduk,
-      simpanBatchKodeValidasiProduk: Actions.simpanBatchKodeValidasiProduk
+      simpanBatchKodeValidasiProduk: Actions.simpanBatchKodeValidasiProduk,
+      getLogCetak: Actions.getLogCetak,
+      simpanLogCetak: Actions.simpanLogCetak
     }, dispatch);
 }
 

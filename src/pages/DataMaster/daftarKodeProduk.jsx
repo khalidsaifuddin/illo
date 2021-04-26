@@ -137,12 +137,12 @@ class daftarKodeProduk extends Component {
         return (
             <Page name="daftarKodeProduk" className="halamanJenisTiket" hideBarsOnScroll style={{paddingBottom:'100px', boxSizing:'content-box'}}>
                 <Navbar sliding={false} backLink="Kembali" onBackClick={this.backClick}>
-                    <NavTitle sliding>Daftar Kode Produk</NavTitle>
+                    <NavTitle sliding>Daftar Kode Tracking</NavTitle>
                 </Navbar>
 
                 <Popup className="kode-popup" opened={this.state.input_kode} onPopupClosed={() => this.setState({input_kode : false})}>
                     <Page>
-                        <Navbar title="Kode Produk">
+                        <Navbar title="Kode Tracking">
                             <NavRight>
                                 <Link popupClose>Tutup</Link>
                             </NavRight>
@@ -150,7 +150,9 @@ class daftarKodeProduk extends Component {
                         <Block style={{marginTop:'0px', paddingLeft:'0px', paddingRight:'0px'}}>
                             <Card>
                                 <CardContent style={{textAlign:'center'}}>
-                                    <QRCode value={btoa(this.state.kode_aktif.kode_produk_id).toUpperCase().substring(0,10)} style={{width:'80%', height:'auto'}} />
+                                    <QRCode value={btoa(this.state.kode_aktif.kode_produk_id).toUpperCase().substring(0,10)} style={{width:'75%', height:'auto'}} />
+                                    <br/>
+                                    <b style={{fontSize:'20px'}}>{btoa(this.state.kode_aktif.kode_produk_id).toUpperCase().substring(0,10)}</b>
                                 </CardContent>
                             </Card>
                         </Block>
@@ -194,9 +196,10 @@ class daftarKodeProduk extends Component {
                                                                 <Col width="100" tabletWidth="80">
                                                                     <Row noGap>
                                                                         <Col width="50">
-                                                                            Kode Produk:<br/>
+                                                                            Kode Tracking:<br/>
                                                                             {/* <b>{option.kode_produk_id}</b><br/> */}
-                                                                            <b>{btoa(option.kode_produk_id).toUpperCase().substring(0,10)}</b><br/>
+                                                                            {/* <b>{btoa(option.kode_produk_id).toUpperCase().substring(0,10)}</b><br/> */}
+                                                                            <b>{option.kode_tracking}</b><br/>
                                                                         </Col>
                                                                         <Col width="50">
                                                                             Kode Produksi:<br/>
@@ -215,7 +218,7 @@ class daftarKodeProduk extends Component {
                                                                 </Col>
                                                                 <Col width="100" tabletWidth="20" style={{textAlign:'right'}}>
                                                                     <Button style={{marginLeft:'4px', display:'inline-flex'}} onClick={()=>this.perbesarKode(option)}>
-                                                                        <i className="f7-icons" style={{fontSize:'20px'}}>zoom_in</i>&nbsp;Perbesar QRCode
+                                                                        <i className="f7-icons" style={{fontSize:'20px'}}>zoom_in</i>&nbsp;Perbesar
                                                                     </Button>
                                                                 </Col>
                                                             </Row>

@@ -181,6 +181,52 @@ class Produk extends Component {
     kodeValidasi = (produk_id) => {
         this.$f7router.navigate('/KodeValidasiProduk/'+produk_id)
     }
+
+    klikNext = () => {
+        // alert('tes');
+        this.$f7.dialog.preloader()
+        
+        this.setState({
+            ...this.state,
+            loading: true,
+            routeParams: {
+                ...this.state.routeParams,
+                start: (parseInt(this.state.routeParams.start) + parseInt(this.state.routeParams.limit))
+            }
+        },()=>{
+            this.props.getProduk(this.state.routeParams).then((result)=>{
+                this.setState({
+                    produk: result.payload,
+                    loading: false
+                },()=>{
+                    this.$f7.dialog.close()
+                })
+            })
+        })
+    }
+
+    klikPrev = () => {
+        // alert('tes');
+        this.$f7.dialog.preloader()
+        
+        this.setState({
+            ...this.state,
+            loading: true,
+            routeParams: {
+                ...this.state.routeParams,
+                start: (parseInt(this.state.routeParams.start) - parseInt(this.state.routeParams.limit))
+            }
+        },()=>{
+            this.props.getProduk(this.state.routeParams).then((result)=>{
+                this.setState({
+                    produk: result.payload,
+                    loading: false
+                },()=>{
+                    this.$f7.dialog.close()
+                })
+            })
+        })
+    }
     
     render()
     {

@@ -432,6 +432,29 @@ class app extends Component {
                 </ListItem>
                 }
                 {
+                (localStorage.getItem('user') !== null && 
+                localStorage.getItem('user') !== '') && 
+                (
+                  localStorage.getItem('sekolah_id_beranda') === '' || 
+                  localStorage.getItem('sekolah_id_beranda') === null
+                ) &&
+                parseInt(JSON.parse(localStorage.getItem('user')).a_admin) ===  1 &&
+                <ListItem view=".view-main" accordionItem title="Konten Website">
+                  <i slot="media" className="f7-icons">slider_horizontal_below_rectangle</i>
+                  <AccordionContent>
+                    <ListItem noChevron link="/BannerUtama/" view=".view-main" panelClose panel-close title="Banner Utama" className="itemSub">
+                      <i slot="media" className="f7-icons">rectangle_on_rectangle</i>
+                    </ListItem>
+                    <ListItem noChevron link="/BannerSamping/" view=".view-main" panelClose panel-close title="Banner Samping" className="itemSub">
+                      <i slot="media" className="f7-icons">sidebar_left</i>
+                    </ListItem>
+                    <ListItem noChevron link="/BannerBawah/" view=".view-main" panelClose panel-close title="Banner Bawah" className="itemSub">
+                      <i slot="media" className="f7-icons">rectangle_stack</i>
+                    </ListItem>
+                  </AccordionContent>
+                </ListItem>
+                }
+                {
                 (
                   localStorage.getItem('user') !== null && 
                   localStorage.getItem('user') !== ''

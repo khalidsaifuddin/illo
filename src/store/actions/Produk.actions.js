@@ -22,6 +22,13 @@ export const GET_KODE_VALIDASI_PRODUK = '[PRODUK] GET_KODE_VALIDASI_PRODUK';
 export const GET_BATCH_KODE_VALIDASI_PRODUK = '[PRODUK] GET_BATCH_KODE_VALIDASI_PRODUK';
 export const SIMPAN_BATCH_KODE_VALIDASI_PRODUK = '[PRODUK] SIMPAN_BATCH_KODE_VALIDASI_PRODUK';
 export const SIMPAN_KODE_VALIDASI_PRODUK = '[PRODUK] SIMPAN_KODE_VALIDASI_PRODUK';
+export const GET_LOG_CETAK = '[PRODUK] GET_LOG_CETAK';
+export const SIMPAN_LOG_CETAK = '[PRODUK] SIMPAN_LOG_CETAK';
+export const SIMPAN_LOG_CETAK_TRACKING = '[PRODUK] SIMPAN_LOG_CETAK_TRACKING';
+export const SIMPAN_TRACKING = '[PRODUK] SIMPAN_TRACKING';
+export const GET_TRACKING = '[PRODUK] GET_TRACKING';
+export const SIMPAN_LANJUT_TRANSAKSI = '[PRODUK] SIMPAN_LANJUT_TRANSAKSI';
+export const HAPUS_TRACKING = '[PRODUK] HAPUS_TRACKING';
 
 //fungsinya
 
@@ -371,6 +378,118 @@ export function simpanKodeValidasiProduk(routeParams)
         request.then((response) =>
             dispatch({
                 type   : SIMPAN_KODE_VALIDASI_PRODUK,
+                payload: response.data,
+                routeParams
+            })
+        );
+}
+
+export function getLogCetak(routeParams)
+{
+    const request = axios.post(localStorage.getItem('api_base')+'/api/Produk/getLogCetak', {
+        ...routeParams
+    });
+
+    return (dispatch) =>
+        request.then((response) =>
+            dispatch({
+                type   : GET_LOG_CETAK,
+                payload: response.data,
+                routeParams
+            })
+        );
+}
+
+export function simpanLogCetak(routeParams)
+{
+    const request = axios.post(localStorage.getItem('api_base')+'/api/Produk/simpanLogCetak', {
+        ...routeParams
+    });
+
+    return (dispatch) =>
+        request.then((response) =>
+            dispatch({
+                type   : SIMPAN_LOG_CETAK,
+                payload: response.data,
+                routeParams
+            })
+        );
+}
+
+export function simpanLogCetakTracking(routeParams)
+{
+    const request = axios.post(localStorage.getItem('api_base')+'/api/Produk/simpanLogCetakTracking', {
+        ...routeParams
+    });
+
+    return (dispatch) =>
+        request.then((response) =>
+            dispatch({
+                type   : SIMPAN_LOG_CETAK_TRACKING,
+                payload: response.data,
+                routeParams
+            })
+        );
+}
+
+export function simpanTracking(routeParams)
+{
+    const request = axios.post(localStorage.getItem('api_base')+'/api/Produk/simpanTracking', {
+        ...routeParams
+    });
+
+    return (dispatch) =>
+        request.then((response) =>
+            dispatch({
+                type   : SIMPAN_TRACKING,
+                payload: response.data,
+                routeParams
+            })
+        );
+}
+
+export function getTracking(routeParams)
+{
+    const request = axios.post(localStorage.getItem('api_base')+'/api/Produk/getTracking', {
+        ...routeParams
+    });
+
+    return (dispatch) =>
+        request.then((response) =>
+            dispatch({
+                type   : GET_TRACKING,
+                payload: response.data,
+                routeParams
+            })
+        );
+}
+
+export function prosesLanjutTransaksi(routeParams)
+{
+    const request = axios.post(localStorage.getItem('api_base')+'/api/Produk/prosesLanjutTransaksi', {
+        ...routeParams
+    });
+
+    return (dispatch) =>
+        request.then((response) =>
+            dispatch({
+                type   : SIMPAN_LANJUT_TRANSAKSI,
+                payload: response.data,
+                routeParams
+            })
+        );
+}
+
+export function hapusTracking(routeParams)
+{
+    const request = axios.post(localStorage.getItem('api_base')+'/api/Produk/hapusTracking', {
+        ...routeParams
+    });
+
+    return (dispatch) =>
+        request.then((response) =>
+            dispatch({
+                type   : HAPUS_TRACKING,
                 payload: response.data,
                 routeParams
             })

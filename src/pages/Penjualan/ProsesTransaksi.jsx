@@ -9,6 +9,7 @@ import * as Actions from '../../store/actions';
 
 import io from 'socket.io-client';
 import moment from 'moment';
+import QRCode from 'qrcode.react'
 
 import localForage from 'localforage';
 import CardTransaksi from './CardTransaksi';
@@ -32,7 +33,12 @@ class ProsesTransaksi extends Component {
         input_kode: false,
         produk_aktif: {
             harga_final: 0
-        }
+        },
+        tracking: {
+            rows: [],
+            total: 0
+        },
+        komplit: false
     }
 
     bulan = [
@@ -71,12 +77,41 @@ class ProsesTransaksi extends Component {
 
     componentDidMount = () => {
 
-            this.props.getTransaksi({...this.state.routeParams}).then((result)=>{
-                this.setState({
-                    transaksi: result.payload,
-                    transaksi_record: result.payload.total > 0 ? result.payload.rows[0] : {}
-                })
+        this.props.getTransaksi({...this.state.routeParams}).then((result)=>{
+            this.setState({
+                transaksi: result.payload,
+                transaksi_record: result.payload.total > 0 ? result.payload.rows[0] : {}
+            },()=>{
+
+                if(this.state.transaksi_record.produk_transaksi && this.state.transaksi_record.produk_transaksi.length > 0){
+                    // console.log(this.state.transaksi_record.produk_transaksi)
+                    let tracking_komplit = 0
+
+                    for (let index = 0; index < this.state.transaksi_record.produk_transaksi.length; index++) {
+                        const element = this.state.transaksi_record.produk_transaksi[index];
+
+                        // console.log(element)
+
+                        if(parseInt(element.total_tracking) >= parseInt(element.jumlah)){
+                            //sesuai
+                            tracking_komplit++
+                        }else{
+                            //kurang
+                        }
+                        
+                    }
+
+                    if(parseInt(tracking_komplit) === parseInt(this.state.transaksi_record.produk_transaksi.length)){
+                        //sudah semua
+                        this.setState({komplit:true})
+                    }else{
+                        //ada yang belum
+                        this.setState({komplit:false})
+                    }
+                }
+
             })
+        })
 
     }
 
@@ -91,6 +126,13 @@ class ProsesTransaksi extends Component {
         },()=>{
             // this.inputCari.focus()
             console.log(this.refs.ketikCari)
+
+            this.props.getTracking(option).then((result)=>{
+                this.setState({
+                    tracking: result.payload
+                })
+            })
+
         })
     }
 
@@ -109,13 +151,128 @@ class ProsesTransaksi extends Component {
         // console.log(e.key)
         if(e.key === 'Enter'){
             //what to do
+
+            if(this.state.routeParams.kode_produk.length < 1){
+                this.$f7.dialog.alert('Mohon ketik kode tracking terlebih dahulu!', 'Peringatan')
+                return true
+            }
+
+            this.$f7.dialog.preloader()
+
             this.props.cariKodeProduk({
                 ...this.state.routeParams,
                 produk_id: this.state.produk_aktif.produk_id,
                 varian_produk_id: this.state.produk_aktif.varian_produk_id,
                 transaksi_id: this.state.transaksi_record.transaksi_id
+            }).then((result)=>{
+
+                // this.$f7.dialog.close()
+                console.log(result.payload)
+
+                if(result.payload.length > 0){
+                    //ketemu
+
+                    console.log(this.state.produk_aktif.produk_id)
+                    console.log(result.payload[0].produk_id)
+                    
+                    if(this.state.produk_aktif.produk_id === result.payload[0].produk_id){
+                        //sama produknya
+                        this.props.simpanTracking({
+                            ...result.payload[0],
+                            ...this.state.produk_aktif,
+                            ...this.state.routeParams
+                        }).then((result)=>{
+    
+                            if(result.payload.sukses){
+                                //berhasil
+                                this.$f7.dialog.close()
+    
+                                //final process
+                                this.props.getTracking({
+                                    ...this.state.routeParams,
+                                    produk_transaksi_id: this.state.produk_aktif.produk_transaksi_id,
+                                    produk_id: this.state.produk_aktif.produk_id,
+                                    varian_produk_id: this.state.produk_aktif.varian_produk_id,
+                                    transaksi_id: this.state.transaksi_record.transaksi_id
+                                }).then((result)=>{
+                                    this.setState({
+                                        tracking: result.payload,
+                                        routeParams: {
+                                            ...this.state.routeParams,
+                                            kode_produk: ''
+                                        }
+                                    },()=>{
+                                        this.componentDidMount()
+                                    })
+                                })
+        
+                            }else{
+                                //gagal
+                                this.$f7.dialog.close()
+                                this.$f7.dialog.alert(result.payload.pesan, 'Peringatan')
+                            }
+
+                        })
+                    }else{
+                        //produk tidak cocok/sesuai
+                        this.$f7.dialog.close()
+                        this.$f7.dialog.alert('Kode Tracking tidak sesuai dengan produk ini! Mohon pastikan tidak ada kesalahan ketik', 'Peringatan')
+                    }
+
+                    // return true
+
+                }else{
+                    //nggak ketemu
+                    
+                    this.$f7.dialog.close()
+                    this.$f7.dialog.alert('Kode Tracking tidak ditemukan! Mohon pastikan tidak ada kesalahan ketik', 'Peringatan')
+                }
             })
         }
+    }
+
+    simpanLanjut = () => {
+        // alert('oke')
+        this.$f7.dialog.preloader()
+        this.props.prosesLanjutTransaksi(this.state.routeParams).then((result)=>{
+            
+            this.$f7.dialog.close()
+            
+            if(result.payload.sukses){
+                this.$f7router.navigate('/ProsesPengiriman/'+this.$f7route.params['transaksi_id'])
+            }else{
+                this.$f7.dialog.alert('Terdapat kesalahan. Mohon coba kembali dalam beberapa waktu ke depan', 'Gagal')
+            }
+        }).catchn(()=>{
+            this.$f7.dialog.close()
+            this.$f7.dialog.alert('Terdapat kesalahan. Mohon coba kembali dalam beberapa waktu ke depan', 'Gagal')
+        })
+
+    }
+
+    hapusTracking = (option) => {
+
+        this.$f7.dialog.confirm('Apakah Anda yakin ingin menghapus kode tracking ini?','Konfirmasi',()=>{
+
+            this.props.hapusTracking({tracking_produk_transaksi_id: option.tracking_produk_transaksi_id}).then((result)=>{
+                
+                this.props.getTracking({
+                    ...this.state.routeParams,
+                    produk_id: this.state.produk_aktif.produk_id,
+                    varian_produk_id: this.state.produk_aktif.varian_produk_id,
+                    transaksi_id: this.state.transaksi_record.transaksi_id
+                }).then((result)=>{
+                    this.setState({
+                        tracking: result.payload
+                    },()=>{
+                        this.componentDidMount()
+                    })
+                })
+    
+            })
+
+        })
+        // console.log(option)
     }
     
     render()
@@ -128,7 +285,7 @@ class ProsesTransaksi extends Component {
 
                 <Popup className="input-kode-popup" opened={this.state.input_kode} onPopupClosed={() => this.setState({input_kode : false})}>
                     <Page>
-                        <Navbar title="Input Kode Produk">
+                        <Navbar title="Input Kode Tracking">
                             <NavRight>
                                 <Link popupClose>Tutup</Link>
                             </NavRight>
@@ -171,7 +328,14 @@ class ProsesTransaksi extends Component {
                                                 <div class="item-inner">
                                                     {/* <div class="item-title item-floating-label">Name</div> */}
                                                     <div class="item-input-wrap">
-                                                        <input onKeyPress={this.ketikEnter} onChange={this.ketikCari} type="text" placeholder="Kode Produk (Tekan Enter untuk mencari)" />
+                                                        <input 
+                                                            ref={'ketikCari'}
+                                                            value={this.state.routeParams.kode_produk} 
+                                                            onKeyPress={this.ketikEnter} 
+                                                            onChange={this.ketikCari} 
+                                                            type="text"
+                                                            placeholder="Kode Tracking (Tekan Enter untuk mencari)" 
+                                                        />
                                                         <span class="input-clear-button"></span>
                                                     </div>
                                                 </div>
@@ -200,7 +364,38 @@ class ProsesTransaksi extends Component {
                             <Card>
                                 <CardContent>
                                     <div>
-                                        Kode terinput: 0/{this.state.produk_aktif.jumlah} barang
+                                        Kode terinput: {this.state.tracking.total > 0 ? this.state.tracking.total : '0'}/{this.state.produk_aktif.jumlah} barang
+                                    </div>
+                                    <div>
+                                        {this.state.tracking.rows.map((option)=>{
+                                            return (
+                                                <Card style={{margin:'4px'}}>
+                                                    <CardContent style={{display:'inline-flex', padding:'8px', paddingLeft:'16px', width:'calc(100% - 30px)'}}>
+                                                        <div style={{display:'inline-flex'}}>
+                                                            <QRCode value={option.kode_produk} style={{width:'50px', height:'50px'}} />
+                                                        </div>
+                                                        <div style={{fontSize:'10px', marginLeft:'8px', width:'100%'}}>
+                                                            <Row noGap>
+                                                                <Col width="100" tabletWidth="100">
+                                                                    <Row noGap>
+                                                                        <Col width="80">
+                                                                            Kode Tracking:<br/>
+                                                                            <b>{option.kode_produk}</b><br/>
+                                                                            Kode Produksi:<br/>
+                                                                            <b>{btoa(option.batch_id).toUpperCase().substring(0,10)}</b>
+                                                                        </Col>
+                                                                        <Col width="20" style={{textAlign:'right'}}>
+                                                                            <Link onClick={()=>this.hapusTracking(option)}>Hapus</Link>
+                                                                        </Col>
+                                                                    </Row>
+                                                                </Col>
+                                                                
+                                                            </Row>
+                                                        </div>
+                                                    </CardContent>
+                                                </Card>
+                                            )
+                                        })}
                                     </div>
                                 </CardContent>
                             </Card>
@@ -224,45 +419,71 @@ class ProsesTransaksi extends Component {
                                         {this.state.transaksi_record.produk_transaksi && this.state.transaksi_record.produk_transaksi.map((option)=>{
                                             return (
                                                 <Card>
-                                                    <CardContent style={{display:'inline-flex'}}>
-                                                        <div style={{
-                                                            height:'120px', 
-                                                            width:'120px', 
-                                                            backgroundColor:'#434343',
-                                                            backgroundImage: 'url('+localStorage.getItem('api_base')+''+option.gambar_produk+')',
-                                                            backgroundSize:'contain',
-                                                            backgroundRepeat:'no-repeat',
-                                                            backgroundPosition:'center',
-                                                            borderRadius:'10px' 
-                                                        }}>
-                                                            &nbsp;
-                                                        </div>
-                                                        <div style={{paddingLeft:'8px'}}>
-                                                            <h3 className="title" style={{marginTop:'0px', marginBottom:'8px', fontSize:'15px'}}>
-                                                                {option.nama}
-                                                            </h3>
-                                                            {option.varian_produk_id ? <div style={{marginTop:'-10px', color:'#434343', fontSize:'12px'}}>{option.varian_produk}</div> : ''}
-                                                            <h2 style={{fontWeight:'bold', fontSize:'20px', marginTop:'0px'}}>
-                                                                Rp {this.formatAngka(option.harga_final)}
-                                                            </h2>
-                                                            <span>Jumlah: {option.jumlah}</span>
-                                                            <Button raised fill style={{marginTop:'8px', background:'linear-gradient(to right, #ed213a, #93291e)'}} onClick={()=>this.inputKode(option)}>
-                                                                <i className="f7-icons" style={{fontSize:'20px'}}>qrcode</i>&nbsp;
-                                                                Input Kode Produk
-                                                            </Button>
-                                                            {/* <span>Input kode produ</span> */}
-                                                        </div>
+                                                    <CardContent>
+                                                        <Row>
+                                                            <Col width="60" style={{display:'inline-flex'}}>
+                                                                <div style={{
+                                                                    height:'120px', 
+                                                                    width:'120px', 
+                                                                    backgroundColor:'#434343',
+                                                                    backgroundImage: 'url('+localStorage.getItem('api_base')+''+option.gambar_produk+')',
+                                                                    backgroundSize:'contain',
+                                                                    backgroundRepeat:'no-repeat',
+                                                                    backgroundPosition:'center',
+                                                                    borderRadius:'10px' 
+                                                                }}>
+                                                                    &nbsp;
+                                                                </div>
+                                                                <div style={{paddingLeft:'8px'}}>
+                                                                    <h3 className="title" style={{marginTop:'0px', marginBottom:'8px', fontSize:'15px'}}>
+                                                                        {option.nama}
+                                                                    </h3>
+                                                                    {option.varian_produk_id ? <div style={{marginTop:'-10px', color:'#434343', fontSize:'12px'}}>{option.varian_produk}</div> : ''}
+                                                                    <h2 style={{fontWeight:'bold', fontSize:'20px', marginTop:'0px'}}>
+                                                                        Rp {this.formatAngka(option.harga_final)}
+                                                                    </h2>
+                                                                    <span>Jumlah: {option.jumlah}</span>
+                                                                    <Button raised fill style={{marginTop:'8px', background:'linear-gradient(to right, #ed213a, #93291e)', paddingRight:'32px', paddingLeft:'32px'}} onClick={()=>this.inputKode(option)}>
+                                                                        <i className="f7-icons" style={{fontSize:'20px'}}>qrcode</i>&nbsp;
+                                                                        Input Kode Tracking
+                                                                    </Button>
+                                                                    {/* <span>Input kode produ</span> */}
+                                                                </div>
+                                                            </Col>
+                                                            <Col width="40">
+                                                                {/* {option.total_tracking} */}
+                                                                {parseInt(option.total_tracking) === parseInt(option.jumlah) && <div style={{width:'100%', textAlign:'right', display:'inline-flex', justifyContent:'flex-end'}}><i className="f7-icons" style={{color:'green', fontSize:'20px'}}>checkmark_circle_fill</i>&nbsp;Tracking produk lengkap</div>}
+                                                                {parseInt(option.total_tracking) < parseInt(option.jumlah) && <div style={{width:'100%', textAlign:'right', color:'red'}}>Tracking produk belum lengkap. Mohon lengkapi terlebih dahulu!</div>}
+                                                                {!option.total_tracking && <div style={{width:'100%', textAlign:'right', color:'red'}}>Tracking produk belum lengkap. Mohon lengkapi terlebih dahulu!</div>}
+                                                            </Col>
+                                                        </Row>
+                                                        {/* <div>
+                                                            {option.total_tracking}
+                                                        </div> */}
                                                     </CardContent>
                                                 </Card>
                                             )
                                         })}
                                     </Col>
                                     <Col width="100">
+                                        <Card noBorder noShadow style={{marginBottom:'32px'}}>
+                                            <CardContent style={{padding:'0px', color:'#6d6d6d', fontStyle:'italic'}}>
+                                                <b>Keterangan:</b>
+                                                <br/>
+                                                Mohon lengkapi tracking produk untuk barang diata sebelum melanjutkan.
+                                                <br/>
+                                                Pastikan bahwa jumlah tracking yang dilengkapi sesuai dengan jumlah barang yang akan diproses/dikirimkan<br/>
+                                            </CardContent>
+                                        </Card>
                                         <Card noBorder noShadow>
                                             <CardContent style={{padding:'0px'}}>
-                                                <Button raised fill style={{display:'inline-flex'}}>
+                                                <Button onClick={this.simpanLanjut} raised fill style={{display:'inline-flex', paddingRight:'32px', paddingLeft:'32px', marginTop:'8px', marginRight:'8px'}} disabled={!this.state.komplit}>
                                                     <i className="f7-icons" style={{fontSize:'20px'}}>paperplane</i>&nbsp;
                                                     Simpan dan Lanjutkan
+                                                </Button>
+                                                <Button onClick={()=>this.$f7router.navigate('/Penjualan/')} style={{display:'inline-flex', paddingRight:'4px', paddingLeft:'4px', marginTop:'8px', marginRight:'8px'}} disabled={!this.state.komplit}>
+                                                    <i className="f7-icons" style={{fontSize:'20px'}}>square_arrow_left</i>&nbsp;
+                                                    Kembali ke Daftar Penjualan
                                                 </Button>
                                             </CardContent>
                                         </Card>
@@ -287,7 +508,11 @@ function mapDispatchToProps(dispatch) {
       generateUUID: Actions.generateUUID,
       getTransaksi: Actions.getTransaksi,
       cariKodeProduk: Actions.cariKodeProduk,
-      getMitra: Actions.getMitra
+      getMitra: Actions.getMitra,
+      simpanTracking: Actions.simpanTracking,
+      getTracking: Actions.getTracking,
+      prosesLanjutTransaksi: Actions.prosesLanjutTransaksi,
+      hapusTracking: Actions.hapusTracking
     }, dispatch);
 }
 
