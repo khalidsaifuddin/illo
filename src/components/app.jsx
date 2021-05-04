@@ -63,9 +63,9 @@ class app extends Component {
       },
 
       // Register service worker
-      // serviceWorker: this.$device.cordova ? {} : {
-      //   path: '/service-worker.js',
-      // },
+      serviceWorker: this.$device.cordova ? {} : {
+        path: '/service-worker.js',
+      },
       // Input settings
       input: {
         scrollIntoViewOnFocus: this.$device.cordova && !this.$device.electron,
@@ -419,15 +419,15 @@ class app extends Component {
                     <ListItem noChevron link="/Mitra/" view=".view-main" panelClose panel-close title="Mitra" className="itemSub">
                       <i slot="media" className="f7-icons">doc_text</i>
                     </ListItem>
-                    <ListItem noChevron link="/UnitPenjualan/" view=".view-main" panelClose panel-close title="Unit Penjualan" className="itemSub">
+                    {/* <ListItem noChevron link="/UnitPenjualan/" view=".view-main" panelClose panel-close title="Unit Penjualan" className="itemSub">
                       <i slot="media" className="f7-icons">doc_text</i>
-                    </ListItem>
-                    <ListItem noChevron link="/Unit/" view=".view-main" panelClose panel-close title="Unit Dukungan" className="itemSub">
+                    </ListItem> */}
+                    {/* <ListItem noChevron link="/Unit/" view=".view-main" panelClose panel-close title="Unit Dukungan" className="itemSub">
                       <i slot="media" className="f7-icons">doc_text</i>
                     </ListItem>
                     <ListItem noChevron link="/JenisTiket/" view=".view-main" panelClose panel-close title="Jenis Tiket" className="itemSub">
                       <i slot="media" className="f7-icons">doc_text</i>
-                    </ListItem>
+                    </ListItem> */}
                   </AccordionContent>
                 </ListItem>
                 }
@@ -442,14 +442,20 @@ class app extends Component {
                 <ListItem view=".view-main" accordionItem title="Konten Website">
                   <i slot="media" className="f7-icons">slider_horizontal_below_rectangle</i>
                   <AccordionContent>
-                    <ListItem noChevron link="/BannerUtama/" view=".view-main" panelClose panel-close title="Banner Utama" className="itemSub">
+                    <ListItem noChevron link="/Banner/utama" view=".view-main" panelClose panel-close title="Banner Utama" className="itemSub">
                       <i slot="media" className="f7-icons">rectangle_on_rectangle</i>
                     </ListItem>
-                    <ListItem noChevron link="/BannerSamping/" view=".view-main" panelClose panel-close title="Banner Samping" className="itemSub">
+                    <ListItem noChevron link="/Banner/samping" view=".view-main" panelClose panel-close title="Banner Samping" className="itemSub">
                       <i slot="media" className="f7-icons">sidebar_left</i>
                     </ListItem>
-                    <ListItem noChevron link="/BannerBawah/" view=".view-main" panelClose panel-close title="Banner Bawah" className="itemSub">
+                    <ListItem noChevron link="/Banner/bawah" view=".view-main" panelClose panel-close title="Banner Bawah" className="itemSub">
                       <i slot="media" className="f7-icons">rectangle_stack</i>
+                    </ListItem>
+                    <ListItem noChevron link={"/kelola-blog/"} view=".view-main" panelClose panel-close title="Kelola Blog" className="itemSub">
+                        <i slot="media" className="f7-icons">quote_bubble_fill</i>
+                    </ListItem>
+                    <ListItem noChevron link={"/kelola-faq/"} view=".view-main" panelClose panel-close title="Kelola FAQ" className="itemSub">
+                        <i slot="media" className="f7-icons">question_circle</i>
                     </ListItem>
                   </AccordionContent>
                 </ListItem>
@@ -478,7 +484,27 @@ class app extends Component {
                 //   <i slot="media" className="f7-icons">money_dollar_circle</i>
                 // </ListItem>
                 }
-                {localStorage.getItem('unit_layanan') === '' &&
+                {
+                (localStorage.getItem('user') !== null && 
+                localStorage.getItem('user') !== '') && 
+                (
+                  localStorage.getItem('sekolah_id_beranda') === '' || 
+                  localStorage.getItem('sekolah_id_beranda') === null
+                ) &&
+                parseInt(JSON.parse(localStorage.getItem('user')).a_admin) ===  1 &&
+                <ListItem view=".view-main" accordionItem title="Diskon">
+                  <i slot="media" className="f7-icons">tag</i>
+                  <AccordionContent>
+                    <ListItem noChevron link="/DiskonPelanggan/" view=".view-main" panelClose panel-close title="Diskon Pelanggan" className="itemSub">
+                      <i slot="media" className="f7-icons">person_2_alt</i>
+                    </ListItem>
+                    <ListItem noChevron link="/DiskonProduk/" view=".view-main" panelClose panel-close title="Diskon Produk" className="itemSub">
+                      <i slot="media" className="f7-icons">cube_box</i>
+                    </ListItem>
+                  </AccordionContent>
+                </ListItem>
+                }
+                {/* {localStorage.getItem('unit_layanan') === '' &&
                 <ListItem noChevron link="/DaftarTiket/" view=".view-main" panelClose panel-close title="Tiket dan Dukungan">
                   <i slot="media" className="f7-icons">smallcircle_fill_circle_fill</i>
                 </ListItem>
@@ -487,7 +513,7 @@ class app extends Component {
                 <ListItem noChevron link="/KelolaTiket/" view=".view-main" panelClose panel-close title="Kelola Tiket">
                   <i slot="media" className="f7-icons">smallcircle_fill_circle</i>
                 </ListItem>
-                }
+                } */}
                 {/* <ListItem noChevron link="/JenisTiket/" view=".view-main" panelClose panel-close title="Jenis Tiket" className="itemSub">
                   <i slot="media" className="f7-icons">doc_text</i>
                 </ListItem> */}

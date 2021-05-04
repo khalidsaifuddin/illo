@@ -76,6 +76,18 @@ import ProsesTransaksi from '../pages/Penjualan/ProsesTransaksi';
 import KodeValidasi from '../pages/DataMaster/KodeValidasi';
 import FormKodeValidasi from '../pages/DataMaster/FormKodeValidasi';
 import daftarKodeValidasiProduk from '../pages/DataMaster/daftarKodeValidasiProduk';
+import Banner from '../pages/Website/Banner';
+import FormBanner from '../pages/Website/FormBanner';
+import DiskonPelanggan from '../pages/Diskon/DiskonPelanggan';
+import FormDiskonPelanggan from '../pages/Diskon/FormDiskonPelanggan';
+import DiskonProduk from '../pages/Diskon/DiskonProduk';
+import FormDiskonProduk from '../pages/Diskon/FormDiskonProduk';
+import DaftarPenggunaDiskon from '../pages/Diskon/DaftarPenggunaDiskon';
+import FormDiskonPengguna from '../pages/Diskon/FormDiskonPengguna';
+import KelolaBlog from '../pages/Website/KelolaBlog';
+import tambahBlog from '../pages/Website/tambahBlog';
+import KelolaFaq from '../pages/Website/KelolaFaq';
+import TambahFaq from '../pages/Website/TambahFaq';
 
 // console.log(localStorage.getItem('kode_aplikasi'));
 
@@ -249,6 +261,18 @@ var routes = [
     component: FormBatch,
   },
   {
+    path: '/Banner/:jenis',
+    component: Banner,
+  },
+  {
+    path: '/FormBanner/:jenis_banner_id',
+    component: FormBanner,
+  },
+  {
+    path: '/FormBanner/:jenis_banner_id/:banner_id',
+    component: FormBanner,
+  },
+  {
     path: '/daftarKodeProduk/:batch_id',
     component: daftarKodeProduk,
   },
@@ -263,6 +287,42 @@ var routes = [
   {
     path: '/Mitra/',
     component: Mitra,
+  },
+  {
+    path: '/DiskonPelanggan/',
+    component: DiskonPelanggan,
+  },
+  {
+    path: '/DiskonProduk/',
+    component: DiskonProduk,
+  },
+  {
+    path: '/FormDiskonPelanggan/',
+    component: FormDiskonPelanggan,
+  },
+  {
+    path: '/FormDiskonPelanggan/:diskon_pelanggan_id',
+    component: FormDiskonPelanggan,
+  }, 
+  {
+    path: '/FormDiskonProduk/',
+    component: FormDiskonProduk,
+  },
+  {
+    path: '/FormDiskonProduk/:diskon_produk_id',
+    component: FormDiskonProduk,
+  },
+  {
+    path: '/DaftarPenggunaDiskon/:diskon_pelanggan_id',
+    component: DaftarPenggunaDiskon,
+  },
+  {
+    path: '/FormDiskonPengguna/:diskon_pelanggan_id',
+    component: FormDiskonPengguna,
+  },
+  {
+    path: '/FormDiskonPengguna/:diskon_pelanggan_id/:diskon_pengguna_id',
+    component: FormDiskonPengguna,
   },
   {
     path: '/KategoriProduk/',
@@ -427,6 +487,30 @@ var routes = [
   {
     path: '/TampilTiket/:tiket_id',
     component: TampilTiket,
+  },
+  {
+    path: '/kelola-faq/',
+    component: KelolaFaq,
+  },
+  {
+    path: '/tambah-faq/',
+    component: TambahFaq,
+  },
+  {
+    path: '/tambah-faq/:faq_id',
+    component: TambahFaq,
+  },
+  {
+    path: '/kelola-blog/',
+    component: KelolaBlog,
+  },
+  {
+    path: '/tambah-artikel/',
+    component: tambahBlog,
+  },
+  {
+    path: '/tambah-artikel/:artikel_id',
+    component: tambahBlog,
   },
   {
     path: '/left-page-1/',

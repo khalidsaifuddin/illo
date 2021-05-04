@@ -172,12 +172,73 @@ class FormProduk extends Component {
         });
     }
 
+    resizeImage = (settings) => {
+        let file = settings.file
+        let maxSize = settings.maxSize
+        let reader = new FileReader()
+        let image = new Image()
+        let canvas = document.createElement('canvas')
+        let dataURItoBlob = (dataURI) => {
+            let bytes = dataURI.split(',')[0].indexOf('base64') >= 0 ?
+                atob(dataURI.split(',')[1]) :
+                unescape(dataURI.split(',')[1])
+            let mime = dataURI.split(',')[0].split(':')[1].split('')[0]
+            let max = bytes.length
+            let ia = new Uint8Array(max)
+            for (let i = 0; i < max; i++){
+                ia[i] = bytes.charCodeAt(i)
+            }
+            return new Blob([ia], { type: mime })
+        }
+        let resize = () => {
+            let width = image.width
+            let height = image.height
+            if (width > height) {
+                if (width > maxSize) {
+                    height *= maxSize / width
+                    width = maxSize
+                }
+            } else {
+                if (height > maxSize) {
+                    width *= maxSize / height
+                    height = maxSize
+                }
+            }
+            canvas.width = width
+            canvas.height = height
+            canvas.getContext('2d').drawImage(image, 0, 0, width, height)
+            let dataUrl = canvas.toDataURL('image/jpeg')
+            return dataURItoBlob(dataUrl)
+        }
+        return new Promise((ok, no) => {
+            if (!file.type.match(/image.*/)) {
+                no(new Error("Not an image"))
+                return
+            }
+            reader.onload = (readerEvent) => {
+                image.onload = () => { return ok(resize()) }
+                image.src = readerEvent.target.result
+            }
+            reader.readAsDataURL(file)
+        })
+    }
+
     acceptedFile = (file) => {
         
         if(file[0].size >= 10000000){ //10MB
             this.$f7.dialog.alert('Ukuran gambar tidak boleh melebihi 10MB!', 'Peringatan');
             return true;
         }
+
+        // this.resizeImage({
+        //     file: file[0],
+        //     maxSize: 500
+        // }).then(function (resizedImage) {
+        //     // console.log(resizedImage)
+        //     // console.log("upload resized image")
+        // }).catch(function (err) {
+        //     console.error(err)
+        // })
 
         // if(file[0].name.substr(file[0].name.length - 3) === 'jpg' || file[0].name.substr(file[0].name.length - 4) === 'jpeg' || file[0].name.substr(file[0].name.length - 3) === 'png'){
         if(
@@ -207,20 +268,36 @@ class FormProduk extends Component {
                     //uploading
                     console.log(this.state.gambar_produk);
 
-                    return new Promise(
-                        (resolve, reject) => {
-                            const xhr = new XMLHttpRequest();
-                            xhr.open('POST', localStorage.getItem('api_base') + '/api/Ruang/upload');
-                            xhr.onload = this.uploadBerhasil;
-                            xhr.onerror = this.uploadGagal;
-                            const data = new FormData();
-                            data.append('image', file[0]);
-                            data.append('pengguna_id', JSON.parse(localStorage.getItem('user')).pengguna_id);
-                            data.append('jenis', 'gambar_ruang');
-                            data.append('guid', this.props.uuid_kuis);
-                            xhr.send(data);
-                        }
-                    );
+                    this.resizeImage({
+                        file: file[0],
+                        maxSize: 1000
+                    }).then((resizedImage) => {
+                        // console.log("upload resized image")
+                        resizedImage.lastModifiedDate = new Date()
+                        resizedImage.name = file[0].name
+                        console.log(resizedImage)
+
+                        return new Promise(
+                            (resolve, reject) => {
+                                const xhr = new XMLHttpRequest()
+                                xhr.open('POST', localStorage.getItem('api_base') + '/api/Ruang/upload')
+                                xhr.onload = this.uploadBerhasil
+                                xhr.onerror = this.uploadGagal
+                                const data = new FormData()
+                                // data.append('image', file[0])
+                                data.append('image', resizedImage)
+                                data.append('pengguna_id', JSON.parse(localStorage.getItem('user')).pengguna_id)
+                                data.append('jenis', 'gambar_ruang')
+                                data.append('ekstensi', ekstensi)
+                                data.append('guid', this.props.uuid_kuis)
+                                xhr.send(data)
+                            }
+                        )
+
+                    }).catch((err) => {
+                        console.error(err)
+                    })
+
                 });
 
             });

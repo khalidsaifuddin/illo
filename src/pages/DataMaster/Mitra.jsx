@@ -19,7 +19,8 @@ class Mitra extends Component {
         loadingPengguna: false,
         routeParams: {
             start:0,
-            limit:20
+            limit:20,
+            bukan_pusat: 'Y'
         },
         jenis_mitra: {
             rows: [],

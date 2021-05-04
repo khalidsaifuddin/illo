@@ -623,7 +623,7 @@ class Beranda extends Component {
                   <Offline>
                     <Card className="off_indi">
                       <CardContent>
-                        Anda Sedang Offline! Anda masih dapat mengakses dan mengerjakan kuis yang telah tersimpan di aplikasi, namun beberapa fitur lain tidak akan berjalan dengan optimal sampai Anda kembali online
+                        Anda Sedang Offline! Mohon cek jaringan internet Anda sebelum kembali menggunakan Aplikasi ini
                       </CardContent>
                     </Card>
                   </Offline>
@@ -1006,6 +1006,7 @@ class Beranda extends Component {
                               {this.props.anggota_mitra.total > 0 &&
                                 <Card className={"cardBorder-20"}>
                                   <CardContent>
+                                    <div style={{fontSize:'10px'}}>Status Kemitraan:</div>
                                     <BlockTitle style={{marginTop:'0px', marginBottom:'4px', fontSize:'15px', fontWeight:'bold', color:'#434343', marginLeft:'0px'}}>
                                       {this.props.anggota_mitra.total > 0 ? this.props.anggota_mitra.rows[0].jenis_mitra : <></>}
                                     </BlockTitle>
@@ -1159,6 +1160,7 @@ class Beranda extends Component {
                               {this.props.anggota_mitra.total > 0 &&
                                 <Card className={"cardBorder-20"}>
                                   <CardContent>
+                                    <div style={{fontSize:'10px'}}>Status Kemitraan:</div>
                                     <BlockTitle style={{marginTop:'0px', marginBottom:'4px', fontSize:'15px', fontWeight:'bold', color:'#434343', marginLeft:'0px'}}>
                                       {this.props.anggota_mitra.total > 0 ? this.props.anggota_mitra.rows[0].jenis_mitra : <></>}
                                     </BlockTitle>
@@ -1259,13 +1261,12 @@ class Beranda extends Component {
                         </CardContent>
                       </Card>
                       } */}
-                      {this.props.anggota_mitra.total < 1 &&
+                      {this.props.anggota_mitra.total > 0 &&
                       <Card className={"cardBorder-20"}>
                         <CardContent>
-                          <BlockTitle style={{marginTop:'0px', marginBottom:'4px', fontSize:'15px', fontWeight:'bold', color:'#434343', marginLeft:'0px'}}>
-                            Privileged Customer
-                          </BlockTitle>
-                          <span  style={{fontSize:'10px'}}>
+                          <div style={{fontSize:'16px', fontWeight:'bold'}}>Alamat Pengiriman:</div>
+                          {this.state.alamat_pengguna.alamat_jalan &&
+                          <div style={{fontSize:'10px', marginTop:'0px', borderTop:'1px solid #eee'}}>
                             Alamat Utama:
                             <br/>
                             <b>{this.state.alamat_pengguna.nama_penerima}</b>
@@ -1275,10 +1276,51 @@ class Beranda extends Component {
                             {this.state.alamat_pengguna.kecamatan}, {this.state.alamat_pengguna.kabupaten}, {this.state.alamat_pengguna.provinsi}
                             <br/>
                             <Link href={"/AlamatPengguna/"+JSON.parse(localStorage.getItem('user')).pengguna_id}>Edit Alamat</Link>
-                          </span>
+                          </div>
+                          }
+                          {!this.state.alamat_pengguna.alamat_jalan &&
+                          <div style={{marginTop:'16px', fontSize:'12px'}}>
+                            Anda belum mengatur alamat pengiriman
+                            <br/>
+                            <Link href={"/AlamatPengguna/"+JSON.parse(localStorage.getItem('user')).pengguna_id}>Atur Alamat Pengiriman</Link>
+                          </div>
+                            
+                          }
+                        </CardContent>
+                      </Card>
+                      }
+                      {this.props.anggota_mitra.total < 1 &&
+                      <Card className={"cardBorder-20"}>
+                        <CardContent>
+                          <div style={{fontSize:'10px'}}>Status Kemitraan:</div>
+                          <BlockTitle style={{marginTop:'0px', marginBottom:'4px', fontSize:'15px', fontWeight:'bold', color:'#434343', marginLeft:'0px'}}>
+                            Privileged Customer
+                          </BlockTitle>
+                          <div style={{fontSize:'16px', fontWeight:'bold'}}>Alamat Pengiriman:</div>
+                          {this.state.alamat_pengguna.alamat_jalan &&
+                          <div style={{fontSize:'10px', marginTop:'32px', borderTop:'1px solid #eee'}}>
+                            Alamat Utama:
+                            <br/>
+                            <b>{this.state.alamat_pengguna.nama_penerima}</b>
+                            <br/>
+                            {this.state.alamat_pengguna.alamat_jalan}, {this.state.alamat_pengguna.desa_kelurahan}, {this.state.alamat_pengguna.kode_pos}
+                            <br/>
+                            {this.state.alamat_pengguna.kecamatan}, {this.state.alamat_pengguna.kabupaten}, {this.state.alamat_pengguna.provinsi}
+                            <br/>
+                            <Link href={"/AlamatPengguna/"+JSON.parse(localStorage.getItem('user')).pengguna_id}>Edit Alamat</Link>
+                          </div>
+                          }
+                          {!this.state.alamat_pengguna.alamat_jalan &&
+                          <div style={{marginTop:'16px', fontSize:'12px'}}>
+                            Anda belum mengatur alamat pengiriman
+                            <br/>
+                            <Link href={"/AlamatPengguna/"+JSON.parse(localStorage.getItem('user')).pengguna_id}>Atur Alamat Pengiriman</Link>
+                          </div>
+                            
+                          }
                           <br/>
                           <br/>
-                          <span  style={{fontSize:'10px'}}>
+                          <span style={{fontSize:'10px'}}>
                             Mitra Terdekat:
                             <br/>
                             {this.state.mitra_terdekat.map((option)=>{

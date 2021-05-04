@@ -17,3 +17,6 @@ export * from './Tiket.actions';
 export * from './Produk.actions';
 export * from './Mitra.actions';
 export * from './Pengguna.actions';
+export * from './Banner.actions';
+export * from './Diskon.actions';
+export * from './Faq.actions';
