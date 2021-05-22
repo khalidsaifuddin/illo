@@ -89,15 +89,24 @@ class DataMaster extends Component {
                                 </Link>
                             </Col>
                             <Col width="50" tabletWidth="25">
-                                <Link href="/UnitPenjualan/" style={{width:'100%'}}>
+                                <Link href="/TimPenjualan/" style={{width:'100%'}}>
                                     <Card style={{background:'url(./static/icons/sales.jpg)', backgroundSize:'cover', minHeight:'100px', width:'100%'}}>
                                         <CardContent className="kontenMenu">
-                                            Unit Penjualan
+                                            Tim Penjualan
                                         </CardContent>
                                     </Card>
                                 </Link>
                             </Col>
                             <Col width="50" tabletWidth="25">
+                                <Link href="/TimMarketing/" style={{width:'100%'}}>
+                                    <Card style={{background:'url(./static/icons/sales.jpg)', backgroundSize:'cover', minHeight:'100px', width:'100%'}}>
+                                        <CardContent className="kontenMenu">
+                                            Tim Marketing
+                                        </CardContent>
+                                    </Card>
+                                </Link>
+                            </Col>
+                            {/* <Col width="50" tabletWidth="25">
                                 <Link href="/Unit/" style={{width:'100%'}}>
                                     <Card style={{background:'url(./static/icons/6308.png)', backgroundSize:'cover', minHeight:'100px', width:'100%'}}>
                                         <CardContent className="kontenMenu">
@@ -114,7 +123,7 @@ class DataMaster extends Component {
                                         </CardContent>
                                     </Card>
                                 </Link>
-                            </Col>
+                            </Col> */}
                             <Col width="50" tabletWidth="50">
 
                             </Col>

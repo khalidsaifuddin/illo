@@ -28,6 +28,7 @@ Framework7.use(Framework7React)
 localStorage.setItem('api_base','http://117.53.47.43:8085');
 // localStorage.setItem('api_base','http://117.53.47.43:8090');
 // localStorage.setItem('google_api','188472097829-4h5peopg70ndp9g1p9seg1abgkg64ot4.apps.googleusercontent.com');
+localStorage.setItem('api_base_gambar','http://117.53.47.43:8085')
 
 // // 026100
 if(localStorage.getItem('kode_aplikasi') === 'MEJA'){
@@ -52,8 +53,8 @@ if(localStorage.getItem('kode_aplikasi') === 'MEJA'){
   localStorage.setItem('socket_url',"https://socket.diskuis.id");
   localStorage.setItem('device','web');
   localStorage.setItem('versi','1.0.0');
-  // localStorage.setItem('store_url','http://localhost:3000');
-  localStorage.setItem('store_url','http://117.53.47.43:8087');
+  localStorage.setItem('store_url','http://localhost:3000');
+  // localStorage.setItem('store_url','http://117.53.47.43:8087');
 }
 
 localStorage.setItem('google_api','908643350959-ml0o4a08iqa99cqqd4vjj1qoojhmnfsq.apps.googleusercontent.com');

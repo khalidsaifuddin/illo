@@ -66,11 +66,11 @@ class StoreToko extends Component {
     {
         return (
             <Page name="StoreToko" className="halamanStoreToko" hideBarsOnScroll style={{marginBottom:'100px', boxSizing:'content-box'}}>
-                <Navbar sliding={false}>
-                    <NavTitle sliding>Illo Store</NavTitle>
+                <Navbar className="navbarStore">
+                    {/* <NavTitle sliding>Illo Store</NavTitle> */}
                 </Navbar>
                 
-                <iframe src={localStorage.getItem('store_url')+'?loginRedirect='+JSON.parse(localStorage.getItem('user')).pengguna_id+'&user='+localStorage.getItem('user')} style={{width:'100%', height: '100%', border:'none'}} />
+                <iframe src={localStorage.getItem('store_url')+'?inframe=1&loginRedirect='+JSON.parse(localStorage.getItem('user')).pengguna_id+'&user='+localStorage.getItem('user')} style={{width:'100%', height: '100%', border:'none'}} />
             </Page>
         )
     }

@@ -99,7 +99,7 @@ class AnggotaMitra extends Component {
     hapus = (pengguna_id) => {
         this.$f7.dialog.confirm('Apakah Anda yakin ingin menghapus data ini?', 'Konfirmasi Hapus',()=>{
             this.$f7.dialog.preloader('Menyimpan...')
-            this.props.simpanAnggotaMitra({pengguna_id: pengguna_id, soft_delete:1}).then((result)=>{
+            this.props.simpanMitra({pengguna_id: pengguna_id, soft_delete:1}).then((result)=>{
                 this.$f7.dialog.close()
                 if(result.payload.sukses){
 
@@ -244,6 +244,10 @@ class AnggotaMitra extends Component {
         // alert(mitra_id)
         this.$f7router.navigate('/FormAnggotaMitra/'+(parseInt(jenis_mitra_id)-1)+'/'+pengguna_id)
     }
+
+    // hapus = () => {
+    //     alert('hapus')
+    // }
     
     render()
     {
@@ -419,6 +423,7 @@ class AnggotaMitra extends Component {
                                                                         {parseInt(option.jenis_mitra_id) === 4 &&
                                                                         <ListItem link="#" popoverClose title={"Daftar "+(parseInt(option.jenis_mitra_id) === 5 ? "Agen" : (parseInt(option.jenis_mitra_id) === 4 ? "Reseller" : null))} onClick={()=>this.daftarDownline(option.jenis_mitra_id, option.pengguna_id)} />
                                                                         }
+                                                                        <ListItem link="#" popoverClose title={"Hapus"} onClick={()=>this.hapus(option.pengguna_id)} />
                                                                         {/* <ListItem link="#" popoverClose title={"Edit"} onClick={()=>this.edit(option.jenis_mitra_id, option.pengguna_id)} /> */}
                                                                     </List>
                                                                 </Popover>
@@ -448,7 +453,7 @@ function mapDispatchToProps(dispatch) {
       updateWindowDimension: Actions.updateWindowDimension,
       setLoading: Actions.setLoading,
       getAnggotaMitra: Actions.getAnggotaMitra,
-      simpanAnggotaMitra: Actions.simpanAnggotaMitra,
+      simpanMitra: Actions.simpanMitra,
       generateUUID: Actions.generateUUID,
       getJenisMitra: Actions.getJenisMitra
     }, dispatch);

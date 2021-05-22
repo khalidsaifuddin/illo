@@ -29,6 +29,13 @@ export const SIMPAN_TRACKING = '[PRODUK] SIMPAN_TRACKING';
 export const GET_TRACKING = '[PRODUK] GET_TRACKING';
 export const SIMPAN_LANJUT_TRANSAKSI = '[PRODUK] SIMPAN_LANJUT_TRANSAKSI';
 export const HAPUS_TRACKING = '[PRODUK] HAPUS_TRACKING';
+export const GET_KURIR = '[PRODUK] GET_KURIR';
+export const SIMPAN_KURIR = '[PRODUK] SIMPAN_KURIR';
+export const BATAL_TRANSAKSI = '[PRODUK] BATAL_TRANSAKSI';
+export const SIMPAN_TRANSAKSI = '[PRODUK] SIMPAN_TRANSAKSI';
+export const SIMPAN_PRODUK_TRANSAKSI = '[PRODUK] SIMPAN_PRODUK_TRANSAKSI';
+export const GET_PRODUK_TRANSAKSI = '[PRODUK] GET_PRODUK_TRANSAKSI';
+export const HAPUS_PRODUK_TRANSAKSI = '[PRODUK] HAPUS_PRODUK_TRANSAKSI';
 
 //fungsinya
 
@@ -490,6 +497,118 @@ export function hapusTracking(routeParams)
         request.then((response) =>
             dispatch({
                 type   : HAPUS_TRACKING,
+                payload: response.data,
+                routeParams
+            })
+        );
+}
+
+export function getKurir(routeParams)
+{
+    const request = axios.post(localStorage.getItem('api_base')+'/api/Produk/getKurir', {
+        ...routeParams
+    });
+
+    return (dispatch) =>
+        request.then((response) =>
+            dispatch({
+                type   : GET_KURIR,
+                payload: response.data,
+                routeParams
+            })
+        );
+}
+
+export function simpanKurir(routeParams)
+{
+    const request = axios.post(localStorage.getItem('api_base')+'/api/Produk/simpanKurir', {
+        ...routeParams
+    });
+
+    return (dispatch) =>
+        request.then((response) =>
+            dispatch({
+                type   : SIMPAN_KURIR,
+                payload: response.data,
+                routeParams
+            })
+        );
+}
+
+export function batalTransaksi(routeParams)
+{
+    const request = axios.post(localStorage.getItem('api_base')+'/api/Produk/batalTransaksi', {
+        ...routeParams
+    });
+
+    return (dispatch) =>
+        request.then((response) =>
+            dispatch({
+                type   : BATAL_TRANSAKSI,
+                payload: response.data,
+                routeParams
+            })
+        );
+}
+
+export function simpanTransaksi(routeParams)
+{
+    const request = axios.post(localStorage.getItem('api_base')+'/api/Produk/simpanTransaksi', {
+        ...routeParams
+    });
+
+    return (dispatch) =>
+        request.then((response) =>
+            dispatch({
+                type   : SIMPAN_TRANSAKSI,
+                payload: response.data,
+                routeParams
+            })
+        );
+}
+
+export function simpanProdukTransaksi(routeParams)
+{
+    const request = axios.post(localStorage.getItem('api_base')+'/api/Produk/simpanProdukTransaksi', {
+        ...routeParams
+    });
+
+    return (dispatch) =>
+        request.then((response) =>
+            dispatch({
+                type   : SIMPAN_PRODUK_TRANSAKSI,
+                payload: response.data,
+                routeParams
+            })
+        );
+}
+
+export function getProdukTransaksi(routeParams)
+{
+    const request = axios.post(localStorage.getItem('api_base')+'/api/Produk/getProdukTransaksi', {
+        ...routeParams
+    });
+
+    return (dispatch) =>
+        request.then((response) =>
+            dispatch({
+                type   : GET_PRODUK_TRANSAKSI,
+                payload: response.data,
+                routeParams
+            })
+        );
+}
+
+export function hapusProdukTransaksi(routeParams)
+{
+    const request = axios.post(localStorage.getItem('api_base')+'/api/Produk/hapusProdukTransaksi', {
+        ...routeParams
+    });
+
+    return (dispatch) =>
+        request.then((response) =>
+            dispatch({
+                type   : HAPUS_PRODUK_TRANSAKSI,
                 payload: response.data,
                 routeParams
             })

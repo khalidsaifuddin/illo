@@ -12,7 +12,7 @@ import moment from 'moment';
 
 import localForage from 'localforage';
 
-class Penjualan extends Component {
+class PenjualanBatal extends Component {
     state = {
         error: null,
         loadingKuis: false,
@@ -66,7 +66,7 @@ class Penjualan extends Component {
         this.$f7.dialog.preloader()
 
         if(parseInt(JSON.parse(localStorage.getItem('user')).a_admin) === 1){
-            this.props.getTransaksi({...this.state.routeParams, mitra_id: '7efe511c-4c9a-4fd3-baa3-893e7093b372', status: 'aktif'}).then((result)=>{
+            this.props.getTransaksi({...this.state.routeParams, mitra_id: '7efe511c-4c9a-4fd3-baa3-893e7093b372', status: 'batal'}).then((result)=>{
                 this.setState({
                     transaksi: result.payload
                 },()=>{
@@ -135,9 +135,9 @@ class Penjualan extends Component {
     render()
     {
         return (
-            <Page name="Penjualan" className="halamanJenisTiket" hideBarsOnScroll style={{marginBottom:'100px', boxSizing:'content-box'}}>
+            <Page name="PenjualanBatal" className="halamanJenisTiket" hideBarsOnScroll style={{marginBottom:'100px', boxSizing:'content-box'}}>
                 <Navbar sliding={false} backLink="Kembali" onBackClick={this.backClick}>
-                    <NavTitle sliding>Penjualan</NavTitle>
+                    <NavTitle sliding>Transaksi Dibatalkan</NavTitle>
                 </Navbar>
                 
                 <Row noGap>
@@ -145,33 +145,29 @@ class Penjualan extends Component {
                     <Col width="100" tabletWidth="100" desktopWidth="100">
                         
                         <Card style={{marginBottom:'50px'}}>
-                            <CardContent style={{marginBottom:'-16px'}}>
-                                <div className="data-table-footer" style={{display:'block'}}>
-                                    {/* <div className="data-table-pagination" style={{textAlign:'right'}}> */}
-                                    <div className="data-table-pagination">
-                                        <a onClick={this.klikPrev} href="#" className={"link "+(this.state.routeParams.start < 1 ? "disabled" : "" )}>
-                                        <i className="icon icon-prev color-gray"></i>
-                                        </a>
-                                        <a onClick={this.klikNext} href="#" className={"link "+((parseInt(this.state.routeParams.start)+this.state.routeParams.limit) >= parseInt(this.state.transaksi.total) ? "disabled" : "" )}>
-                                            <i className="icon icon-next color-gray"></i>
-                                        </a>
-                                        <span className="data-table-pagination-label">{(this.state.routeParams.start+1)}-{(this.state.routeParams.start)+parseInt(this.state.routeParams.limit) <= parseInt(this.state.transaksi.total) ? (this.state.routeParams.start)+parseInt(this.state.routeParams.limit) : parseInt(this.state.transaksi.total)} dari {this.formatAngka(this.state.transaksi.total)} Transaksi</span>
-                                    </div>
-                                </div>
-                                {/* <div style={{marginBottom:'8px', marginTop:'0px', textAlign:'right'}}> */}
-                                <div style={{marginBottom:'8px', marginTop:'-36px', textAlign:'right'}}>
-                                    <Button raised style={{display:'inline-flex', marginRight:'4px'}} onClick={()=>this.$f7router.navigate('/PenjualanBatal/')}>
-                                        <i className="f7-icons" style={{fontSize:'20px'}}>list_dash</i>&nbsp;
-                                        Transaksi Dibatalkan
-                                    </Button>
-                                    <Button raised fill style={{display:'inline-flex'}} onClick={()=>this.$f7router.navigate('/FormPenjualan/'+JSON.parse(localStorage.getItem('user')).pengguna_id)}>
-                                        <i className="f7-icons" style={{fontSize:'20px'}}>plus</i>&nbsp;
-                                        Tambah Transaksi
-                                    </Button>
-                                </div>
-                            </CardContent>
                             <CardContent>
-                                <div className="data-table" style={{overflowY:'hidden', paddingBottom:'32px'}}>
+                                <div className="data-table" style={{overflowY:'hidden'}}>
+                                    <div className="data-table-footer" style={{display:'block'}}>
+                                        <div className="data-table-pagination" style={{textAlign:'right'}}>
+                                            <a onClick={this.klikPrev} href="#" className={"link "+(this.state.routeParams.start < 1 ? "disabled" : "" )}>
+                                            <i className="icon icon-prev color-gray"></i>
+                                            </a>
+                                            <a onClick={this.klikNext} href="#" className={"link "+((parseInt(this.state.routeParams.start)+this.state.routeParams.limit) >= parseInt(this.state.transaksi.total) ? "disabled" : "" )}>
+                                                <i className="icon icon-next color-gray"></i>
+                                            </a>
+                                            <span className="data-table-pagination-label">{(this.state.routeParams.start+1)}-{(this.state.routeParams.start)+parseInt(this.state.routeParams.limit) <= parseInt(this.state.transaksi.total) ? (this.state.routeParams.start)+parseInt(this.state.routeParams.limit) : parseInt(this.state.transaksi.total)} dari {this.formatAngka(this.state.transaksi.total)} Transaksi Dibatalkan</span>
+                                        </div>
+                                    </div>
+                                    <div style={{marginBottom:'8px', marginTop:'-36px', textAlign:'right'}}>
+                                        <Button raised style={{display:'inline-flex', marginRight:'4px'}} onClick={()=>this.$f7router.navigate('/Penjualan/')}>
+                                            <i className="f7-icons" style={{fontSize:'20px'}}>list_dash</i>&nbsp;
+                                            Transaksi Aktif
+                                        </Button>
+                                        {/* <Button raised fill style={{display:'inline-flex'}}>
+                                            <i className="f7-icons" style={{fontSize:'20px'}}>plus</i>&nbsp;
+                                            Tambah Transaksi
+                                        </Button> */}
+                                    </div>
                                     <table>
                                         <thead style={{background:'#eeeeee'}}>
                                             <tr>
@@ -191,7 +187,7 @@ class Penjualan extends Component {
                                                 return(
                                                     <tr key={option.transaksi_id}>
                                                         <td className="label-cell">
-                                                            <Button popoverOpen={".popover-menu-"+option.transaksi_id}>
+                                                            {/* <Button popoverOpen={".popover-menu-"+option.transaksi_id}>
                                                                 <i className="f7-icons" style={{fontSize:'20px'}}>ellipsis_vertical</i>
                                                             </Button>
                                                             <Popover className={"popover-menu-"+option.transaksi_id}>
@@ -202,18 +198,10 @@ class Penjualan extends Component {
                                                                     <ListItem link popoverClose onClick={()=>this.kirim(option)} title="Proses Pengiriman" />
                                                                     <ListItem link disabled={(parseInt(option.status_pembayaran_id) !== 1 ? false : true)} popoverClose onClick={()=>this.batalTransaksi(option)} title="Batalkan Transaksi" />
                                                                 </List>
-                                                            </Popover>
+                                                            </Popover> */}
                                                         </td>
                                                         <td className="label-cell" style={{textAlign:'center'}}>
-                                                            {parseInt(option.status_pembayaran_id) === 0 && <Button raised fill style={{background:'#fbc02d', marginTop:'8px'}}>Menunggu Pembayaran</Button>}
-                                                            {parseInt(option.status_pembayaran_id) === 1 && parseInt(option.status_konfirmasi_id) === 0 && <Button raised fill style={{background:'#ff6f00', marginTop:'8px'}}>Menunggu Verifikasi</Button>}
-                                                            {parseInt(option.status_pembayaran_id) === 1 && parseInt(option.status_konfirmasi_id) === 1 && parseInt(option.status_pengiriman_id) === 0 && <Button raised fill style={{background:'#00acc1', marginTop:'8px'}}>Diproses</Button>}
-                                                            {parseInt(option.status_pembayaran_id) === 1 && parseInt(option.status_konfirmasi_id) === 1 && parseInt(option.status_pengiriman_id) === 1 && parseInt(option.status_diterima_id) === 0 && <Button raised fill style={{background:'#129A2D', marginTop:'8px'}}>Dalam Pengiriman</Button>}
-                                                            {parseInt(option.status_pembayaran_id) === 1 && parseInt(option.status_konfirmasi_id) === 1 && parseInt(option.status_pengiriman_id) === 1 && parseInt(option.status_diterima_id) === 1 && parseInt(option.status_selesai_id) === 0 && <Button raised fill style={{background:'#129A2D', marginTop:'8px'}}>Sudah Diterima</Button>}
-                                                            {parseInt(option.status_pembayaran_id) === 1 && parseInt(option.status_konfirmasi_id) === 1 && parseInt(option.status_pengiriman_id) === 1 && parseInt(option.status_diterima_id) === 1 && parseInt(option.status_selesai_id) === 1 && <Button raised fill style={{background:'#0277bd', marginTop:'8px'}}><i className="f7-icons" style={{fontSize:'20px'}}>checkmark_circle</i>&nbsp;Selesai</Button>}
-
-                                                            {parseInt(option.status_pembayaran_id) === 0 && <div style={{fontSize:'10px', marginBottom:'8px', marginTop:'4px'}}>Batas Pembayaran: {moment(option.batas_pembayaran).format('DD') + ' ' + this.bulan[(moment(option.batas_pembayaran).format('M')-1)] + ' ' + moment(option.batas_pembayaran).format('YYYY') + ', ' + moment(option.batas_pembayaran).format('HH') + ':' + moment(option.batas_pembayaran).format('mm')}</div>}
-                                                            {parseInt(option.status_pembayaran_id) === 1 && option.tanggal_pembayaran !== null && <div style={{fontSize:'10px', marginBottom:'8px', marginTop:'4px'}}>Pembayaran: {moment(option.tanggal_pembayaran).format('DD') + ' ' + this.bulan[(moment(option.tanggal_pembayaran).format('M')-1)] + ' ' + moment(option.tanggal_pembayaran).format('YYYY')}</div>}
+                                                            <Button raised fill style={{background:'red', marginTop:'8px'}}>Dibatalkan</Button>
                                                         </td>
                                                         <td className="label-cell">
                                                             {moment(option.create_date).format('DD') + ' ' + this.bulan[(moment(option.create_date).format('M')-1)] + ' ' + moment(option.create_date).format('YYYY') + ', ' + moment(option.create_date).format('HH') + ':' + moment(option.create_date).format('mm')}
@@ -235,16 +223,7 @@ class Penjualan extends Component {
                                                             {option.pengguna}
                                                         </td>
                                                         <td className="label-cell">
-                                                            {option.manual !== 1 &&
-                                                            <>
                                                             {option.jenis_mitra ? option.jenis_mitra : 'Priv. Customer'}
-                                                            </>
-                                                            }
-                                                            {option.manual === 1 &&
-                                                            <>
-                                                            Penjualan Offline
-                                                            </>
-                                                            }
                                                         </td>
                                                         <td className="numeric-cell">
                                                             {this.formatAngka(option.total_nominal)}
@@ -290,5 +269,5 @@ function mapStateToProps({ App, Pertanyaan, Kuis }) {
     }
 }
 
-export default (connect(mapStateToProps, mapDispatchToProps)(Penjualan));
+export default (connect(mapStateToProps, mapDispatchToProps)(PenjualanBatal));
   

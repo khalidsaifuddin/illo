@@ -1,8 +1,8 @@
 import axios from 'axios/index';
 
-export const GET_JENIS_MITRA = '[NOTIFIKASI] GET_JENIS_MITRA';
-export const GET_ANGGOTA_MITRA = '[NOTIFIKASI] GET_ANGGOTA_MITRA';
-export const SIMPAN_MITRA = '[NOTIFIKASI] SIMPAN_MITRA';
+export const GET_JENIS_MITRA = '[MITRA] GET_JENIS_MITRA';
+export const GET_ANGGOTA_MITRA = '[MITRA] GET_ANGGOTA_MITRA';
+export const SIMPAN_MITRA = '[MITRA] SIMPAN_MITRA';
 
 export function getJenisMitra(routeParams)
 {

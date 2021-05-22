@@ -15,16 +15,16 @@ import 'react-quill/dist/quill.snow.css';
 
 import Dropzone from 'react-dropzone';
 
-class TambahFaq extends Component {
+class FormMitra extends Component {
     state = {
         error: null,
         loading: false,
         routeParams: {
             start: 0,
             limit: 20,
-            jawaban: '',
-            pengguna_id: JSON.parse(localStorage.getItem('user')).pengguna_id,
-            faq_id: this.$f7route.params['faq_id'] ? this.$f7route.params['faq_id'] : null
+            konten: '',
+            jenis_artikel_id: 2,
+            pengguna_id: JSON.parse(localStorage.getItem('user')).pengguna_id
         }
     }
 
@@ -65,22 +65,14 @@ class TambahFaq extends Component {
     }
 
     componentDidMount = () => {
-        if(this.$f7route.params['faq_id']){
-            this.props.getFaq(this.state.routeParams).then((result)=>{
-                if(parseInt(result.payload.total) > 0){
-                    //ada
-                    this.setState({
-                        ...this.state,
-                        routeParams: {
-                            ...this.state.routeParams,
-                            ...result.payload.rows[0]
-                        }
-                    })
-                }else{
-                    //tidak ada
+        this.props.getArtikel(this.state.routeParams).then((result)=>{
+            this.setState({
+                routeParams: {
+                    ...this.state.routeParams,
+                    ...result.payload.rows[0]
                 }
             })
-        }
+        })
     }
 
     setStateValue = (key) => (e) => {
@@ -96,46 +88,29 @@ class TambahFaq extends Component {
 
     }
 
-    gantiStatusPublikasi = (b) => {
-        this.setState({
-            ...this.state,
-            routeParams: {
-                ...this.state.routeParams,
-                publikasi: b.target.value
-            }
-        });
-    }
-
     editorChange = (e) => {
         // console.log(e);
         this.setState({
             routeParams: {
                 ...this.state.routeParams,
-                jawaban: e
+                konten: e
             }
         },()=>{
             // console.log(this.state.routeParams);
         });
     }
 
-    simpanFaq = () => {
+    simpan = () => {
         // alert('oke')
         this.$f7.dialog.preloader()
-        // // console.log('tes')
-        // // console.log(this.state.routeParams)
-        if(!this.state.routeParams.pertanyaan || !this.state.routeParams.jawaban){
-            this.$f7.dialog.preloader()
-            this.$f7.dialog.alert('Pertanyaan dan jawaban harus terisi lengkap sebelum menyimpan!')
-            return true
-        }
-
-        this.props.simpanFaq(this.state.routeParams).then((result)=>{
+        
+        this.props.simpanArtikel(this.state.routeParams).then((result)=>{
             if(result.payload.sukses){
                 //berhasil
                 this.$f7.dialog.close()
                 
-                this.$f7.dialog.alert('FAQ berhasil disimpan', 'Berhasil',()=>{
-                    this.$f7router.navigate("/kelola-faq/");
+                this.$f7.dialog.alert('Artikel berhasil disimpan', 'Berhasil',()=>{
+                    
                 })
 
             }else{
@@ -149,19 +124,24 @@ class TambahFaq extends Component {
         })
     }
 
-    changeToggle = (key) => (e) => {
-
-        console.log(key)
-        console.log(e)
+    simpanArtikel = () => {
+        this.$f7.dialog.preloader()
         
-        this.setState({
-            routeParams: {
-                ...this.state.routeParams,
-                [key] : parseInt(this.state.routeParams.aktif) === 1 ? 0 : 1
+        this.props.simpanArtikel(this.state.routeParams).then((result)=>{
+            if(result.payload.sukses){
+                //berhasil
+                this.$f7.dialog.close()
+                
+                this.$f7.dialog.alert('Artikel berhasil disimpan', 'Berhasil',()=>{
+                    // this.$f7router.navigate("/kelola-blog/");
+                })
+
+            }else{
+                //gagal
+                this.$f7.dialog.alert('Terjadi kesalahan pada sistem atau jaringan Anda. Mohon dicoba kembali dalam beberapa saat', 'Gagal')
+            
             }
-        },()=>{
-            console.log(this.state.routeParams);
-        });
+        })
     }
 
     render()
@@ -172,9 +152,9 @@ class TambahFaq extends Component {
         tanggal = moment(tgl).format('D') + ' ' + this.bulan[(moment(tgl).format('M')-1)] + ' ' + moment(tgl).format('YYYY');
 
         return (
-            <Page name="TambahFaq" hideBarsOnScroll>
+            <Page name="FormMitra" hideBarsOnScroll>
                 <Navbar sliding={false} backLink="Kembali" onBackClick={this.backClick}>
-                    <NavTitle sliding>{this.state.routeParams.faq_id ? 'Edit' : 'Tambah'} FAQ</NavTitle>
+                    <NavTitle sliding>Kelola Petunjuk Mitra</NavTitle>
                 </Navbar>
 
                 <Row>
@@ -182,21 +162,9 @@ class TambahFaq extends Component {
                     <Col width="100" tabletWidth="100" desktopWidth="80">
                         <Card>
                             <CardContent>
-                                <List noHairlinesMd style={{marginBottom:'0px'}}>
-                                    <ListInput
-                                        label="Pertanyaan"
-                                        type="textarea"
-                                        resizable
-                                        placeholder="Pertanyaan FAQ"
-                                        clearButton
-                                        onChange={this.setStateValue('pertanyaan')}
-                                        defaultValue={(this.$f7route.params['faq_id'] ? this.state.routeParams.pertanyaan : null)}
-                                    >
-                                    </ListInput>
-                                </List>
                                 <Block strong style={{marginTop:'0px', marginBottom:'0px'}}>
                                     <div style={{marginBottom:'8px'}}>
-                                        Jawaban FAQ
+                                        Artikel Petunjuk Mitra Illo
                                     </div>
                                     <ReactQuill 
                                         className={"kontenArtikel"}
@@ -204,22 +172,15 @@ class TambahFaq extends Component {
                                         onChange={this.editorChange} 
                                         modules={this.modules}
                                         formats={this.formats}
-                                        value={this.state.routeParams.jawaban}
+                                        value={this.state.routeParams.konten}
                                         on
                                     />
                                 </Block>
-                                <List style={{marginTop:'4px', marginBottom:'4px'}}>
-                                    <ListItem>
-                                        <span>Aktifkan FAQ</span>
-                                        <Toggle defaultChecked={parseInt(this.state.routeParams.aktif) === 1 ? true : false} checked={parseInt(this.state.routeParams.aktif) === 1 ? true : false} value={1} onToggleChange={this.changeToggle('aktif')} />
-                                    </ListItem>
-                                </List>
                                 <Block strong style={{marginTop:'0px'}}>
                                     <Button 
                                     raised 
                                     fill 
-                                    large
-                                    onClick={this.simpanFaq} 
+                                    onClick={this.simpanArtikel} 
                                     style={{marginBottom:'8px', backgroundColor:'green', display:'inline-flex'}}
                                     >
                                         <i className="f7-icons" style={{fontSize:'20px'}}>paperplane_fill</i>&nbsp;Simpan
@@ -239,9 +200,8 @@ function mapDispatchToProps(dispatch) {
     return bindActionCreators({
       updateWindowDimension: Actions.updateWindowDimension,
       setLoading: Actions.setLoading,
-      generateUUID: Actions.generateUUID,
-      simpanFaq: Actions.simpanFaq,
-      getFaq: Actions.getFaq
+      getArtikel: Actions.getArtikel,
+      simpanArtikel: Actions.simpanArtikel
     }, dispatch);
 }
 
@@ -253,5 +213,5 @@ function mapStateToProps({ App, Kuis, Ruang }) {
     }
 }
 
-export default (connect(mapStateToProps, mapDispatchToProps)(TambahFaq));
+export default (connect(mapStateToProps, mapDispatchToProps)(FormMitra));
   

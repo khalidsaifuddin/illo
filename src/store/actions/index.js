@@ -20,3 +20,4 @@ export * from './Pengguna.actions';
 export * from './Banner.actions';
 export * from './Diskon.actions';
 export * from './Faq.actions';
+export * from './Tim.actions';

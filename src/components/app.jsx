@@ -408,16 +408,22 @@ class app extends Component {
                       <i slot="media" className="f7-icons">cube_box</i>
                     </ListItem>
                     <ListItem noChevron link="/Pengguna/" view=".view-main" panelClose panel-close title="Pengguna" className="itemSub">
-                      <i slot="media" className="f7-icons">doc_text</i>
+                      <i slot="media" className="f7-icons">person_2_fill</i>
                     </ListItem>
                     <ListItem noChevron link="/KategoriProduk/" view=".view-main" panelClose panel-close title="Kategori Produk" className="itemSub">
-                      <i slot="media" className="f7-icons">doc_text</i>
+                      <i slot="media" className="f7-icons">cube_box</i>
                     </ListItem>
                     <ListItem noChevron link="/Produk/" view=".view-main" panelClose panel-close title="Produk" className="itemSub">
-                      <i slot="media" className="f7-icons">doc_text</i>
+                      <i slot="media" className="f7-icons">cube_box_fill  </i>
                     </ListItem>
                     <ListItem noChevron link="/Mitra/" view=".view-main" panelClose panel-close title="Mitra" className="itemSub">
-                      <i slot="media" className="f7-icons">doc_text</i>
+                      <i slot="media" className="f7-icons">person_3_fill</i>
+                    </ListItem>
+                    <ListItem noChevron link="/TimMarketing/" view=".view-main" panelClose panel-close title="Tim Marketing" className="itemSub">
+                      <i slot="media" className="f7-icons">person_2_square_stack</i>
+                    </ListItem>
+                    <ListItem noChevron link="/TimPenjualan/" view=".view-main" panelClose panel-close title="Tim Penjualan" className="itemSub">
+                      <i slot="media" className="f7-icons">person_2_square_stack</i>
                     </ListItem>
                     {/* <ListItem noChevron link="/UnitPenjualan/" view=".view-main" panelClose panel-close title="Unit Penjualan" className="itemSub">
                       <i slot="media" className="f7-icons">doc_text</i>
@@ -457,6 +463,15 @@ class app extends Component {
                     <ListItem noChevron link={"/kelola-faq/"} view=".view-main" panelClose panel-close title="Kelola FAQ" className="itemSub">
                         <i slot="media" className="f7-icons">question_circle</i>
                     </ListItem>
+                    <ListItem noChevron link={"/kelola-tentang/"} view=".view-main" panelClose panel-close title="Tentang Illo" className="itemSub">
+                        <i slot="media" className="f7-icons">doc_append</i>
+                    </ListItem>
+                    <ListItem noChevron link={"/kelola-mitra/"} view=".view-main" panelClose panel-close title="Petunjuk Mitra" className="itemSub">
+                        <i slot="media" className="f7-icons">doc_append</i>
+                    </ListItem>
+                    <ListItem noChevron link={"/kelola-petunjuk/"} view=".view-main" panelClose panel-close title="Petunjuk Transaksi" className="itemSub">
+                        <i slot="media" className="f7-icons">doc_append</i>
+                    </ListItem>
                   </AccordionContent>
                 </ListItem>
                 }
@@ -469,19 +484,19 @@ class app extends Component {
                   localStorage.getItem('sekolah_id_beranda') === '' || 
                   localStorage.getItem('sekolah_id_beranda') === null
                 ) &&
-                <ListItem view=".view-main" accordionItem title="Transaksi">
-                  <i slot="media" className="f7-icons">money_dollar_circle</i>
-                  <AccordionContent>
-                    <ListItem noChevron link="/Penjualan/" view=".view-main" panelClose panel-close title="Penjualan" className="itemSub">
-                      <i slot="media" className="f7-icons">tray_arrow_up</i>
-                    </ListItem>
-                    <ListItem noChevron link="/Pembelian/" view=".view-main" panelClose panel-close title="Pembelian" className="itemSub">
-                      <i slot="media" className="f7-icons">tray_arrow_down</i>
-                    </ListItem>
-                  </AccordionContent>
+                <ListItem noChevron link="/Penjualan/" view=".view-main" panelClose panel-close title="Transaksi Penjualan">
+                    <i slot="media" className="f7-icons">money_dollar_circle</i>
                 </ListItem>
-                // <ListItem noChevron link="/Penjualan/" view=".view-main" panelClose panel-close title="Transaksi">
+                // <ListItem view=".view-main" accordionItem title="Transaksi">
                 //   <i slot="media" className="f7-icons">money_dollar_circle</i>
+                //   <AccordionContent>
+                //     <ListItem noChevron link="/Penjualan/" view=".view-main" panelClose panel-close title="Penjualan" className="itemSub">
+                //       <i slot="media" className="f7-icons">tray_arrow_up</i>
+                //     </ListItem>
+                //     <ListItem noChevron link="/Pembelian/" view=".view-main" panelClose panel-close title="Pembelian" className="itemSub">
+                //       <i slot="media" className="f7-icons">tray_arrow_down</i>
+                //     </ListItem>
+                //   </AccordionContent>
                 // </ListItem>
                 }
                 {

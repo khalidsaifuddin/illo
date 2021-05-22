@@ -1296,11 +1296,11 @@ class Beranda extends Component {
                           <BlockTitle style={{marginTop:'0px', marginBottom:'4px', fontSize:'15px', fontWeight:'bold', color:'#434343', marginLeft:'0px'}}>
                             Privileged Customer
                           </BlockTitle>
-                          <div style={{fontSize:'16px', fontWeight:'bold'}}>Alamat Pengiriman:</div>
+                          <div style={{fontSize:'12px', fontWeight:'bold', marginTop:'32px'}}>Alamat Pengiriman:</div>
                           {this.state.alamat_pengguna.alamat_jalan &&
-                          <div style={{fontSize:'10px', marginTop:'32px', borderTop:'1px solid #eee'}}>
-                            Alamat Utama:
-                            <br/>
+                          <div style={{fontSize:'10px', marginTop:'0px', borderTop:'1px solid #eee'}}>
+                            {/* Alamat Utama: */}
+                            {/* <br/> */}
                             <b>{this.state.alamat_pengguna.nama_penerima}</b>
                             <br/>
                             {this.state.alamat_pengguna.alamat_jalan}, {this.state.alamat_pengguna.desa_kelurahan}, {this.state.alamat_pengguna.kode_pos}

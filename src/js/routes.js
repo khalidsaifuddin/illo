@@ -88,6 +88,16 @@ import KelolaBlog from '../pages/Website/KelolaBlog';
 import tambahBlog from '../pages/Website/tambahBlog';
 import KelolaFaq from '../pages/Website/KelolaFaq';
 import TambahFaq from '../pages/Website/TambahFaq';
+import ProsesPengiriman from '../pages/Penjualan/ProsesPengiriman';
+import PenjualanBatal from '../pages/Penjualan/PenjualanBatal';
+import FormPenjualan from '../pages/Penjualan/FormPenjualan';
+import TimMarketing from '../pages/DataMaster/TimMarketing';
+import FormTimMarketing from '../pages/DataMaster/FormTimMarketing';
+import TimPenjualan from '../pages/DataMaster/TimPenjualan';
+import FormTimPenjualan from '../pages/DataMaster/FormTimPenjualan';
+import FormTentang from '../pages/Website/FormTentang';
+import FormMitra from '../pages/Website/FormMitra';
+import FormPetunjuk from '../pages/Website/FormPetunjuk';
 
 // console.log(localStorage.getItem('kode_aplikasi'));
 
@@ -127,6 +137,10 @@ var routes = [
   {
     path: '/ProsesTransaksi/:transaksi_id',
     component: ProsesTransaksi
+  },
+  {
+    path: '/ProsesPengiriman/:transaksi_id',
+    component: ProsesPengiriman
   },
   {
     path: '/StoreToko/:pengguna_id',
@@ -261,8 +275,36 @@ var routes = [
     component: FormBatch,
   },
   {
+    path: '/kelola-tentang/',
+    component: FormTentang,
+  },
+  {
+    path: '/kelola-mitra/',
+    component: FormMitra,
+  },
+  {
+    path: '/kelola-petunjuk/',
+    component: FormPetunjuk,
+  },
+  {
     path: '/Banner/:jenis',
     component: Banner,
+  },
+  {
+    path: '/TimPenjualan/',
+    component: TimPenjualan,
+  },
+  {
+    path: '/FormTimPenjualan/',
+    component: FormTimPenjualan,
+  },
+  {
+    path: '/TimMarketing/',
+    component: TimMarketing,
+  },
+  {
+    path: '/FormTimMarketing/',
+    component: FormTimMarketing,
   },
   {
     path: '/FormBanner/:jenis_banner_id',
@@ -335,6 +377,18 @@ var routes = [
   {
     path: '/Penjualan/',
     component: Penjualan,
+  },
+  {
+    path: '/PenjualanBatal/',
+    component: PenjualanBatal,
+  },
+  {
+    path: '/FormPenjualan/:pengguna_id',
+    component: FormPenjualan,
+  },
+  {
+    path: '/FormPenjualan/:pengguna_id/:transaksi_id',
+    component: FormPenjualan,
   },
   {
     path: '/AnggotaMitra/:jenis_mitra_id',
