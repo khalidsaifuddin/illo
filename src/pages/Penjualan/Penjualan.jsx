@@ -180,10 +180,10 @@ class Penjualan extends Component {
                                                 <th className="label-cell" style={{minWidth:'200px', color:'#434343', fontSize:'12px'}}>Tanggal Pembelian</th>
                                                 <th className="label-cell" style={{minWidth:'400px', color:'#434343', fontSize:'12px'}}>Produk</th>
                                                 <th className="label-cell" style={{minWidth:'200px', color:'#434343', fontSize:'12px'}}>Pembeli</th>
-                                                <th className="label-cell" style={{minWidth:'100px', color:'#434343', fontSize:'12px'}}>Status Pembeli</th>
-                                                <th className="numeric-cell" style={{minWidth:'200px', color:'#434343', fontSize:'12px'}}>Sub Total</th>
-                                                <th className="numeric-cell" style={{minWidth:'200px', color:'#434343', fontSize:'12px'}}>Ongkos Kirim</th>
-                                                <th className="numeric-cell" style={{minWidth:'200px', color:'#434343', fontSize:'12px'}}>Total</th>
+                                                {/* <th className="label-cell" style={{minWidth:'100px', color:'#434343', fontSize:'12px'}}>Status Pembeli</th> */}
+                                                <th className="numeric-cell" style={{minWidth:'120px', color:'#434343', fontSize:'12px'}}>Sub Total</th>
+                                                <th className="numeric-cell" style={{minWidth:'120px', color:'#434343', fontSize:'12px'}}>Ongkos Kirim</th>
+                                                <th className="numeric-cell" style={{minWidth:'120px', color:'#434343', fontSize:'12px'}}>Total</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -234,7 +234,7 @@ class Penjualan extends Component {
                                                         <td className="label-cell">
                                                             {option.pengguna}
                                                         </td>
-                                                        <td className="label-cell">
+                                                        {/* <td className="label-cell">
                                                             {option.manual !== 1 &&
                                                             <>
                                                             {option.jenis_mitra ? option.jenis_mitra : 'Priv. Customer'}
@@ -245,15 +245,17 @@ class Penjualan extends Component {
                                                             Penjualan Offline
                                                             </>
                                                             }
-                                                        </td>
+                                                        </td> */}
                                                         <td className="numeric-cell">
-                                                            {this.formatAngka(option.total_nominal)}
+                                                            {/* {this.formatAngka(option.total_nominal)} */}
+                                                            {this.formatAngka( parseFloat(option.harga_final) - parseFloat(option.ongkos_kirim) )}
                                                         </td>
                                                         <td className="numeric-cell">
                                                             {this.formatAngka(option.ongkos_kirim)}
                                                         </td>
                                                         <td className="numeric-cell">
-                                                            {this.formatAngka(parseFloat(option.total_nominal)+parseFloat(option.ongkos_kirim))}
+                                                            {this.formatAngka(parseFloat(option.harga_final))}
+                                                            {/* {this.formatAngka(parseFloat(option.total_nominal)+parseFloat(option.ongkos_kirim))} */}
                                                         </td>
                                                     </tr>
                                                 )

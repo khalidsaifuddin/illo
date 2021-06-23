@@ -327,6 +327,12 @@ body {
   background-repeat: no-repeat;
   background-position: center;
 
+  background-image: url('/static/icons/mons_80.png');
+  background-image: url('/static/icons/mons_80.png'), linear-gradient(45deg, #fcc5e4 0%, #fda34b 15%, #ff7882 35%, #c8699e 52%, #7046aa 100%);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+
 }
 
 @media only screen and (max-width: 700px) {
@@ -1545,6 +1551,7 @@ h2 {
 
 .kotakKanban {
   min-width: 282px;
+  max-width: 282px;
   min-height: 600px;
 }
 

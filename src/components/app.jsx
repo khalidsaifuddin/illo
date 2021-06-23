@@ -519,6 +519,9 @@ class app extends Component {
                   </AccordionContent>
                 </ListItem>
                 }
+                <ListItem noChevron link="/CRM/" view=".view-main" panelClose panel-close title="CRM">
+                  <i slot="media" className="f7-icons">tickets_fill</i>
+                </ListItem>
                 {/* {localStorage.getItem('unit_layanan') === '' &&
                 <ListItem noChevron link="/DaftarTiket/" view=".view-main" panelClose panel-close title="Tiket dan Dukungan">
                   <i slot="media" className="f7-icons">smallcircle_fill_circle_fill</i>

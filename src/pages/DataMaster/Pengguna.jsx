@@ -80,6 +80,10 @@ class Pengguna extends Component {
     edit = (pengguna_id) => {
         this.$f7router.navigate('/FormPengguna/'+pengguna_id)
     }
+    
+    alamatPengguna = (pengguna_id) => {
+        this.$f7router.navigate('/AlamatPengguna/'+pengguna_id)
+    }
 
     hapus = (option) => {
         this.$f7.dialog.confirm('Apakah Anda yakin ingin menghapus data ini?', 'Konfirmasi Hapus',()=>{
@@ -407,6 +411,7 @@ class Pengguna extends Component {
                                                                 <Popover className={"popover-menu-"+option.pengguna_id} style={{minWidth:'300px'}}>
                                                                     <List>
                                                                         <ListItem link="#" popoverClose title="Edit" onClick={()=>this.edit(option.pengguna_id)} />
+                                                                        <ListItem link="#" popoverClose title="Alamat Pengguna" onClick={()=>this.alamatPengguna(option.pengguna_id)} />
                                                                         {parseInt(option.a_admin) !== 1 && <ListItem link="#" popoverClose title="Set sebagai Administrator" onClick={()=>this.jadikanAdmin(option)} />}
                                                                         {parseInt(option.a_admin) === 1 && <ListItem link="#" popoverClose title="Stop sebagai Administrator" onClick={()=>this.stopAdmin(option)} />}
                                                                         <ListItem link="#" popoverClose title="Nonaktifkan" onClick={()=>this.hapus(option)} />

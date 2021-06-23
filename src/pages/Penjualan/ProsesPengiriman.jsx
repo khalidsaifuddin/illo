@@ -79,19 +79,26 @@ class ProsesPengiriman extends Component {
                 routeParams: {
                     ...this.state.routeParams,
                     ...result.payload.rows[0],
-                    tanggal_pengiriman: result.payload.rows[0].tanggal_pengiriman.replace(' ','T'),
+                    tanggal_pengiriman: result.payload.total > 0 ? ( result.payload.rows[0].tanggal_pengiriman ? result.payload.rows[0].tanggal_pengiriman.replace(' ','T') : null ): null,
                 }
             },()=>{
 
-                this.props.getKurir(this.state.routeParams).then((result)=>{
-                    this.setState({
-                        kurir: result.payload,
-                        routeParams: {
-                            ...this.state.routeParams,
-                            kurir_id: result.payload.total > 0 ? result.payload.rows[0].kurir_id : null
-                        }
+                this.props.getAlamatPengiriman({
+                    pengguna_id: this.state.transaksi_record.pengguna_id
+                }).then((result)=>{
+
+                    this.props.getKurir(this.state.routeParams).then((result)=>{
+                        this.setState({
+                            kurir: result.payload,
+                            routeParams: {
+                                ...this.state.routeParams,
+                                kurir_id: result.payload.total > 0 ? result.payload.rows[0].kurir_id : null
+                            }
+                        })
                     })
+                    
                 })
+
 
             })
         })
@@ -146,6 +153,14 @@ class ProsesPengiriman extends Component {
                         <Card style={{marginBottom:'50px'}}>
                             <CardContent style={{padding:'8px'}}>
                                 <CardTransaksi transaksi={this.state.transaksi_record} />
+                                <Card>
+                                    <CardHeader>
+                                        Alamat Pengiriman
+                                    </CardHeader>
+                                    <CardContent>
+                                        
+                                    </CardContent>
+                                </Card>
                                 <Card>
                                     <CardContent>
                                         <List noHairlinesMd style={{marginBottom:'0px'}}>
@@ -216,7 +231,8 @@ function mapDispatchToProps(dispatch) {
       generateUUID: Actions.generateUUID,
       getTransaksi: Actions.getTransaksi,
       getKurir: Actions.getKurir,
-      simpanKurir: Actions.simpanKurir
+      simpanKurir: Actions.simpanKurir,
+      getAlamatPengiriman: Actions.getAlamatPengiriman
     }, dispatch);
 }
 

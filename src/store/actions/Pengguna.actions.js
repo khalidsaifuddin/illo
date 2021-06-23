@@ -3,6 +3,7 @@ import axios from 'axios/index';
 export const GET_ALAMAT_PENGGUNA = '[PENGGUNA] GET_ALAMAT_PENGGUNA';
 export const SIMPAN_ALAMAT_PENGGUNA = '[PENGGUNA] SIMPAN_ALAMAT_PENGGUNA';
 export const GET_MITRA_TERDEKAT = '[PENGGUNA] GET_MITRA_TERDEKAT';
+export const GET_ALAMAT_PENGIRIMAN = '[PENGGUNA] GET_ALAMAT_PENGIRIMAN';
 
 export function getMitraTerdekat(routeParams)
 {
@@ -46,6 +47,22 @@ export function simpanAlamatPengguna(routeParams)
         request.then((response) =>
             dispatch({
                 type   : SIMPAN_ALAMAT_PENGGUNA,
+                payload: response.data,
+                routeParams
+            })
+        );
+}
+
+export function getAlamatPengiriman(routeParams)
+{
+    const request = axios.post(localStorage.getItem('api_base')+'/api/Pengguna/getAlamatPengiriman', {
+        ...routeParams
+    });
+
+    return (dispatch) =>
+        request.then((response) =>
+            dispatch({
+                type   : GET_ALAMAT_PENGIRIMAN,
                 payload: response.data,
                 routeParams
             })

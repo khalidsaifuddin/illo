@@ -21,3 +21,4 @@ export * from './Banner.actions';
 export * from './Diskon.actions';
 export * from './Faq.actions';
 export * from './Tim.actions';
+export * from './Crm.actions';

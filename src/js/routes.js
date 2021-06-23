@@ -98,6 +98,8 @@ import FormTimPenjualan from '../pages/DataMaster/FormTimPenjualan';
 import FormTentang from '../pages/Website/FormTentang';
 import FormMitra from '../pages/Website/FormMitra';
 import FormPetunjuk from '../pages/Website/FormPetunjuk';
+import daftarCrm from '../pages/CRM/daftarCrm';
+import formCrm from '../pages/CRM/formCrm';
 
 // console.log(localStorage.getItem('kode_aplikasi'));
 
@@ -329,6 +331,14 @@ var routes = [
   {
     path: '/Mitra/',
     component: Mitra,
+  },
+  {
+    path: '/CRM/',
+    component: daftarCrm,
+  },
+  {
+    path: '/formCRM',
+    component: formCrm,
   },
   {
     path: '/DiskonPelanggan/',

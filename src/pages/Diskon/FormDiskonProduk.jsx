@@ -213,9 +213,10 @@ class FormDiskonProduk extends Component {
                                         placeholder="Pilih Produk..."
                                         onChange={this.setValue('produk_id')}
                                     >
+                                        <option selected={this.state.routeParams.produk_id ? false : true} value={'-'}>{'-'}</option>    
                                         {this.state.produk.rows.map((option)=>{
                                             return (
-                                                <option selected={option.produk_id === this.state.routeParams.produk_id ? true : false} value={option.produk_id}>{option.kode_produk ? option.kode_produk + ' - ' : ''}{option.nama}</option>    
+                                                <option selected={option.produk_id === this.state.routeParams.produk_id ? true : false} value={option.produk_id}>{option.kode_produk ? option.kode_produk + ' - ' : ''}{option.nama}</option>
                                             )
                                         })}
                                         {/* <option value={1}>Persentase</option>

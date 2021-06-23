@@ -53,12 +53,13 @@ if(localStorage.getItem('kode_aplikasi') === 'MEJA'){
   localStorage.setItem('socket_url',"https://socket.diskuis.id");
   localStorage.setItem('device','web');
   localStorage.setItem('versi','1.0.0');
-  localStorage.setItem('store_url','http://localhost:3000');
-  // localStorage.setItem('store_url','http://117.53.47.43:8087');
+  // localStorage.setItem('store_url','http://localhost:3000');
+  localStorage.setItem('store_url','http://117.53.47.43:8087');
+  localStorage.setItem('alamat_email','info@illoskincare.com');
 }
 
 localStorage.setItem('google_api','908643350959-ml0o4a08iqa99cqqd4vjj1qoojhmnfsq.apps.googleusercontent.com');
-localStorage.setItem('api_base','http://illobackend:8888');
+// localStorage.setItem('api_base','http://illobackend:8888');
 // localStorage.setItem('socket_url',"http://localhost:5000");
 // localStorage.setItem('google_api', '582957663393-hlr6l0a2oendcq6ul13n9pasi88mb7bc.apps.googleusercontent.com');
 
