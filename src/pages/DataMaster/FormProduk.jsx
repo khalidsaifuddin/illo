@@ -78,8 +78,21 @@ class FormProduk extends Component {
                     },()=>{
                         
                         this.props.getHargaProduk(this.state.routeParams).then((result)=>{
+
+                            let harga_produk = []
+
+                            for (let index = 0; index < result.payload.rows.length; index++) {
+                                const element = result.payload.rows[index];
+
+                                let persen = parseFloat(element.nominal)/parseFloat(this.state.routeParams.harga_jual)*100
+                                element.persen = persen
+
+                                harga_produk.push(element)
+                                
+                            }
+
                             this.setState({
-                                harga_produk: result.payload.rows
+                                harga_produk: harga_produk
                             },()=>{
                                 this.props.getGambarProduk(this.state.routeParams).then((result)=>{
 
@@ -141,6 +154,22 @@ class FormProduk extends Component {
             }
         },()=>{
             console.log(this.state)
+
+            if(type === 'harga_jual'){
+                let harga_produk = []
+
+                this.state.harga_produk.map((option)=>{
+                    option.nominal = parseFloat(parseFloat(option.persen)/100*parseFloat(this.state.routeParams.harga_jual)).toFixed(0)
+
+                    harga_produk.push(option)
+
+                })
+
+                this.setState({
+                    harga_produk: harga_produk
+                })
+            }
+
         })
     }
 
@@ -417,15 +446,56 @@ class FormProduk extends Component {
     }
 
     setHargaProduk = (jenis_harga_id) => (e) => {
+        
+        let harga_produk  = []
+
         this.state.harga_produk.map((option)=>{
             if(option.jenis_harga_id === jenis_harga_id){
                 option.nominal = e.currentTarget.value
                 option.produk_id = this.state.routeParams.produk_id,
                 option.soft_delete = 0
+                option.persen = parseFloat(e.currentTarget.value)/parseFloat(this.state.routeParams.harga_jual)*100
+            }else{
+                //do nothing
             }
+
+            harga_produk.push(option)
         })
 
-        console.log(this.state.harga_produk)
+        // console.log(this.state.harga_produk)
+        this.setState({
+            harga_produk: harga_produk
+        },()=>{
+            console.log(this.state.harga_produk)
+        })
+    }
+
+    gantiPersenHarga = (jenis_harga_id) => (e) => {
+        //hitung
+        let nominal = parseFloat(parseFloat(e.currentTarget.value)/100*this.state.routeParams.harga_jual).toFixed(0)
+
+        console.log(nominal)
+        
+        let harga_produk  = []
+
+        this.state.harga_produk.map((option)=>{
+            if(option.jenis_harga_id === jenis_harga_id){
+                option.persen = e.currentTarget.value
+                option.nominal = nominal
+            }else{
+                //do nothing
+            }
+
+            harga_produk.push(option)
+
+        })
+
+        this.setState({
+            harga_produk: harga_produk
+        },()=>{
+            console.log(this.state.harga_produk)
+        })
+
     }
     
     render()
@@ -534,22 +604,53 @@ class FormProduk extends Component {
                                             })}
                                         </div>
                                     </ListItem>
+                                    <ListInput
+                                        label="HPP Produk (Rp)"
+                                        type="number"
+                                        placeholder="HPP Produk (Rp) ..."
+                                        clearButton
+                                        value={this.state.routeParams.hpp}
+                                        onChange={this.setValue('hpp')}
+                                    />
+                                    <ListInput
+                                        label="Harga Jual Dasar (Rp)"
+                                        type="number"
+                                        placeholder="Harga Jual Dasar (Rp) ..."
+                                        clearButton
+                                        value={this.state.routeParams.harga_jual}
+                                        onChange={this.setValue('harga_jual')}
+                                    />
                                     <ListItem className="teksQuill" style={{marginTop:'16px'}}>
                                         {/* <div>Harga Produk</div> */}
-                                        <List noHairlinesBetweenIos className="listHarga">
-                                            {this.state.harga_produk.map((optionHarga)=>{
-                                                return (
+                                        {this.state.harga_produk.map((optionHarga)=>{
+
+                                            return (
+                                                <List noHairlinesBetweenIos className="listHarga" style={{
+                                                    marginBottom:'16px', 
+                                                    border:'1px solid #ccc', 
+                                                    padding:'16px',
+                                                    borderRadius: '10px'
+                                                }}>
                                                     <ListInput
-                                                        label={optionHarga.nama + " (Rp)"}
+                                                        label={"Persentase " + optionHarga.nama + " (%)"}
                                                         type="number"
-                                                        placeholder={optionHarga.nama}
+                                                        placeholder={"Persentase " + optionHarga.nama}
                                                         clearButton
-                                                        defaultValue={optionHarga.nominal}
+                                                        value={optionHarga.persen}
+                                                        onChange={this.gantiPersenHarga(optionHarga.jenis_harga_id)}
+                                                        info={"Persentase dari harga jual dasar"}
+                                                    /> 
+                                                    <ListInput
+                                                        label={"Nominal " + optionHarga.nama + " (Rp)"}
+                                                        type="number"
+                                                        placeholder={"Nominal " + optionHarga.nama}
+                                                        clearButton
+                                                        value={optionHarga.nominal}
                                                         onChange={this.setHargaProduk(optionHarga.jenis_harga_id)}
                                                     /> 
-                                                )
-                                            })}
-                                        </List>
+                                                </List>
+                                            )
+                                        })}
                                     </ListItem>
                                     {/* <ListInput
                                         label="Keterangan Produk"

@@ -100,6 +100,7 @@ import FormMitra from '../pages/Website/FormMitra';
 import FormPetunjuk from '../pages/Website/FormPetunjuk';
 import daftarCrm from '../pages/CRM/daftarCrm';
 import formCrm from '../pages/CRM/formCrm';
+import Pos from '../pages/POS/Pos';
 
 // console.log(localStorage.getItem('kode_aplikasi'));
 
@@ -555,6 +556,10 @@ var routes = [
   {
     path: '/kelola-faq/',
     component: KelolaFaq,
+  },
+  {
+    path: '/POS/',
+    component: Pos,
   },
   {
     path: '/tambah-faq/',

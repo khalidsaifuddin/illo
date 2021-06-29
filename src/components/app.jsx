@@ -522,6 +522,9 @@ class app extends Component {
                 <ListItem noChevron link="/CRM/" view=".view-main" panelClose panel-close title="CRM">
                   <i slot="media" className="f7-icons">tickets_fill</i>
                 </ListItem>
+                <ListItem noChevron link="/POS/" view=".view-main" panelClose panel-close title="POS">
+                  <i slot="media" className="f7-icons">money_dollar_circle</i>
+                </ListItem>
                 {/* {localStorage.getItem('unit_layanan') === '' &&
                 <ListItem noChevron link="/DaftarTiket/" view=".view-main" panelClose panel-close title="Tiket dan Dukungan">
                   <i slot="media" className="f7-icons">smallcircle_fill_circle_fill</i>
